@@ -12,7 +12,7 @@ def StateIdLe():
         print("performed")
     return (receiveCounter)
 
-def Reading(arg):
+def Reading():
     switcher = {
     1: StateIdLe
     }
@@ -37,11 +37,6 @@ if z1serial.is_open:
                 data = z1serial.read(1)
                 #print(data)
             #print(data[0])
-            isinstance(data, int)
-    #        for i in range (data):
-    #           port[i]
-    #           print(len(port))
-    #           #print(port[0])
         else:
             print('no data')
         time.sleep(1)
