@@ -6,7 +6,7 @@ from array import *
 #messageState = "StateIdLe"
 
 def StateIdLe():
-    if z1serial.read(1) == :
+    if True: #z1serial.read(1) == :
         messageState = "StateData"
         receiveCounter = 0
         print('c')
