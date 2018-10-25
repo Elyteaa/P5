@@ -3,9 +3,24 @@ import serial
 import time
 from array import *
 
+messageState = "StateIdLe"
+
+def StateIdLe():
+    if z1serial.read(1) == x02:
+        messageState = "StateData"
+        receiveCounter = 0
+        print("performed")
+    return (messageState, receiveCounter)
+
+def Reading(arg):
+    switcher = {
+    "StateIdLe": StateIdLe
+    }
+
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
 data = []
+receivedMessage[receiveCounter] = []
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate)
 z1serial.timeout = 2  # set read timeout
@@ -17,6 +32,7 @@ if z1serial.is_open:
         if size:
             singleRead = True
             while True:
+                Reading(messageState)
                 data = z1serial.read(1)
                 print(data)
             #print(data[0])
