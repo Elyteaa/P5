@@ -3,18 +3,18 @@ import serial
 import time
 from array import *
 
-messageState = "StateIdLe"
+#messageState = "StateIdLe"
 
 def StateIdLe():
     if z1serial.read(1) == x02:
         messageState = "StateData"
         receiveCounter = 0
         print("performed")
-    return (messageState, receiveCounter)
+    return (receiveCounter)
 
 def Reading(arg):
     switcher = {
-    "StateIdLe": StateIdLe
+    1: StateIdLe
     }
 
 z1baudrate = 115200
@@ -33,7 +33,7 @@ if z1serial.is_open:
         if size:
             singleRead = True
             while True:
-                Reading(messageState)
+                Reading(1)
                 data = z1serial.read(1)
                 print(data)
             #print(data[0])
