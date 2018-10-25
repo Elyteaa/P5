@@ -21,7 +21,7 @@ z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
 data = []
 receiveCounter = 0
-receivedMessage[receiveCounter] = []
+receivedMessage = [None]*255
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate)
 z1serial.timeout = 2  # set read timeout
