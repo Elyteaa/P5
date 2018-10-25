@@ -18,7 +18,7 @@ if z1serial.is_open:
             singleRead = True
             while True:
                 data = z1serial.read(1)
-                print(data "\n")
+                print(data '\n')
             #print(data[0])
             isinstance(data, int)
     #        for i in range (data):
