@@ -15,7 +15,7 @@ if z1serial.is_open:
     while True:
         size = z1serial.inWaiting()
         if size:
-            bool singleRead = True
+            singleRead = True
             while True:
                 data = z1serial.read(1)
                 print(data "\n")
