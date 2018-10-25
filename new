@@ -14,7 +14,7 @@ def StateIdLe():
 
 def Reading(self):
     switcher = {
-    1: StateIdLe
+    1: StateIdLe()
     }
 
 z1baudrate = 115200
