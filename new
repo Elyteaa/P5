@@ -12,12 +12,11 @@ def StateIdLe():
         print('c')
     return (receiveCounter)"""
     print("works")
-    return "works2"
 
-def Reading(self):
-    switcher = {
-    1: StateIdLe
-    }
+#def Reading():
+switcher = {
+1: StateIdLe
+}
 
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
@@ -35,7 +34,7 @@ if z1serial.is_open:
         if size:
             singleRead = True
             while True:
-                Reading(1)
+                switcher[1]()
                 data = z1serial.read(1)
                 #print(data)
             #print(data[0])
