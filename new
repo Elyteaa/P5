@@ -12,7 +12,7 @@ def StateIdLe():
         print("performed")
     return (receiveCounter)
 
-def Reading():
+def Reading(self):
     switcher = {
     1: StateIdLe
     }
