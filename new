@@ -12,7 +12,7 @@ def StateIdLe():
         print('c')
     return (receiveCounter)"""
     print("works")
-return
+    return "works2"
 
 def Reading(self):
     switcher = {
