@@ -15,8 +15,10 @@ if z1serial.is_open:
     while True:
         size = z1serial.inWaiting()
         if size:
-            data = z1serial.read(size)
-            print(data)
+            bool singleRead = True
+            while True:
+                data = z1serial.read(1)
+                print(data "\n")
             #print(data[0])
             isinstance(data, int)
     #        for i in range (data):
