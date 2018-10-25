@@ -6,7 +6,7 @@ from array import *
 #messageState = "StateIdLe"
 
 def StateIdLe():
-    if z1serial.read(1) == 0x62 0x27 0x5c 0x78 0x30 0x32 0x27:
+    if z1serial.read(1) == :
         messageState = "StateData"
         receiveCounter = 0
         print('c')
@@ -35,9 +35,9 @@ if z1serial.is_open:
         if size:
             singleRead = True
             while True:
-                switcher[1]()
+                #switcher[1]()
                 data = z1serial.read(1)
-                #print(data)
+                print(data)
             #print(data[0])
         else:
             print('no data')
