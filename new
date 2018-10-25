@@ -20,6 +20,7 @@ def Reading(arg):
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
 data = []
+receiveCounter = 0
 receivedMessage[receiveCounter] = []
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate)
