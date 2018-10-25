@@ -35,7 +35,7 @@ if z1serial.is_open:
             while True:
                 Reading(1)
                 data = z1serial.read(1)
-                print(data)
+                #print(data)
             #print(data[0])
             isinstance(data, int)
     #        for i in range (data):
