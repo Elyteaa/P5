@@ -10,7 +10,8 @@ def StateIdLe():
         messageState = "StateData"
         receiveCounter = 0
         print('c')
-    else print(z1serial.read(1))
+    else:
+        print(z1serial.read(1))
     #return (receiveCounter)
 
 #def Reading():
