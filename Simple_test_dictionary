@@ -1,0 +1,27 @@
+#!/usr/bin/python
+import random
+
+
+
+def StateIdle():
+	print("hey")
+
+def StateData():
+	print("hello")
+
+def StateDataDLE():
+	print("eyyy")
+
+switch = {
+
+0 : StateIdle,
+
+1 : StateData,
+
+2 : StateDataDLE
+
+}
+
+while True:
+	i = (random.randrange(0,3))
+	switch[i]()
