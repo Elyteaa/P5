@@ -1,27 +1,33 @@
 #!/usr/bin/python
 import random
 
+messageState = "messageState"
 
+def caseStateIdle():
+	messageState = "StateData"
+	receiveCounter = 0
+	print(messageState)
 
-def StateIdle():
-	print("hey")
+def caseStateData():
+	messageState = "StateDataDLE"
+	receiveCounter = 1
+	print(messageState)
 
-def StateData():
-	print("hello")
-
-def StateDataDLE():
-	print("eyyy")
-
+def caseStateDataDLE():
+	messageState = "StateData1"
+	receiveCounter = 2
+	print(messageState)
 switch = {
 
-0 : StateIdle,
+0 : caseStateIdle,
 
-1 : StateData,
+1 : caseStateData,
 
-2 : StateDataDLE
+2 : caseStateDataDLE
 
 }
 
 while True:
 	i = (random.randrange(0,3))
 	switch[i]()
+	
