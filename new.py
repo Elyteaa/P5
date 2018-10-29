@@ -2,7 +2,7 @@
 import serial
 import time
 from array import *
-from ctypes import *
+#from ctypes import *
 
 #messageState = "StateIdLe"
 
@@ -25,7 +25,7 @@ z1port = '/dev/ttyUSB0'  # set the correct port before running it
 data = []
 receiveCounter = 0
 receivedMessage = [None]*255
-startbyte = ctypes.c_ubyte(0x02)
+startbyte = b'\x02'
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
