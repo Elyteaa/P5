@@ -36,10 +36,8 @@ if z1serial.is_open:
             singleRead = True
             while True:
                 #switcher[1]()
-                data = z1serial.read(1).hex()
+                data = z1serial.read(1)
                 print(data)
-
-
             #print(data[0])
         else:
             print('no data')
