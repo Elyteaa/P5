@@ -2,6 +2,7 @@
 import serial
 import time
 from array import *
+from ctypes import *
 
 #messageState = "StateIdLe"
 
@@ -24,6 +25,7 @@ z1port = '/dev/ttyUSB0'  # set the correct port before running it
 data = []
 receiveCounter = 0
 receivedMessage = [None]*255
+startbyte = ctypes.c_ubyte(0x02)
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
@@ -36,8 +38,11 @@ if z1serial.is_open:
             singleRead = True
             while True:
                 #switcher[1]()
-                data = z1serial.read(1)
-                print(data)
+                data = z1serial.read(1).hex()
+                if data == startbyte:
+                    print(data)
+                else:
+                    print('no start byte yet')
             #print(data[0])
         else:
             print('no data')
