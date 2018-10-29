@@ -7,17 +7,16 @@ from array import *
 #messageState = "StateIdLe"
 
 def StateIdLe():
-    if z1serial.read(1) == 0x02:
-        messageState = "StateData"
+    if int(z1serial.read(1).hex(),16) == startbyte:
+        #messageState = "StateData"
         receiveCounter = 0
-        print('c')
+        print('start byte')
     else:
-        print(z1serial.read(1))
+        print('not start byte')
     #return (receiveCounter)
 
-#def Reading():
-switcher = {
-1: StateIdLe
+switchCase = {
+"StateDataDLE": StateIdLe,
 }
 
 z1baudrate = 115200
@@ -26,6 +25,7 @@ data = []
 receiveCounter = 0
 receivedMessage = [None]*255
 startbyte = 0x02
+messageState = "StateDataDLE"
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
@@ -37,13 +37,13 @@ if z1serial.is_open:
         if size:
             singleRead = True
             while True:
-                #switcher[1]()
-                data = int(z1serial.read(1).hex(), 16)
-                #data = int(data, 16)
-                if data == startbyte:
+                switchCase[messageState]()
+                #data = int(z1serial.read(1).hex(), 16)
+                
+                """if data == startbyte:
                     print(data)
                 else:
-                    print('no start byte yet')
+                    print('no start byte yet')"""
             #print(data[0])
         else:
             print('no data')
