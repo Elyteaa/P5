@@ -25,7 +25,7 @@ z1port = '/dev/ttyUSB0'  # set the correct port before running it
 data = []
 receiveCounter = 0
 receivedMessage = [None]*255
-startbyte = b'\x02'
+startbyte = 0x02
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
@@ -39,6 +39,7 @@ if z1serial.is_open:
             while True:
                 #switcher[1]()
                 data = z1serial.read(1).hex()
+                data = int(data, 16)
                 if data == startbyte:
                     print(data)
                 else:
