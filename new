@@ -25,7 +25,7 @@ data = []
 receiveCounter = 0
 receivedMessage = [None]*255
 
-z1serial = serial.Serial(port=z1port, baudrate=z1baudrate)
+z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = 2  # set read timeout
 # print z1serial  # debug serial.
 print(z1serial.is_open)  # True for opened
