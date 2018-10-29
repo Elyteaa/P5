@@ -2,21 +2,35 @@
 import serial
 import time
 from array import *
-#from ctypes import *
-
-#messageState = "StateIdLe"
 
 def StateIdLe():
+    global messageState, receiveCounter
     if int(z1serial.read(1).hex(),16) == startbyte:
-        #messageState = "StateData"
+        messageState = "StateData"
         receiveCounter = 0
-        print('start byte')
+
+def StateData():
+    global messageState, newMeasReady, singleRead, receivedMessage, receiveCounter
+    if int(z1serial.read(1).hex(),16) == DLEChar:
+        messageState = "StateDataDLE"
+    else if int(z1serial.read(1).hex(),16) == endbyte:
+        messageState = "StateIdLe"
+        newMeasReady = True
+        singleRead = False
     else:
-        print('not start byte')
-    #return (receiveCounter)
+        receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16)
+        receiveCounter = receiveCounter + 1
+
+def StateDataDLE():
+    global receivedMessage, receiveCounter, messageState
+    receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16) - 0x20 #types?
+    receiveCounter = receiveCounter + 1
+    messageState = "StateData"
 
 switchCase = {
-"StateDataDLE": StateIdLe,
+"StateIdLe": StateIdLe,
+"StateData": StateData,
+"StateDataDLE": StateDataDLE
 }
 
 z1baudrate = 115200
@@ -25,7 +39,10 @@ data = []
 receiveCounter = 0
 receivedMessage = [None]*255
 startbyte = 0x02
+DLEChar = 0x10
+endbyte = 0x03
 messageState = "StateDataDLE"
+newMeasReady = False
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
@@ -38,23 +55,13 @@ if z1serial.is_open:
             singleRead = True
             while True:
                 switchCase[messageState]()
-                #data = int(z1serial.read(1).hex(), 16)
+                if newMeasReady:
+                    newMeasReady = False
+                    inputBuffer = [None]*255
                 
-                """if data == startbyte:
-                    print(data)
-                else:
-                    print('no start byte yet')"""
-            #print(data[0])
         else:
             print('no data')
         time.sleep(1)
 else:
     print('z1serial not open')
-# z1serial.close()  # close z1serial if z1serial is open.
-
-while True:
-	if data == x00:
-		print("start")
-		
-	else:
-		print(":(")
+#z1serial.close()  # close z1serial if z1serial is open.
