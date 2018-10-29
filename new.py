@@ -38,8 +38,8 @@ if z1serial.is_open:
             singleRead = True
             while True:
                 #switcher[1]()
-                data = z1serial.read(1).hex()
-                data = int(data, 16)
+                data = int(z1serial.read(1).hex(), 16)
+                #data = int(data, 16)
                 if data == startbyte:
                     print(data)
                 else:
