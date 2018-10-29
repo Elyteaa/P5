@@ -37,9 +37,8 @@ if z1serial.is_open:
             while True:
                 #switcher[1]()
                 data = z1serial.read(1).hex()
-                print(data)
-
-
+                if data == 0x02:
+                    print(data)
             #print(data[0])
         else:
             print('no data')
