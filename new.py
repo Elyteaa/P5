@@ -19,7 +19,7 @@ def StateData():
         newMeasReady = True
         singleRead = False
     else:
-        #receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16)
+        receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16)
         receiveCounter = receiveCounter + 1
     print('StateData reached', receiveCounter)
 
@@ -56,11 +56,15 @@ if z1serial.is_open:
         size = z1serial.inWaiting()
         if size:
             singleRead = True
-            while True:
+            while singleRead:
                 switchCase[messageState]()
                 if newMeasReady:
                     newMeasReady = False
-                    inputBuffer = [None]*255
+                    inputBuffer = [None]*receiveCounter
+                    for x in (len(inputBuffer)-2):
+                        sum1 = (sum1+(inputBuffer[x] & 0xff)) % 255
+                        sum2 = (sum2 + sum1) % 255
+                checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)
                 
         else:
             print('no data')
