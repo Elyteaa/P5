@@ -8,24 +8,27 @@ def StateIdLe():
     if int(z1serial.read(1).hex(),16) == startbyte:
         messageState = "StateData"
         receiveCounter = 0
+    print('StateIdLe reached')
 
 def StateData():
     global messageState, newMeasReady, singleRead, receivedMessage, receiveCounter
     if int(z1serial.read(1).hex(),16) == DLEChar:
         messageState = "StateDataDLE"
-    else if int(z1serial.read(1).hex(),16) == endbyte:
+    elif: int(z1serial.read(1).hex(),16) == endbyte:
         messageState = "StateIdLe"
         newMeasReady = True
         singleRead = False
     else:
-        receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16)
+        #receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16)
         receiveCounter = receiveCounter + 1
+    print('StateData reached')
 
 def StateDataDLE():
     global receivedMessage, receiveCounter, messageState
     receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16) - 0x20 #types?
     receiveCounter = receiveCounter + 1
     messageState = "StateData"
+    print('StateDataDLE reached')
 
 switchCase = {
 "StateIdLe": StateIdLe,
@@ -54,7 +57,7 @@ if z1serial.is_open:
         if size:
             singleRead = True
             while True:
-                switchCase[messageState]()
+                #switchCase[messageState]()
                 if newMeasReady:
                     newMeasReady = False
                     inputBuffer = [None]*255
