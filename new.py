@@ -8,27 +8,27 @@ def StateIdLe():
     if int(z1serial.read(1).hex(),16) == startbyte:
         messageState = "StateData"
         receiveCounter = 0
-    print('StateIdLe reached')
+    print('StateIdLe reached', receiveCounter)
 
 def StateData():
     global messageState, newMeasReady, singleRead, receivedMessage, receiveCounter
     if int(z1serial.read(1).hex(),16) == DLEChar:
         messageState = "StateDataDLE"
-    elif: int(z1serial.read(1).hex(),16) == endbyte:
+    elif int(z1serial.read(1).hex(),16) == endbyte:
         messageState = "StateIdLe"
         newMeasReady = True
         singleRead = False
     else:
         #receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16)
         receiveCounter = receiveCounter + 1
-    print('StateData reached')
+    print('StateData reached', receiveCounter)
 
 def StateDataDLE():
     global receivedMessage, receiveCounter, messageState
     receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16) - 0x20 #types?
     receiveCounter = receiveCounter + 1
     messageState = "StateData"
-    print('StateDataDLE reached')
+    print('StateDataDLE reached', receiveCounter)
 
 switchCase = {
 "StateIdLe": StateIdLe,
@@ -50,14 +50,14 @@ newMeasReady = False
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
 # print z1serial  # debug serial.
-print(z1serial.is_open)  # True for opened
+#print(z1serial.is_open)  # True for opened
 if z1serial.is_open:
     while True:
         size = z1serial.inWaiting()
         if size:
             singleRead = True
             while True:
-                #switchCase[messageState]()
+                switchCase[messageState]()
                 if newMeasReady:
                     newMeasReady = False
                     inputBuffer = [None]*255
