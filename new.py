@@ -63,11 +63,10 @@ if z1serial.is_open:
                 if newMeasReady:
                     newMeasReady = False
                     inputBuffer = [None]*receiveCounter
-                    """for x in (len(inputBuffer)-2):
+                    for i in range(1, len(inputBuffer)-2):
                         sum1 = (sum1+(inputBuffer[x] & 0xff)) % 255
                         sum2 = (sum2 + sum1) % 255
-                checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)"""
-                
+                checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)                
         else:
             print('no data')
         time.sleep(1)
