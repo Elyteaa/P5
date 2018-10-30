@@ -46,6 +46,8 @@ DLEChar = 0x10
 endbyte = 0x03
 messageState = "StateDataDLE"
 newMeasReady = False
+sum1 = 0
+sum2 = 0
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
@@ -61,10 +63,10 @@ if z1serial.is_open:
                 if newMeasReady:
                     newMeasReady = False
                     inputBuffer = [None]*receiveCounter
-                    for x in (len(inputBuffer)-2):
+                    """for x in (len(inputBuffer)-2):
                         sum1 = (sum1+(inputBuffer[x] & 0xff)) % 255
                         sum2 = (sum2 + sum1) % 255
-                checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)
+                checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)"""
                 
         else:
             print('no data')
