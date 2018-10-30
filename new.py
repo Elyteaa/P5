@@ -61,15 +61,16 @@ if z1serial.is_open:
                 if newMeasReady:
                     newMeasReady = False
                     inputBuffer = [0]*receiveCounter
-                    for i in range(0, receiveCounter-1)
+                    for i in range(0, receiveCounter-1):
                         inputBuffer[i] = receivedMessage[i]
                     sum1 = 0
                     sum2 = 0
                     checksumcalculated = 0
                     for i in range(1, len(inputBuffer)-2):
                         sum1 = int(sum1+inputBuffer[i]) & int(0xff) % int(255)
-                        print(sum1)
                         sum2 = int(sum2 + sum1) % int(255)
+                        print(inputBuffer[i])
+                        print(sum1)
                         print(sum2)
                     checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)                
                     print('checksum calculated', checksumcalculated)
