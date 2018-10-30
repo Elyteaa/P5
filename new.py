@@ -64,9 +64,9 @@ if z1serial.is_open:
                     sum1 = 0
                     sum2 = 0
                     for i in range(1, len(inputBuffer)-2):
-                        sum1 = int((sum1+(inputBuffer[i]) & 0xff)) % 255
+                        sum1 = bin(sum1+inputBuffer[i]) & bin(0xff) % 255
                         #sum2 = (sum2 + sum1) % 255
-                checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)                
+                #checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)                
         else:
             print('no data')
         time.sleep(1)
