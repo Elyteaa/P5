@@ -63,6 +63,7 @@ if z1serial.is_open:
                     inputBuffer = [0]*receiveCounter
                     sum1 = 0
                     sum2 = 0
+                    checksumcalculated = 0
                     for i in range(1, len(inputBuffer)-2):
                         sum1 = int(sum1+inputBuffer[i]) & int(0xff) % int(255)
                         sum2 = int(sum2 + sum1) % int(255)
