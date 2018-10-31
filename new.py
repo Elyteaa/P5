@@ -56,7 +56,7 @@ if z1serial.is_open:
     while True:
         size = z1serial.inWaiting()
         if size > 255:
-            z1serial.flush()
+            z1serial.reset_input_buffer()
             #print('no data')
         else:
             singleRead = True
