@@ -41,6 +41,7 @@ z1port = '/dev/ttyUSB0'  # set the correct port before running it
 data = []
 receiveCounter = 0
 receivedMessage = [0]*255
+inputBuffer = [0]*255
 startbyte = 0x02
 DLEChar = 0x10
 endbyte = 0x03
@@ -60,14 +61,14 @@ if z1serial.is_open:
                 switchCase[messageState]()
                 if newMeasReady:
                     newMeasReady = False
-                    inputBuffer = [0]*receiveCounter
+                    #inputBuffer = [0]*receiveCounter
                     for i in range(0, receiveCounter-1):
                         inputBuffer[i] = receivedMessage[i]
                     sum1 = 0
                     sum2 = 0
                     checksumcalculated = 0
                     for i in range(1, len(inputBuffer)-1):
-                        sum1 = ((sum1+inputBuffer[i]) & 0xff % 255
+                        sum1 = ((sum1+inputBuffer[i]) & 0xff) % 255
                         sum2 = (sum2 + sum1) % 255
                     checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)                
                     print('checksum calculated', checksumcalculated)
