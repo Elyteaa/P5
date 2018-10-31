@@ -8,7 +8,7 @@ def StateIdLe():
     if int(z1serial.read(1).hex(),16) == startbyte:
         messageState = "StateData"
         receiveCounter = 0
-    print('StateIdLe reached', receiveCounter)
+    #print('StateIdLe reached', receiveCounter)
 
 def StateData():
     global messageState, newMeasReady, singleRead, receivedMessage, receiveCounter
@@ -21,14 +21,14 @@ def StateData():
     else:
         receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16)
         receiveCounter = receiveCounter + 1
-    print('StateData reached', receiveCounter)
+    #print('StateData reached', receiveCounter)
 
 def StateDataDLE():
     global receivedMessage, receiveCounter, messageState
     receivedMessage[receiveCounter] = int(z1serial.read(1).hex(),16) - 0x20 #types?
     receiveCounter = receiveCounter + 1
     messageState = "StateData"
-    print('StateDataDLE reached', receiveCounter)
+    #print('StateDataDLE reached', receiveCounter)
 
 switchCase = {
 "StateIdLe": StateIdLe,
@@ -40,7 +40,7 @@ z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
 data = []
 receiveCounter = 0
-receivedMessage = [None]*255
+receivedMessage = [0]*255
 startbyte = 0x02
 DLEChar = 0x10
 endbyte = 0x03
@@ -66,14 +66,14 @@ if z1serial.is_open:
                     sum1 = 0
                     sum2 = 0
                     checksumcalculated = 0
-                    for i in range(1, len(inputBuffer)-2):
-                        sum1 = ((sum1+inputBuffer[i]) & int(0xff)) % int(255)
-                        sum2 = (sum2 + sum1) % int(255)
-                        print(inputBuffer[i])
-                        print(sum1)
-                        print(sum2)
+                    for i in range(1, len(inputBuffer)-1):
+                        sum1 = ((sum1+inputBuffer[i]) & 0xff % 255
+                        sum2 = (sum2 + sum1) % 255
                     checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)                
                     print('checksum calculated', checksumcalculated)
+
+                    checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
+                    print('packet checksum', checksum)
         else:
             print('no data')
         time.sleep(1)
