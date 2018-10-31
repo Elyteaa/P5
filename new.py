@@ -55,7 +55,10 @@ z1serial.timeout = None  # set read timeout
 if z1serial.is_open:
     while True:
         size = z1serial.inWaiting()
-        if size <= 255:
+        if size > 255:
+            z1serial.flush()
+            #print('no data')
+        else:
             singleRead = True
             while singleRead:
                 switchCase[messageState]()
@@ -75,9 +78,6 @@ if z1serial.is_open:
 
                     checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
                     print('packet checksum', checksum)
-        else:
-            z1serial.flush()
-            #print('no data')
         time.sleep(1)
 else:
     print('z1serial not open')
