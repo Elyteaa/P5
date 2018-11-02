@@ -65,8 +65,9 @@ if z1serial.is_open:
                 if newMeasReady:
                     newMeasReady = False
                     #inputBuffer = [0]*receiveCounter
-                    for i in range(0, receiveCounter-1):
+                    for i in range(0, receiveCounter):
                         inputBuffer[i] = receivedMessage[i]
+                        print(i, ' ', inputBuffer[i])
                     sum1 = 0
                     sum2 = 0
                     checksumcalculated = 0
