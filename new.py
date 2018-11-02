@@ -65,20 +65,22 @@ if z1serial.is_open:
                 if newMeasReady:
                     newMeasReady = False
                     #inputBuffer = [0]*receiveCounter
-                    for i in range(0, receiveCounter+1):
+                    for i in range(0, receiveCounter):
                         inputBuffer[i] = receivedMessage[i]
                         print(i, ' ', inputBuffer[i])
                     sum1 = 0
                     sum2 = 0
                     checksumcalculated = 0
-                    for i in range(0, receiveCounter-1):
+                    for i in range(1, receiveCounter-2):
                         sum1 = (sum1+(inputBuffer[i] & 0xff)) % 255
                         sum2 = (sum2 + sum1) % 255
                     checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)
                     print('checksum calculated', checksumcalculated)
-
-                    checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
-                    print('packet checksum', checksum)
+                    if inputBuffer[1] == 1:
+                        checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
+                        print('packet checksum', checksum)
+                    else:
+                        print('wrong type')
         time.sleep(1)
 else:
     print('z1serial not open')
