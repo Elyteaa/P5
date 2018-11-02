@@ -70,10 +70,10 @@ if z1serial.is_open:
                     sum1 = 0
                     sum2 = 0
                     checksumcalculated = 0
-                    #for i in range(1, receiveCounter-2):
+                    for i in range(0, receiveCounter-1):
                         sum1 = (sum1+(inputBuffer[i] & 0xff)) % 255
                         sum2 = (sum2 + sum1) % 255
-                    checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)                
+                    checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)
                     print('checksum calculated', checksumcalculated)
 
                     checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
