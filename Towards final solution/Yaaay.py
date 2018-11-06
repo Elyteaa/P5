@@ -1,9 +1,7 @@
 #!/usr/bin/python
 import serial
 import time
-from array import *
-from classModule import CPRMeasurement
-
+from classModule import *
 
 def StateIdLe():
     global messageState, receiveCounter
@@ -95,11 +93,6 @@ if z1serial.is_open:
                         incomingMeasurement.transmitterID = ((inputBuffer[10]) & 0xff) << 16 | (inputBuffer[9] & 0xff) << 8 | (inputBuffer[8] & 0xff)
 
                     print(incomingMeasurement.ultrasoundLevel)
-
-
-
-
-        time.sleep(1)
 else:
     print('z1serial not open')
 #z1serial.close()  # close z1serial if z1serial is open.

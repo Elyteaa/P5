@@ -13,5 +13,14 @@ class CPRMeasurement:
 		self.RSSI = RSSI
 
 
-class measurement:
-	pass
+class trueMeasurement: #temperature is needed here
+	
+	#data of incomngMeasurement
+	def __init__(self, transmitterID, masterID, RSSI, ultrasoundLevel, timestampMS, CPRID, timeDifference, temperature)
+		self.timestampMS = timestampMS
+		self.receiverID = CPRID
+		self.ultrasoundLevel = ultrasoundLevel
+		self.distance = (timeDifference * (331.4+0.6*temperature)/1000) + 18
+		self.transmitterID = transmitterID
+		self.RSSI = RSSI
+		self.masterID = masterID
