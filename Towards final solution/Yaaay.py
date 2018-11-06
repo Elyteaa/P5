@@ -66,36 +66,35 @@ if z1serial.is_open:
             while singleRead:
                 byteRead = int(z1serial.read(1).hex(),16)
                 switchCase[messageState]()
-                if newMeasReady:
-                    newMeasReady = False
-                    #inputBuffer = [0]*receiveCounter
-                    for i in range(0, receiveCounter):
-                        inputBuffer[i] = receivedMessage[i]
-                        #print(i, ' ', inputBuffer[i])
-                    sum1 = 0
-                    sum2 = 0
-                    checksumcalculated = 0
-                    for i in range(1, receiveCounter-2):
-                        sum1 = (sum1+(inputBuffer[i] & 0xff)) % 255
-                        sum2 = (sum2 + sum1) % 255
-                    checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)
+            if newMeasReady:
+                newMeasReady = False
+                #inputBuffer = [0]*receiveCounter
+                for i in range(0, receiveCounter):
+                    inputBuffer[i] = receivedMessage[i]
+                    #print(i, ' ', inputBuffer[i])
+                sum1 = 0
+                sum2 = 0
+                checksumcalculated = 0
+                for i in range(1, receiveCounter-2):
+                    sum1 = (sum1+(inputBuffer[i] & 0xff)) % 255
+                    sum2 = (sum2 + sum1) % 255
+                checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)
 
-                    if inputBuffer[0] == 12 and inputBuffer[1] == 1:
-                        print(inputBuffer[0])
-                        incomingMeasurement = CPRMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
-                        incomingMeasurement.timestampMS = int(round(time.time()*1000))
-                        incomingMeasurement.numMaster = (inputBuffer[6] & 0xff)
-                        incomingMeasurement.CPRID = ((inputBuffer[4] & 0xff) << 16) | ((inputBuffer[3] & 0xff) << 8) | ((inputBuffer[2] & 0xff))
+                if inputBuffer[0] == 12 and inputBuffer[1] == 1:
+                    incomingMeasurement = CPRMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                    incomingMeasurement.timestampMS = int(round(time.time()*1000))
+                    incomingMeasurement.numMaster = (inputBuffer[6] & 0xff)
+                    incomingMeasurement.CPRID = ((inputBuffer[4] & 0xff) << 16) | ((inputBuffer[3] & 0xff) << 8) | ((inputBuffer[2] & 0xff))
 
-                        checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
-                        if checksum == checksumcalculated and incomingMeasurement.CPRID > 0:
-                            incomingMeasurement.ultrasoundLevel = inputBuffer[5] & 0xff
-                            #The following would be performed in for loop if more masters are present
-                            incomingMeasurement.RSSI = (inputBuffer[7] & 0xff)
-                            incomingMeasurement.timeDifference = ((inputBuffer[12] & 0xff) << 8) | (inputBuffer[11] & 0xff)
-                            incomingMeasurement.transmitterID = ((inputBuffer[10]) & 0xff) << 16 | (inputBuffer[9] & 0xff) << 8 | (inputBuffer[8] & 0xff)
+                    checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
+                    if checksum == checksumcalculated and incomingMeasurement.CPRID > 0:
+                        incomingMeasurement.ultrasoundLevel = inputBuffer[5] & 0xff
+                        #The following would be performed in for loop if more masters are present
+                        incomingMeasurement.RSSI = (inputBuffer[7] & 0xff)
+                        incomingMeasurement.timeDifference = ((inputBuffer[12] & 0xff) << 8) | (inputBuffer[11] & 0xff)
+                        incomingMeasurement.transmitterID = ((inputBuffer[10]) & 0xff) << 16 | (inputBuffer[9] & 0xff) << 8 | (inputBuffer[8] & 0xff)
 
-                        print(incomingMeasurement.ultrasoundLevel)
+                    print(incomingMeasurement.ultrasoundLevel)
 
 
 
