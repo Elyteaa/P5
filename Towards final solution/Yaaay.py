@@ -92,26 +92,28 @@ if z1serial.is_open:
                     if checksum == checksumcalculated and incomingMeasurement.CPRID > 0:
                         incomingMeasurement.ultrasoundLevel = inputBuffer[5] & 0xff
                         #The following would be performed in for loop if more masters are present
-                        incomingMeasurement.RSSI = (inputBuffer[7] & 0xff)
+                        incomingMeasurement.RSSI = inputBuffer[7] & 0xff
                         incomingMeasurement.timeDifference = ((inputBuffer[12] & 0xff) << 8) | (inputBuffer[11] & 0xff)
                         incomingMeasurement.transmitterID = ((inputBuffer[10]) & 0xff) << 16 | (inputBuffer[9] & 0xff) << 8 | (inputBuffer[8] & 0xff)
 
-                    #print(incomingMeasurement.ultrasoundLevel)
+                        #print(incomingMeasurement.ultrasoundLevel)
 
-                    measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
+                        measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
 
-                    measurementHistory.append(measurement)
+                        measurementHistory.append(measurement)
 
-                    newMeasGood = True
+                        newMeasGood = True
+
                     else:
                         newMeasGood = False
+
             measurementUse = [] #check if the values are reset
 
             print(measurementHistory[-1])
 
             if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000) and measurementTimer + 5000 > int(round(time.time()*1000)): #ask Jacob
                 measurementTimer = int(round(time.time()*1000))
-
+                #671
 
 
 
