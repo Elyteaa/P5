@@ -16,7 +16,7 @@ class CPRMeasurement:
 class trueMeasurement: #temperature is needed here
 	
 	#data of incomngMeasurement
-	def __init__(self, transmitterID, masterID, RSSI, ultrasoundLevel, timestampMS, CPRID, timeDifference, temperature)
+	def __init__(self, transmitterID, masterID, RSSI, ultrasoundLevel, timestampMS, CPRID, timeDifference, temperature):
 		self.timestampMS = timestampMS
 		self.receiverID = CPRID
 		self.ultrasoundLevel = ultrasoundLevel

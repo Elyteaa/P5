@@ -40,6 +40,8 @@ switchCase = {
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
 data = []
+measurementHistory = [] #.append()
+#positionHistory = []
 receiveCounter = 0
 receivedMessage = [0]*255
 inputBuffer = [0]*255
@@ -92,7 +94,12 @@ if z1serial.is_open:
                         incomingMeasurement.timeDifference = ((inputBuffer[12] & 0xff) << 8) | (inputBuffer[11] & 0xff)
                         incomingMeasurement.transmitterID = ((inputBuffer[10]) & 0xff) << 16 | (inputBuffer[9] & 0xff) << 8 | (inputBuffer[8] & 0xff)
 
-                    print(incomingMeasurement.ultrasoundLevel)
+                    #print(incomingMeasurement.ultrasoundLevel)
+
+                    measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
+
+                    print(measurement.distance)
+
 else:
     print('z1serial not open')
 #z1serial.close()  # close z1serial if z1serial is open.
