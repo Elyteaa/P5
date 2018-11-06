@@ -2,7 +2,7 @@
 import serial
 import time
 from array import *
-from classModule import CPRMeasurement
+import classModule
 
 
 def StateIdLe():
