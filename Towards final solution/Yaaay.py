@@ -80,7 +80,7 @@ if z1serial.is_open:
                         sum2 = (sum2 + sum1) % 255
                     checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)
 
-                    if inputBuffer[0] == 12 && inputBuffer[1] == 1:
+                    if inputBuffer[0] == 12 and inputBuffer[1] == 1:
                         print(inputBuffer[0])
                         incomingMeasurement = CPRMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
                         incomingMeasurement.timestampMS = int(round(time.time()*1000))
@@ -88,7 +88,7 @@ if z1serial.is_open:
                         incomingMeasurement.CPRID = ((inputBuffer[4] & 0xff) << 16) | ((inputBuffer[3] & 0xff) << 8) | ((inputBuffer[2] & 0xff))
 
                         checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
-                        if checksum == checksumcalculated && incomingMeasurement.CPRID > 0:
+                        if checksum == checksumcalculated and incomingMeasurement.CPRID > 0:
                             incomingMeasurement.ultrasoundLevel = inputBuffer[5] & 0xff
                             #The following would be performed in for loop if more masters are present
                             incomingMeasurement.RSSI = (inputBuffer[7] & 0xff)
