@@ -11,3 +11,7 @@ class CPRMeasurement:
 		self.transmitterID = transmitterID
 		self.masterID = masterID
 		self.RSSI = RSSI
+
+
+class measurement:
+	pass
