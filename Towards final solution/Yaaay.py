@@ -39,7 +39,6 @@ switchCase = {
 
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
-data = []
 measurementHistory = [] #.append()
 #positionHistory = []
 receiveCounter = 0
@@ -50,6 +49,7 @@ DLEChar = 0x10
 endbyte = 0x03
 messageState = "StateIdLe"
 newMeasReady = False
+measurementTimer = int(round(time.time()*1000))
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
@@ -57,6 +57,8 @@ z1serial.timeout = None  # set read timeout
 #print(z1serial.is_open)  # True for opened
 if z1serial.is_open:
     while True:
+        if len(measurementHistory) > 1000:
+            measurementHistory.clear()
         size = z1serial.inWaiting()
         if size > 255:
             z1serial.reset_input_buffer()
@@ -98,7 +100,22 @@ if z1serial.is_open:
 
                     measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
 
-                    print(measurement.distance)
+                    measurementHistory.append(measurement)
+
+                    newMeasGood = True
+
+                    else:
+                        newMeasGood = False
+
+            measurementUse = [] #check if the values are reset
+
+            print(measurementHistory[-1])
+
+            if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000) and measurementTimer + 5000 > int(round(time.time()*1000)): #ask Jacob
+                measurementTimer = int(round(time.time()*1000))
+
+
+
 
 else:
     print('z1serial not open')
