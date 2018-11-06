@@ -1,0 +1,11 @@
+class CPRMeasurement:
+
+	def __init__(self, CPRID, ultrasoundLevel, numMasters, timeDifference, timestampMS, transmitterID, masterID, RSSI)
+		self.CPRID = CPRID
+		self.ultrasoundLevel = ultrasoundLevel
+		self.numMasters = numMasters
+		self.timeDifference = timeDifference
+		self.timestampMS = timestampMS
+		self.transmitterID = transmitterID
+		self.masterID = masterID
+		self.RSSI = RSSI

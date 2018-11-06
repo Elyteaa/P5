@@ -45,7 +45,7 @@ inputBuffer = [0]*255
 startbyte = 0x02
 DLEChar = 0x10
 endbyte = 0x03
-messageState = "StateDataDLE"
+messageState = "StateDataIdLe"
 newMeasReady = False
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)

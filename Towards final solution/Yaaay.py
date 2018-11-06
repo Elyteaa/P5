@@ -2,6 +2,8 @@
 import serial
 import time
 from array import *
+from classModule import CPRMeasurement
+
 
 def StateIdLe():
     global messageState, receiveCounter
@@ -69,7 +71,7 @@ if z1serial.is_open:
                     #inputBuffer = [0]*receiveCounter
                     for i in range(0, receiveCounter):
                         inputBuffer[i] = receivedMessage[i]
-                        print(i, ' ', inputBuffer[i])
+                        #print(i, ' ', inputBuffer[i])
                     sum1 = 0
                     sum2 = 0
                     checksumcalculated = 0
@@ -81,6 +83,11 @@ if z1serial.is_open:
 
                     checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
                     print('packet checksum', checksum)
+
+                    if inputBuffer[1] == 1:
+                        incomingMeasurement = CPRMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                        print(incomingMeasurement.ultrasoundLevel)
+
         time.sleep(1)
 else:
     print('z1serial not open')
