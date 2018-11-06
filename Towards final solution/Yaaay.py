@@ -103,10 +103,8 @@ if z1serial.is_open:
                     measurementHistory.append(measurement)
 
                     newMeasGood = True
-
                     else:
                         newMeasGood = False
-
             measurementUse = [] #check if the values are reset
 
             print(measurementHistory[-1])
