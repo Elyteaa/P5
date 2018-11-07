@@ -114,9 +114,9 @@ if z1serial.is_open:
 
             if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))): #ask Jacob
                 measurementTimer = int(round(time.time()*1000))
-                measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000))
+                measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
+                print(measurementsUse.count)
 
-			print(measurementsUse.count)
 else:
     print('z1serial not open')
 #z1serial.close()  # close z1serial if z1serial is open.
