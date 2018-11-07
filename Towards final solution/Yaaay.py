@@ -21,13 +21,13 @@ def StateData():
         singleRead = False
     else:
         receivedMessage[receiveCounter] = byteRead
-        receiveCounter = receiveCounter + 1
+        receiveCounter += 1
     #print('StateData reached', receiveCounter)
 
 def StateDataDLE():
     global receivedMessage, receiveCounter, messageState
     receivedMessage[receiveCounter] = byteRead - 0x20 #types?
-    receiveCounter = receiveCounter + 1
+    receiveCounter += 1
     messageState = "StateData"
     #print('StateDataDLE reached', receiveCounter)
 

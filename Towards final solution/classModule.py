@@ -30,15 +30,18 @@ class measurementToUseChooser:
 	def __init__(self, measurementHistory, numSats, currentTime):
 		self.measurementsUse = []
 		self.usePosCalc = False
-		self.measurementLoop = True
-		self.count = 1
-		self.compareID = numSats
+		#self.measurementLoop = True
+		#self.count = 1
+		#self.compareID = numSats
 		self.measurementsUse.append(measurementHistory[len(measurementHistory)-1])
-		self.compareID = measurementHistory[len(measurementHistory)-1].transmitterID
+		#self.compareID = measurementHistory[len(measurementHistory)-1].transmitterID
 
-		self.lookfor()
+		self.lookfor(measurementHistory, numSats, currentTime)
 
-	def lookfor(self):
+	def lookfor(self, measurementHistory, numSats, currentTime):
+		count = 1
+		compareID = measurementHistory[len(measurementHistory)-1].transmitterID
+		measurementLoop = True
 		while measurementLoop:
 			count += 1
 
@@ -49,17 +52,17 @@ class measurementToUseChooser:
 			for n in range(0,numSats): #ask Jacob
 				if tempID != compareID and compareID == 0 and currentTime < measTime + 5000 and measLvl >= 5:
 					compareID = tempID
-					measurementsUse.append(measurementHistory[len(measurementHistory)-count])
+					self.measurementsUse.append(measurementHistory[len(measurementHistory)-count])
 					break
 				elif tempID == compareID or currentTime > measTime + 5000 or measLvl < 5:
 					break
 
-			if len(measurementsUse) >= numSats:
-				usePosCalc = True
+			if len(self.measurementsUse) >= numSats:
+				self.usePosCalc = True
 				measurementLoop = False
-			elif count >= len(measurementHistory) or measurementsUse[0].timestampMS > measurementHistory[len(measurementHistory)-count].timestampMS + 1000:
-				if len(measurementsUse) > 2
-					usePosCalc = True
+			elif count >= len(measurementHistory) or self.measurementsUse[0].timestampMS > measurementHistory[len(measurementHistory)-count].timestampMS + 1000:
+				if len(self.measurementsUse) > 2:
+					self.usePosCalc = True
 				else:
-					usePosCalc = False
+					self.usePosCalc = False
 				measurementLoop = False
