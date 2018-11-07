@@ -37,6 +37,7 @@ switchCase = {
 "StateDataDLE": StateDataDLE
 }
 
+numSats = 4
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
 measurementHistory = [] #.append()
@@ -107,16 +108,15 @@ if z1serial.is_open:
                     else:
                         newMeasGood = False
 
-            measurementUse = [] #check if the values are reset
+            #measurementUse = [] #check if the values are reset
 
             #print(measurementHistory[-1])
 
             if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))): #ask Jacob
                 measurementTimer = int(round(time.time()*1000))
-                
+                measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000))
 
-
-
+			print(measurementsUse.count)
 else:
     print('z1serial not open')
 #z1serial.close()  # close z1serial if z1serial is open.

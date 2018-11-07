@@ -27,7 +27,7 @@ class trueMeasurement: #temperature is needed here
 
 class measurementToUseChooser:
 
-	def __init__(self, measurementHistory, numSats, currentTime)
+	def __init__(self, measurementHistory, numSats, currentTime):
 		self.measurementsUse = []
 		self.usePosCalc = False
 		self.measurementLoop = True
