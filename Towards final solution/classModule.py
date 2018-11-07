@@ -36,7 +36,30 @@ class measurementToUseChooser:
 		self.measurementsUse.append(measurementHistory[len(measurementHistory)-1])
 		self.compareID = measurementHistory[len(measurementHistory)-1].transmitterID
 
-		self.search()
+		self.lookfor()
 
-	def search(self):
-		pass
+	def lookfor(self):
+		while measurementLoop:
+			count += 1
+
+			tempID = measurementHistory[len(measurementHistory)-count].transmitterID
+			measTime = measurementHistory[len(measurementHistory)-count].timestampMS
+			measLvl = measurementHistory[len(measurementHistory)-count].ultrasoundLevel
+			
+			for n in range(0,numSats): #ask Jacob
+				if tempID != compareID and compareID == 0 and currentTime < measTime + 5000 and measLvl >= 5:
+					compareID = tempID
+					measurementsUse.append(measurementHistory[len(measurementHistory)-count])
+					break
+				elif tempID == compareID or currentTime > measTime + 5000 or measLvl < 5:
+					break
+
+			if len(measurementsUse) >= numSats:
+				usePosCalc = True
+				measurementLoop = False
+			elif count >= len(measurementHistory) or measurementsUse[0].timestampMS > measurementHistory[len(measurementHistory)-count].timestampMS + 1000:
+				if len(measurementsUse) > 2
+					usePosCalc = True
+				else:
+					usePosCalc = False
+				measurementLoop = False
