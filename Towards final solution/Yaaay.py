@@ -109,11 +109,11 @@ if z1serial.is_open:
 
             measurementUse = [] #check if the values are reset
 
-            print(measurementHistory[-1])
+            #print(measurementHistory[-1])
 
-            if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000) and measurementTimer + 5000 > int(round(time.time()*1000)): #ask Jacob
+            if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))): #ask Jacob
                 measurementTimer = int(round(time.time()*1000))
-                #671
+                
 
 
 

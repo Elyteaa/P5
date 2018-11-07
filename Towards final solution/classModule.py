@@ -24,3 +24,19 @@ class trueMeasurement: #temperature is needed here
 		self.transmitterID = transmitterID
 		self.RSSI = RSSI
 		self.masterID = masterID
+
+class measurementToUseChooser:
+
+	def __init__(self, measurementHistory, numSats, currentTime)
+		self.measurementsUse = []
+		self.usePosCalc = False
+		self.measurementLoop = True
+		self.count = 1
+		self.compareID = numSats
+		self.measurementsUse.append(measurementHistory[len(measurementHistory)-1])
+		self.compareID = measurementHistory[len(measurementHistory)-1].transmitterID
+
+		self.search()
+
+	def search(self):
+		pass
