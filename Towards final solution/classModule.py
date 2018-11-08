@@ -63,8 +63,7 @@ class measurementToUseChooser:
 				measurementLoop = False
 
 class ForwardCalculation:
-
-    def __init__(self, measHis, measurementToUse, currentTime):
+	def __init__(self, measHis, measurementToUse, currentTime):
 		self.measurementForward = measurementToUse
 		self.prediction(measHist, currentTime, 2)
 	def prediction(self, measHist, currentTime, numPrev):
