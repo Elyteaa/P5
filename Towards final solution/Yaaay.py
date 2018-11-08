@@ -120,7 +120,7 @@ if z1serial.is_open:
                     print(len(measurementsUse.measurementsUse), '1 ', i, ' ', measurementsUse.measurementsUse[i].transmitterID)
                 if measurementsUse.usePosCalc:
                    measuremetForward = ForwardCalculation(measurementHistory, measurementsUse, int(round(time.time()*1000)))
-                   print('2 ', measuremetForward.measurementsUse[0].transmitterID)
+                   print('2 ', measuremetForward.measurementForward.measurementsUse[0].transmitterID)
 
 
 
