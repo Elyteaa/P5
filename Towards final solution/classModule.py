@@ -30,12 +30,7 @@ class measurementToUseChooser:
 	def __init__(self, measurementHistory, numSats, currentTime):
 		self.measurementsUse = []
 		self.usePosCalc = False
-		#self.measurementLoop = True
-		#self.count = 1
-		#self.compareID = numSats
 		self.measurementsUse.append(measurementHistory[len(measurementHistory)-1])
-		#self.compareID = measurementHistory[len(measurementHistory)-1].transmitterID
-
 		self.lookfor(measurementHistory, numSats, currentTime)
 
 	def lookfor(self, measurementHistory, numSats, currentTime):

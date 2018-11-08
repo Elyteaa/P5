@@ -112,10 +112,16 @@ if z1serial.is_open:
 
             #print(measurementHistory[-1])
 
-            if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))): #ask Jacob
+            if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))):
                 measurementTimer = int(round(time.time()*1000))
                 measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
-                print(measurementsUse.compareID)
+                print(measurementsUse.measurementsUse[0].transmitterID)
+
+            if measurementsUse.usePosCalc == True: #Ask Jacob positionManager line 44
+            	#Ask Jacob PositionManager ForwardCalculation?
+
+
+
 
 else:
     print('z1serial not open')
