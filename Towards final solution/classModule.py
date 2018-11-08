@@ -87,6 +87,7 @@ class ForwardCalculation:
 			measID = self.measurementForward.measurementsUse[n].transmitterID
 			count = len(measHist)-1
 			while findPrevDist:
+				count2 = 0
 				if measID == measHist[count].transmitterID and count2 < numPrev + 1 and measHist[count].ultrasoundLevel > 5:
 					prevDist[n][count2][0] = measHist[count].distance
 					prevDist[n][count2][1] = measHist[count].timestampMS
