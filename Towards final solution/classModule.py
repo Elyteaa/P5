@@ -38,6 +38,7 @@ class measurementToUseChooser:
 		count = 1
 		compareID = measurementHistory[len(measurementHistory)-1].transmitterID
 		measurementLoop = True
+		self.measurementsUse.append(measurementHistory[len(measurementHistory)-1])
 		while measurementLoop:
 			count += 1
 
