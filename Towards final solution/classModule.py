@@ -77,7 +77,7 @@ class ForwardCalculation:
 		if numPrev > len(measHist):
 			numPrev = len(measHist)
 
-		measSize = len(self.measurementForward)
+		measSize = len(self.measurementForward.measurementToUse)
 		speed = [0] * measSize
 		findPrevDist = True
 		prevDist = [[[ 0 for col in range(measSize)] for row in range(numPrev+1)] for layers in range(2)]
