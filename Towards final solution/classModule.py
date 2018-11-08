@@ -63,19 +63,21 @@ class measurementToUseChooser:
 				measurementLoop = False
 
 class ForwardCalculation:
+
 	def __init__(self, measHis, measurementToUse, currentTime):
 		self.measurementForward = measurementToUse
 		self.prediction(measHist, currentTime, 2)
+
 	def prediction(self, measHist, currentTime, numPrev):
 		if numPrev > len(measHist):
-            numPrev = len(measHist)
+			numPrev = len(measHist)
 
-        measSize = len(self.measurementForward)
-        speed = [0] * measSize
-        findPrevDist = True
-        prevDist = [[[ 0 for col in range(measSize)] for row in range(numPrev+1)] for layers in range(2)]
-        
-        for n in range(measSize):
+		measSize = len(self.measurementForward)
+		speed = [0] * measSize
+		findPrevDist = True
+		prevDist = [[[ 0 for col in range(measSize)] for row in range(numPrev+1)] for layers in range(2)]
+
+		for n in range(measSize):
             count2 = 0
             measID = self.measurementForward[n].transmitterID
             count = len(measHist)-1
@@ -93,8 +95,8 @@ class ForwardCalculation:
             	speed[n] = (((prevDist[n][0][0]) - (prevDist[n][count2 - 1][0])) / (prevDist[n][0][1] - prevDist[n][count2 - 1][1]))
             elif count2 == 3:
             	speed2 = (prevDist[n][0][0] - prevDist[n][1][0]) / (prevDist[n][0][1] - prevDist[n][1][1])
-            	speed1 = (prevDist[n][1][0] - prevDist[n][2][0]) / (prevDist[n][1][1] - prevDist[n][2][1])
-            	speed[n] = ((speed2-speed1)/(prevDist[n][0][1]-prevDist[n][2][1]))*(currentTime- prevDist[n][0][1])
+				speed1 = (prevDist[n][1][0] - prevDist[n][2][0]) / (prevDist[n][1][1] - prevDist[n][2][1])
+				speed[n] = ((speed2-speed1)/(prevDist[n][0][1]-prevDist[n][2][1]))*(currentTime- prevDist[n][0][1])
 
 			if speed[n] > 2:
 				speed[n] = 0
