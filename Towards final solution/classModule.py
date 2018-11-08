@@ -82,8 +82,9 @@ class ForwardCalculation:
 		findPrevDist = True
 		prevDist = [[[ 0 for col in range(measSize)] for row in range(numPrev+1)] for layers in range(2)]
 
+		count2 = [0] * measSize
 		for n in range(measSize):
-			count2 = [0] * measSize
+			count2[n] = 0
 			measID = self.measurementForward.measurementsUse[n].transmitterID
 			count = len(measHist)-1
 			while findPrevDist:
