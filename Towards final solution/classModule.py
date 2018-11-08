@@ -48,7 +48,7 @@ class measurementToUseChooser:
 			measLvl = measurementHistory[len(measurementHistory)-count].ultrasoundLevel
 			
 			for n in range(0,numSats):
-				print('n in numSats: ', numSats)
+				#print('n in numSats: ', numSats)
 				if tempID != compareID[n] and compareID[n] == 0 and currentTime < measTime + 5000 and measLvl >= 5:
 					print('compareID values: ', compareID)
 					compareID[n] = tempID
@@ -89,6 +89,7 @@ class ForwardCalculation:
 			count = len(measHist)-1
 			while findPrevDist:
 				#count2 = 0
+				print('for n', measSize, 'for count2[n]', numPrev+1, 'for count', len(measHist))
 				if measID == measHist[count].transmitterID and count2[n] < numPrev + 1 and measHist[count].ultrasoundLevel > 5:
 					print('n= ', n, 'count2[n]= ', count2[n], 'count= ', count)
 					#prevDist[n][count2[n]][0] = measHist[count].distance
