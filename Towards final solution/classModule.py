@@ -46,8 +46,9 @@ class measurementToUseChooser:
 			measTime = measurementHistory[len(measurementHistory)-count].timestampMS
 			measLvl = measurementHistory[len(measurementHistory)-count].ultrasoundLevel
 			
-			for n in range(0,numSats): #ask Jacob
+			for n in range(numSats):
 				if tempID != compareID and compareID == 0 and currentTime < measTime + 5000 and measLvl >= 5:
+					print('--> ', compareID)
 					compareID = tempID
 					self.measurementsUse.append(measurementHistory[len(measurementHistory)-count])
 					break
