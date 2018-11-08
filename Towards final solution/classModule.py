@@ -36,7 +36,8 @@ class measurementToUseChooser:
 	def lookfor(self, measurementHistory, numSats, currentTime):
 		print('lookfor entered ', len(measurementHistory))
 		count = 1
-		compareID = measurementHistory[len(measurementHistory)-1].transmitterID
+		compareID = [0] * numSats
+		compareID[0] = measurementHistory[len(measurementHistory)-1].transmitterID
 		measurementLoop = True
 		self.measurementsUse.append(measurementHistory[len(measurementHistory)-1])
 		while measurementLoop:
@@ -47,12 +48,13 @@ class measurementToUseChooser:
 			measLvl = measurementHistory[len(measurementHistory)-count].ultrasoundLevel
 			
 			for n in range(numSats):
-				if tempID != compareID and compareID == 0 and currentTime < measTime + 5000 and measLvl >= 5:
+				print(n)
+				if tempID != compareID[n] and compareID[n] == 0 and currentTime < measTime + 5000 and measLvl >= 5:
 					print('--> ', compareID)
-					compareID = tempID
+					compareID[n] = tempID
 					self.measurementsUse.append(measurementHistory[len(measurementHistory)-count])
 					break
-				elif tempID == compareID or currentTime > measTime + 5000 or measLvl < 5:
+				elif tempID == compareID[n] or currentTime > measTime + 5000 or measLvl < 5:
 					break
 
 			if len(self.measurementsUse) >= numSats:
