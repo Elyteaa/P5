@@ -113,6 +113,7 @@ if z1serial.is_open:
             #print(measurementHistory[-1])
 
             if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))):
+                print(len(measurementHistory))
                 measurementTimer = int(round(time.time()*1000))
                 measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
                 for i in range(len(measurementsUse.measurementsUse)):

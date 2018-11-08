@@ -34,6 +34,7 @@ class measurementToUseChooser:
 		self.lookfor(measurementHistory, numSats, currentTime)
 
 	def lookfor(self, measurementHistory, numSats, currentTime):
+		print('lookfor entered ', len(measurementHistory))
 		count = 1
 		compareID = measurementHistory[len(measurementHistory)-1].transmitterID
 		measurementLoop = True
