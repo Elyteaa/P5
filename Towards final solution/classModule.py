@@ -82,12 +82,12 @@ class ForwardCalculation:
 			measID = self.measurementForward[n].transmitterID
 			count = len(measHist)-1
 			while findPrevDist:
-				if measID == measHist[count].transmitterID && count2 < numPrev + 1 && measHist[count].ultrasoundLevel > 5:
+				if measID == measHist[count].transmitterID and count2 < numPrev + 1 and measHist[count].ultrasoundLevel > 5:
 					prevDist[n][count2][0] = measHist[count].distance
 					prevDist[n][count2][1] = measHist[count].timestampMS
 					count2 += 1
 					prevDistCount = count2
-				if count == 0 || count2 >= numPrev + 1:
+				if count == 0 or count2 >= numPrev + 1:
 					break
 				count -= 1
 			speed[n] = 0
@@ -106,7 +106,7 @@ class ForwardCalculation:
 		for n in range(measSize):
 			speedCounter = 0
 			for i in range(measSize):
-				if speed[n] != 0 && speed[i] == 0:
+				if speed[n] != 0 and speed[i] == 0:
 					speedCounter += 1
 			if speedCounter > 2:
 				speed[n] = 0
