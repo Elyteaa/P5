@@ -67,7 +67,7 @@ class ForwardCalculation:
     def __init__(self, measHis, measurementToUse, currentTime):
         self.measurementForward = measurementToUse
         self.prediction(measHist, currentTime, 2)
-
+        
 	def prediction(self, measHist, currentTime, numPrev):
         if numPrev > len(measHist):
             numPrev = len(measHist)
