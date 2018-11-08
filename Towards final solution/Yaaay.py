@@ -117,6 +117,7 @@ if z1serial.is_open:
                 measurementTimer = int(round(time.time()*1000))
                 measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
                 for i in range(len(measurementsUse.measurementsUse)):
+                    pass
                     #print(len(measurementsUse.measurementsUse), '1 ', i, ' ', measurementsUse.measurementsUse[i].transmitterID)
                 if measurementsUse.usePosCalc:
                    measuremetForward = ForwardCalculation(measurementHistory, measurementsUse, int(round(time.time()*1000)))
