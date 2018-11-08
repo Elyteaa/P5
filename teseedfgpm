@@ -1,0 +1,69 @@
+class 
+
+if numPrev < 1:
+    numPrev = 1
+elif numPrev > len(measHist):
+    numPrev = len(measHist)
+
+measSize = len(measurementToUse)
+speed = double([measSize])
+count2 = int([measSize]) # or int([0])*measSize. If initialised as the first one it will have the length of measSize as its first element
+
+measID = int([measSize])
+prevDistCount = int([measSize])
+findPrevDist = false
+prevDist = [measSize][numPrev+1][2]
+ArrayList<Measurement.measurement> measurementForward = measurementsToUse; #still need to rewrite this
+Measurement.measurement tempMeas = None
+for n in range(0,len(measSize)):
+    #count2+[0] this requires the the list to be initialised as count2 = int([0])*len(measSize)
+    #count2.append(0) not sure which one will work. I think its clear I'm slightly confused about this :DDD
+    #count2Copy = count2.append(0)
+    #count2Copy = 0
+    #count2 = 0 otherwise this might be enough
+    measID[n] = (measurementsToUse.get(n)).getTransmitterID(); # its late and I'm confused
+    count = len(measHis)-1
+    while findPrevDist = False:
+        if measID###
+
+
+def zero():
+  
+    pass
+
+
+def one():
+  
+    pass
+
+
+def two():
+  
+    pass
+
+
+def three():
+  
+    print('hello')
+  
+
+
+
+
+ry = {0 : zero,
+
+1 : one,
+
+2 : two,
+
+3 : three}
+
+
+for m in range(0,4):
+
+  count = m
+
+  #print(count)
+
+  ry[count]()
+    
