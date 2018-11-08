@@ -69,7 +69,7 @@ class measurementToUseChooser:
 
 class ForwardCalculation:
 
-	def __init__(self, measHis, measurementToUse, currentTime):
+	def __init__(self, measHist, measurementToUse, currentTime):
 		self.measurementForward = measurementToUse
 		self.prediction(measHist, currentTime, 2)
 
