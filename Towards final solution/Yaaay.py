@@ -117,8 +117,9 @@ if z1serial.is_open:
                 measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
                 print(measurementsUse.measurementsUse[0].transmitterID)
 
-            if measurementsUse.usePosCalc == True: #Ask Jacob positionManager line 44
-            	#Ask Jacob PositionManager ForwardCalculation?
+            if measurementsUse.usePosCalc:
+            	measuremetForward = ForwardCalculation(measurementHistory, measurementsUse, int(round(time.time()*1000)))
+                
 
 
 
