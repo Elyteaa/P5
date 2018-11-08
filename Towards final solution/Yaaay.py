@@ -108,7 +108,7 @@ if z1serial.is_open:
                     else:
                         newMeasGood = False
 
-            measurementUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
+            #measurementUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
 
             #print(measurementHistory[-1])
 
