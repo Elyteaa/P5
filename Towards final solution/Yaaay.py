@@ -58,13 +58,13 @@ z1serial.timeout = None  # set read timeout
 #print(z1serial.is_open)  # True for opened
 if z1serial.is_open:
     while True:
-        if len(measurementHistory) > 1000:
-            measurementHistory.clear()
         size = z1serial.inWaiting()
         if size > 255:
             z1serial.reset_input_buffer()
             #print('no data')
         else:
+            if len(measurementHistory) > 1000:
+                measurementHistory.clear()
             singleRead = True
             while singleRead:
                 byteRead = int(z1serial.read(1).hex(),16)
@@ -115,8 +115,8 @@ if z1serial.is_open:
             if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))):
                 measurementTimer = int(round(time.time()*1000))
                 measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
-                for i in range(len(measurementsUse.measurementsUse))
-                    print('1 ', measurementsUse.measurementsUse[i].transmitterID)
+                for i in range(len(measurementsUse.measurementsUse)):
+                    print('1 ', i, ' ', measurementsUse.measurementsUse[i].transmitterID)
                 if measurementsUse.usePosCalc:
                    measuremetForward = ForwardCalculation(measurementHistory, measurementsUse, int(round(time.time()*1000)))
                    print('2 ', measuremetForward.measurementsUse[0].transmitterID)
