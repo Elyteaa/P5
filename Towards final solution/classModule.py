@@ -140,6 +140,6 @@ class FindSatellitePos:
 	def calculate(self, measurementForward, SatPosList):
 		for nn in range(len(measurementForward)):
 			for n in range(len(SatPosList)):
-				if measurementForward.measurementForward.measurementsUse[nn].transmitterID == SatPosList.SatPosList[n].StransmitterID
+				if measurementForward.measurementForward.measurementsUse[nn].transmitterID == SatPosList[n].SatPosList.StransmitterID
 				self.satPosUse.append(SatPosList[n])
 				break
