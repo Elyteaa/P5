@@ -37,6 +37,7 @@ switchCase = {
 "StateDataDLE": StateDataDLE
 }
 
+#Callibration
 numSats = 4
 SatPosList = []
 Satid1 = 42928
@@ -152,8 +153,6 @@ if z1serial.is_open:
                    #print('2 ', measuremetForward.measurementForward.measurementsUse[0].transmitterID)
                    #Maybe we need sorting, maybe we don't
                    SatPosUse = FindSatellitePos(measuremetForward, SatPosList)
-
-
 
 else:
     print('z1serial not open')
