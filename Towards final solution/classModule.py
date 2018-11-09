@@ -94,7 +94,7 @@ class ForwardCalculation:
 				if measID == measHist[count].transmitterID and count2[n] < numPrev + 1 and measHist[count].ultrasoundLevel > 5:
 					#print('n=   ', n,        'count2[n]=   ', count2[n], 'count=   ', count)
 					prevDist[0][count2[n]][n] = measHist[count].distance
-					prevDist[n][count2[n]][1] = measHist[count].timestampMS
+					prevDist[1][count2[n]][n] = measHist[count].timestampMS
 					count2[n] += 1
 					prevDistCount = count2[n]
 				if count == 0 or count2[n] >= numPrev + 1:
