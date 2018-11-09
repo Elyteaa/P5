@@ -153,18 +153,18 @@ if z1serial.is_open:
                 #print(measurementsUse.usePosCalc)
                     #print(len(measurementsUse.measurementsUse), '1 ', i, ' ', measurementsUse.measurementsUse[i].transmitterID)
                 if measurementsUse.usePosCalc:
-                    measuremetForward = ForwardCalculation(measurementHistory, measurementsUse, int(round(time.time()*1000)))
+                    measurementForward = ForwardCalculation(measurementHistory, measurementsUse, int(round(time.time()*1000)))
                     #print('2 ', measurementForward.measurementForward.measurementsUse[0].transmitterID)
                     #Maybe we need sorting, maybe we don't
-                    SatPosUse = FindSatellitePos(measuremetForward, SatPosList)
-                    measForwSize = len(measuremetForward.measuremetForward.measurementsUse)
+                    SatPosUse = FindSatellitePos(measurementForward, SatPosList)
+                    measForwSize = len(measurementForward.measurementForward.measurementsUse)
                     if measForwSize == 3:
                         distance = [0] * measForwSize
                         SatPos = []
                         for n in range(3):
                             temp = point3D(SatPosList[n].position[0], SatPosList[n].position[1], SatPosList[n].position[2])
                             SatPos.append(temp)
-                            distance[n] = measuremetForward.measuremetForward.measurementsUse[n].distance
+                            distance[n] = measurementForward.measurementForward.measurementsUse[n].distance
                             pass #result = ...
                     elif measForwSize > 3:
                         if measForwSize > 5:
@@ -173,7 +173,7 @@ if z1serial.is_open:
                         distance = [0] * measForwSize
                         for n in range(measForwSize):
                             temp = point3D(SatPosList[n].position[0], SatPosList[n].position[1], SatPosList[n].position[2])
-                            distance[n] = measuremetForward.measuremetForward.measurementsUse[n].distance
+                            distance[n] = measurementForward.measurementForward.measurementsUse[n].distance
                             #result = ...
                         
 
