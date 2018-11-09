@@ -37,6 +37,25 @@ switchCase = {
 "StateDataDLE": StateDataDLE
 }
 
+SatPosList = []
+Satid1 = 42928
+Satid2 = 42929
+Satid3 = 42497
+Satid4 = 42498
+S1X = 0
+S1Y = 500
+S1Z = 0
+S2X = 500
+S2Y = 0
+S2Z = 0
+S3X = 0
+S3Y = -500
+S3Z = 0
+S4X = -500
+S4Y = 0
+S4Z = 0
+SatPosList.append()
+
 numSats = 4
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
@@ -113,16 +132,16 @@ if z1serial.is_open:
             #print(measurementHistory[-1])
 
             if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))):
-                print('measurement history: ', len(measurementHistory))
+                #print('measurement history: ', len(measurementHistory))
                 measurementTimer = int(round(time.time()*1000))
                 measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
-                print(measurementsUse.usePosCalc)
+                #print(measurementsUse.usePosCalc)
                     #print(len(measurementsUse.measurementsUse), '1 ', i, ' ', measurementsUse.measurementsUse[i].transmitterID)
                 if measurementsUse.usePosCalc:
                    measuremetForward = ForwardCalculation(measurementHistory, measurementsUse, int(round(time.time()*1000)))
                    #print('2 ', measuremetForward.measurementForward.measurementsUse[0].transmitterID)
-
-
+                   #Maybe we need sorting, maybe we don't
+                   SatPosUse = FindSatellitePos(measuremetForward, SatPosList)
 
 
 

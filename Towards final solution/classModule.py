@@ -102,7 +102,7 @@ class ForwardCalculation:
 				count -= 1
 			speed[n] = 0
 			if count2[n] == 2:
-				speed[n] = (((prevDist[n][0][0]) - (prevDist[n][count2[n] - 1][0])) / (prevDist[n][0][1] - prevDist[n][count2[n] - 1][1]))
+				speed[n] = (((prevDist[0][0][n]) - (prevDist[0][count2[n] - 1][n])) / (prevDist[1][0][n] - prevDist[1][count2[n] - 1][n]))
 			elif count2[n] == 3:
 				speed2 = (prevDist[0][0][n] - prevDist[0][1][n]) / (prevDist[1][0][n] - prevDist[1][1][n])
 				speed1 = (prevDist[0][1][n] - prevDist[0][2][n]) / (prevDist[1][1][n] - prevDist[1][2][n])
@@ -123,3 +123,16 @@ class ForwardCalculation:
 				tempMeas = self.measurementForward.measurementsUse[n]
 				tempMeas.distance = tempMeas.distance + speed[n]*timeDiff
 				self.measurementForward.measurementsUse[n] = tempMeas
+
+class FindSatellitePos:
+
+	def __init__(self, measurementForward, SatPosList):
+		self.satPosUse = []
+		self.calculate(measurementForward, SatPosList)
+
+	def calculate(self, measurementForward, SatPosList):
+		for nn in range(len(measurementForward)):
+			for n in range(len(SatPosList)):
+				if measurementForward.measurementForward.measurementsUse[nn].transmitterID == SatPosList[n].transmitterID
+				self.satPosUse.append(SatPosList[n])
+				break
