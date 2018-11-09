@@ -100,19 +100,17 @@ class ForwardCalculation:
 				if count == 0 or count2[n] >= numPrev + 1:
 					break
 				count -= 1
-			"""speed[n] = 0
+			speed[n] = 0
 			if count2[n] == 2:
 				speed[n] = (((prevDist[n][0][0]) - (prevDist[n][count2[n] - 1][0])) / (prevDist[n][0][1] - prevDist[n][count2[n] - 1][1]))
 			elif count2[n] == 3:
-				speed2 = (prevDist[n][0][0] - prevDist[n][1][0]) / (prevDist[n][0][1] - prevDist[n][1][1])
-				speed1 = (prevDist[n][1][0] - prevDist[n][2][0]) / (prevDist[n][1][1] - prevDist[n][2][1])
-				speed[n] = ((speed2-speed1)/(prevDist[n][0][1]-prevDist[n][2][1]))*(currentTime- prevDist[n][0][1])
-
+				speed2 = (prevDist[0][0][n] - prevDist[0][1][n]) / (prevDist[1][0][n] - prevDist[1][1][n])
+				speed1 = (prevDist[0][1][n] - prevDist[0][2][n]) / (prevDist[1][1][n] - prevDist[1][2][n])
+				speed[n] = ((speed2-speed1)/(prevDist[1][0][n]-prevDist[1][2][n]))*(currentTime- prevDist[1][0][n])
 			if speed[n] > 2:
 				speed[n] = 0
 			elif speed[n] < 0.05:
 				speed[n] = 0
-
 		for n in range(measSize):
 			speedCounter = 0
 			for i in range(measSize):
@@ -121,7 +119,7 @@ class ForwardCalculation:
 			if speedCounter > 2:
 				speed[n] = 0
 			if count2[n] > 1:
-				timeDiff = currentTime - prevDist[n][0][1]
+				timeDiff = currentTime - prevDist[1][0][n]
 				tempMeas = self.measurementForward.measurementsUse[n]
 				tempMeas.distance = tempMeas.distance + speed[n]*timeDiff
-				self.measurementForward.measurementsUse[n] = tempMeas"""
+				self.measurementForward.measurementsUse[n] = tempMeas
