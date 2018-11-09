@@ -63,10 +63,14 @@ SatPosList.append([0, 0, 0], Satid2, [S2X, S2Y, S2Z])
 SatPosList.append([0, 0, 0], Satid3, [S3X, S3Y, S3Z])
 SatPosList.append([0, 0, 0], Satid4, [S4X, S4Y, S4Z])"""
 
-SatPosList.append(SatellitePositions([0, 0, 0], Satid1, [S1X, S1Y, S1Z]))
-SatPosList.append(SatellitePositions([0, 0, 0], Satid2, [S2X, S2Y, S2Z]))
-SatPosList.append(SatellitePositions([0, 0, 0], Satid3, [S3X, S3Y, S3Z]))
-SatPosList.append(SatellitePositions([0, 0, 0], Satid4, [S4X, S4Y, S4Z]))
+temp = SatellitePositions([0, 0, 0], Satid1, [S1X, S1Y, S1Z])
+SatPosList.append(temp)
+temp = SatellitePositions([0, 0, 0], Satid2, [S2X, S2Y, S2Z])
+SatPosList.append(temp)
+temp = SatellitePositions([0, 0, 0], Satid3, [S3X, S3Y, S3Z])
+SatPosList.append(temp)
+temp = SatellitePositions([0, 0, 0], Satid4, [S4X, S4Y, S4Z])
+SatPosList.append(temp)
 
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
@@ -150,7 +154,7 @@ if z1serial.is_open:
                     #print(len(measurementsUse.measurementsUse), '1 ', i, ' ', measurementsUse.measurementsUse[i].transmitterID)
                 if measurementsUse.usePosCalc:
                    measuremetForward = ForwardCalculation(measurementHistory, measurementsUse, int(round(time.time()*1000)))
-                   #print('2 ', measuremetForward.measurementForward.measurementsUse[0].transmitterID)
+                   #print('2 ', measurementForward.measurementForward.measurementsUse[0].transmitterID)
                    #Maybe we need sorting, maybe we don't
                    SatPosUse = FindSatellitePos(measuremetForward, SatPosList)
 
