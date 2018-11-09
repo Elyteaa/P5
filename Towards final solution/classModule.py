@@ -1,4 +1,11 @@
 #!/usr/bin/python
+class point3D:
+
+	def __init__(self, x, y, z):
+		self.x = x
+		self.y = y
+		self.z = z
+
 class SatellitePositions:
 
 	def __init__(self, masterpos, ID, position):
