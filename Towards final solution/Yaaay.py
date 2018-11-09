@@ -37,6 +37,7 @@ switchCase = {
 "StateDataDLE": StateDataDLE
 }
 
+numSats = 4
 SatPosList = []
 Satid1 = 42928
 Satid2 = 42929
@@ -54,9 +55,18 @@ S3Z = 0
 S4X = -500
 S4Y = 0
 S4Z = 0
-SatPosList.append()
 
-numSats = 4
+"""temp = SatellitePositions([0, 0, 0], Satid1, [S1X, S1Y, S1Z])
+SatPosList.append(temp)
+SatPosList.append([0, 0, 0], Satid2, [S2X, S2Y, S2Z])
+SatPosList.append([0, 0, 0], Satid3, [S3X, S3Y, S3Z])
+SatPosList.append([0, 0, 0], Satid4, [S4X, S4Y, S4Z])"""
+
+SatPosList.append(SatellitePositions([0, 0, 0], Satid1, [S1X, S1Y, S1Z]))
+SatPosList.append(SatellitePositions([0, 0, 0], Satid2, [S2X, S2Y, S2Z]))
+SatPosList.append(SatellitePositions([0, 0, 0], Satid3, [S3X, S3Y, S3Z]))
+SatPosList.append(SatellitePositions([0, 0, 0], Satid4, [S4X, S4Y, S4Z]))
+
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
 measurementHistory = [] #.append()

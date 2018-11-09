@@ -1,4 +1,11 @@
 #!/usr/bin/python
+class SatellitePositions:
+
+	def __init__(self, masterpos, ID, position):
+		self.masterpos = masterpos
+		self.transmitterID = ID
+		self.position = position
+
 
 class CPRMeasurement:
 
