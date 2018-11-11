@@ -1,4 +1,6 @@
 #!/usr/bin/python
+import math
+
 class point3D:
 
 	def __init__(self, x, y, z):
@@ -150,3 +152,36 @@ class FindSatellitePos:
 				if measurementForward.measurementForward.measurementsUse[nn].transmitterID == SatPosList[n].transmitterID:
 					self.satPosUse.append(SatPosList[n])
 					break
+
+class TrilaterateManyLinearEquations:
+
+	def __init__(self, satPosUse, measurementsUse, measForwSize):
+		self.result = 0
+		self.themath(satPosUse, measurementsUse, measForwSize)
+
+	def themath(self, satPosUse, measurementsUse, measForwSize):
+		counter = 0
+		for n in range(measForwSize):
+			for nn in range(n+1, measForwSize):
+				for nnn in range(nn+1,measForwSize):
+					if n != nn and nn != nnn and n != nnn:
+						aPosition = satPosUse[n]
+						bPosition = satPosUse[nn]
+						cPosition = satPosUse[nnn]
+						aDistance = measurementsUse[n]
+						bDistance = measurementsUse[nn]
+						cDistance = measurementsUse[nnn]
+
+						temp = math.sqrt((bPosition[0]-aPosition[0])**2 + (bPosition[1]-aPosition[1])**2 + (bPosition[2]-aPosition[2])**2)
+						ex = [[aPosition[0] * 1/temp, aPosition[1] * 1/temp, aPosition[2] * 1/temp], [bPosition[0] * 1/temp, bPosition[1] * 1/temp, bPosition[2] * 1/temp]]
+						i = aPosition[0] * cPosition[0] + aPosition[1] * cPosition[1] + aPosition[2] * cPosition[2]
+						"""for x in range(2):
+							for y in range(3):
+								temp2[x][y] = ex[x][y] * i"""
+						#iteration of lists may be Jewish
+						for n in range(2):
+							for x in range(1):
+								for y in range(2):
+									temp = math.sqrt((aPosition[n] - ex[x][y]*i)**2 + (cPosition[n] - ex[x][y] * i)**2)
+						#temp = [[aPosition[0] - temp2, aPosition[1] - temp, aPosition[2] - temp], [cPosition[0] - temp, cPosition[1] - temp, cPosition[2] - temp]]
+						#temp = math.sqrt((temp2[0][1] - temp2[0][0])**2 + (temp2[1][1] - temp2[1][0])**2 + (temp2[2][1] - temp2[2][0])**2)
