@@ -173,8 +173,8 @@ class TrilaterateManyLinearEquations:
 						cDistance = measurementsUse[nnn]
 
 						temp = math.sqrt((bPosition.x -aPosition.x)**2 + (bPosition.y-aPosition.y)**2 + (bPosition.z-aPosition.z)**2)
-						ex = [[aPosition[0] * 1/temp, aPosition[1] * 1/temp, aPosition[2] * 1/temp], [bPosition[0] * 1/temp, bPosition[1] * 1/temp, bPosition[2] * 1/temp]]
-						i = aPosition[0] * cPosition[0] + aPosition[1] * cPosition[1] + aPosition[2] * cPosition[2]
+						ex = [[aPosition.x * 1/temp, aPosition.y * 1/temp, aPosition.z * 1/temp], [bPosition.x * 1/temp, bPosition.y * 1/temp, bPosition.z * 1/temp]]
+						i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
 						"""for x in range(2):
 							for y in range(3):
 								temp2[x][y] = ex[x][y] * i"""
@@ -188,15 +188,15 @@ class TrilaterateManyLinearEquations:
 						for x in range(2):
 							for y in range(3):
 								exi[x][y] = ex[x][y] * i
-						temp = [[aPosition[0] - exi[0][0], aPosition[1] - exi[0][1], aPosition[2] - exi[0][2]], [cPosition[0] - exi[1][0], cPosition[1] - exi[1][1], cPosition[2] - exi[1][2]]]
-						temp = math.sqrt((cPosition[0]-aPosition[0])**2 + (cPosition[1]-aPosition[1])**2 + (cPosition[2]-aPosition[2])**2)
-						ey = [[aPosition[0]-exi[0][0], aPosition[1]-exi[0][1], aPosition[2]-exi[0][2]], [cPosition[0]-exi[1][0], cPosition[1]-exi[1][1], cPosition[2]-exi[1][2]]]
+						temp = [[aPosition.x - exi[0][0], aPosition.y - exi[0][1], aPosition.z - exi[0][2]], [cPosition.x - exi[1][0], cPosition.y - exi[1][1], cPosition.z - exi[1][2]]]
+						temp = math.sqrt((cPosition.x-aPosition.x)**2 + (cPosition.y-aPosition.y)**2 + (cPosition[2]-aPosition[2])**2)
+						ey = [[aPosition.x-exi[0][0], aPosition.y-exi[0][1], aPosition.z-exi[0][2]], [cPosition.x-exi[1][0], cPosition.y-exi[1][1], cPosition.z-exi[1][2]]]
 						for x in range(2):
 							for y in range(3):
 								ey[x][y] = ey[x][y] * 1 / temp
 						ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
-						d = math.sqrt((bPosition[0] - aPosition[0])**2 + (bPosition[1] - aPosition[1])**2 + (bPosition[2] - aPosition[2])**2)
-						j = aPosition[0] * cPosition[0] + aPosition[1] * cPosition[1] + aPosition[2] * cPosition[2]
+						d = math.sqrt((bPosition.x - aPosition.x)**2 + (bPosition.y - aPosition.y)**2 + (bPosition.z - aPosition.z)**2)
+						j = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
 
 						x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
 						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
