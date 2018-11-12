@@ -199,7 +199,7 @@ class TrilaterateManyLinearEquations:
 						j = aPosition[0] * cPosition[0] + aPosition[1] * cPosition[1] + aPosition[2] * cPosition[2]
 
 						x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
-						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / * (2 * j)) - ((i / j) * x)
+						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
 						z = math.sqrt(aDistance**2 - x**2 - y**2)
 
 						"""if (!(math.isnan(z) or math.isinf(z))):
