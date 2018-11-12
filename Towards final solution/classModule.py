@@ -203,5 +203,6 @@ class TrilaterateManyLinearEquations:
 						z = math.sqrt(aDistance**2 - x**2 - y**2)
 
 						if math.isnan(z) == False and math.isinf(z) == False:
+							pass
 							#temp = aPosition[2] + ex[]
-							if abs(aPosition[])
+							#if abs(aPosition[])
