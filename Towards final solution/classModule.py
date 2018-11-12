@@ -173,9 +173,9 @@ class TrilaterateManyLinearEquations:
 						cDistance = measurementsUse[nnn]
 
 						temp = math.sqrt((bPosition.x -aPosition.x)**2 + (bPosition.y-aPosition.y)**2 + (bPosition.z-aPosition.z)**2)
-						if temp != 0:
+						if temp != 0: #figure out why its 0
 							ex = [[aPosition.x * 1/temp, aPosition.y * 1/temp, aPosition.z * 1/temp], [bPosition.x * 1/temp, bPosition.y * 1/temp, bPosition.z * 1/temp]]
-							"""i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
+							i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
 								for x in range(2):
 								for y in range(3):
 									temp2[x][y] = ex[x][y] * i
@@ -204,6 +204,6 @@ class TrilaterateManyLinearEquations:
 							z = math.sqrt(aDistance**2 - x**2 - y**2)
 
 							if math.isnan(z) == False and math.isinf(z) == False:
-								pass"""
+								pass
 								#temp = aPosition[2] + ex[]
 								#if abs(aPosition[])
