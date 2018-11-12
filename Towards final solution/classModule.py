@@ -187,10 +187,10 @@ class TrilaterateManyLinearEquations:
 						#temp = math.sqrt((temp2[0][1] - temp2[0][0])**2 + (temp2[1][1] - temp2[1][0])**2 + (temp2[2][1] - temp2[2][0])**2)
 						for x in range(2):
 							for y in range(3):
-								exi = ex[x][y] * i
-						temp = [[aPosition[0] - exi, aPosition[1] - exi, aPosition[2] - exi], [cPosition[0] - exi, cPosition[1] - exi, cPosition[2] - exi]]
+								exi[x][y] = ex[x][y] * i
+						temp = [[aPosition[0] - exi[0][0], aPosition[1] - exi[0][1], aPosition[2] - exi[0][2]], [cPosition[0] - exi[1][0], cPosition[1] - exi[1][1], cPosition[2] - exi[1][2]]]
 						temp = math.sqrt((cPosition[0]-aPosition[0])**2 + (cPosition[1]-aPosition[1])**2 + (cPosition[2]-aPosition[2])**2)
-						ey = [[aPosition[0]-exi, aPosition[1]-exi, aPosition[2]-exi], [cPosition[0]-exi, cPosition[1]-exi, cPosition[2]-exi]]
+						ey = [[aPosition[0]-exi[0][0], aPosition[1]-exi[0][1], aPosition[2]-exi[0][2]], [cPosition[0]-exi[1][0], cPosition[1]-exi[1][1], cPosition[2]-exi[1][2]]]
 						for x in range(2):
 							for y in range(3):
 								ey[x][y] = ey[x][y] * 1 / temp
