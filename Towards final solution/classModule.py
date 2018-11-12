@@ -177,8 +177,8 @@ class TrilaterateManyLinearEquations:
 							ex = [[aPosition.x * 1/temp, aPosition.y * 1/temp, aPosition.z * 1/temp], [bPosition.x * 1/temp, bPosition.y * 1/temp, bPosition.z * 1/temp]]
 							i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
 								for x in range(2):
-								for y in range(3):
-									temp2[x][y] = ex[x][y] * i
+									for y in range(3):
+										temp2[x][y] = ex[x][y] * i
 							#iteration of lists may be Jewish
 							#for n in range(3):
 								#for x in range(2):
