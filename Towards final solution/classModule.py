@@ -202,6 +202,6 @@ class TrilaterateManyLinearEquations:
 						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
 						z = math.sqrt(aDistance**2 - x**2 - y**2)
 
-						if (!(math.isnan(z) or math.isinf(z))):
+						if math.isnan(z) == False and math.isinf(z) == False:
 							temp = aPosition[2] + ex[]
 							if abs(aPosition[])
