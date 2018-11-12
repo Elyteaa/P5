@@ -162,7 +162,7 @@ if z1serial.is_open:
                         distance = [0] * measForwSize
                         SatPos = []
                         for n in range(3):
-                            temp = point3D(SatPosUse[n].position[0], SatPosUse[n].position[1], SatPosUse[n].position[2])
+                            temp = point3D(SatPosUse.SatPosUse[n].position[0], SatPosUse.SatPosUse[n].position[1], SatPosUse.SatPosUse[n].position[2])
                             SatPos.append(temp)
                             distance[n] = measurementForward.measurementForward.measurementsUse[n].distance
                             pass #result = ...
@@ -172,7 +172,7 @@ if z1serial.is_open:
                         SatPos = []
                         distance = [0] * measForwSize
                         for n in range(measForwSize):
-                            temp = point3D(SatPosUse[n].position[0], SatPosUse[n].position[1], SatPosUse[n].position[2])
+                            temp = point3D(SatPosUse.SatPosUse[n].position[0], SatPosUse.SatPosUse[n].position[1], SatPosUse.SatPosUse[n].position[2])
                             SatPos.append(temp)
                             distance[n] = measurementForward.measurementForward.measurementsUse[n].distance
                             #result = ...

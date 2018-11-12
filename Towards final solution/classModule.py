@@ -143,7 +143,7 @@ class ForwardCalculation:
 class FindSatellitePos:
 
 	def __init__(self, measurementForward, SatPosList):
-		self.satPosUse = []
+		self.SatPosUse = []
 		self.calculate(measurementForward, SatPosList)
 
 	def calculate(self, measurementForward, SatPosList):
