@@ -150,24 +150,24 @@ class FindSatellitePos:
 		for nn in range(len(measurementForward.measurementForward.measurementsUse)):
 			for n in range(len(SatPosList)):
 				if measurementForward.measurementForward.measurementsUse[nn].transmitterID == SatPosList[n].transmitterID:
-					self.satPosUse.append(SatPosList[n])
+					self.SatPosUse.append(SatPosList[n])
 					break
 
 class TrilaterateManyLinearEquations:
 
-	def __init__(self, satPosUse, measurementsUse, measForwSize):
+	def __init__(self, SatPosUse, measurementsUse, measForwSize):
 		self.result = 0
-		self.themath(satPosUse, measurementsUse, measForwSize)
+		self.themath(SatPosUse, measurementsUse, measForwSize)
 
-	def themath(self, satPosUse, measurementsUse, measForwSize):
+	def themath(self, SatPosUse, measurementsUse, measForwSize):
 		counter = 0
 		for n in range(measForwSize):
 			for nn in range(n+1, measForwSize):
 				for nnn in range(nn+1,measForwSize):
 					if n != nn and nn != nnn and n != nnn:
-						aPosition = satPosUse[n]
-						bPosition = satPosUse[nn]
-						cPosition = satPosUse[nnn]
+						aPosition = SatPosUse[n]
+						bPosition = SatPosUse[nn]
+						cPosition = SatPosUse[nnn]
 						aDistance = measurementsUse[n]
 						bDistance = measurementsUse[nn]
 						cDistance = measurementsUse[nnn]
