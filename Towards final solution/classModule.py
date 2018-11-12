@@ -172,7 +172,7 @@ class TrilaterateManyLinearEquations:
 						bDistance = measurementsUse[nn]
 						cDistance = measurementsUse[nnn]
 
-						temp = math.sqrt((bPosition[0]-aPosition[0])**2 + (bPosition[1]-aPosition[1])**2 + (bPosition[2]-aPosition[2])**2)
+						temp = math.sqrt((bPosition.x -aPosition.x)**2 + (bPosition.y-aPosition.y)**2 + (bPosition.z-aPosition.z)**2)
 						ex = [[aPosition[0] * 1/temp, aPosition[1] * 1/temp, aPosition[2] * 1/temp], [bPosition[0] * 1/temp, bPosition[1] * 1/temp, bPosition[2] * 1/temp]]
 						i = aPosition[0] * cPosition[0] + aPosition[1] * cPosition[1] + aPosition[2] * cPosition[2]
 						"""for x in range(2):
