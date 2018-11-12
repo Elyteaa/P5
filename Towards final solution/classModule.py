@@ -179,9 +179,29 @@ class TrilaterateManyLinearEquations:
 							for y in range(3):
 								temp2[x][y] = ex[x][y] * i"""
 						#iteration of lists may be Jewish
-						for n in range(2):
-							for x in range(1):
-								for y in range(2):
-									temp = math.sqrt((aPosition[n] - ex[x][y]*i)**2 + (cPosition[n] - ex[x][y] * i)**2)
+						"""for n in range(3):
+							for x in range(2):
+								for y in range(3):
+									temp = temp + ((cPosition[n] - ex[x][y] * i) - (aPosition[n] - ex[x][y]*i))**2"""
 						#temp = [[aPosition[0] - temp2, aPosition[1] - temp, aPosition[2] - temp], [cPosition[0] - temp, cPosition[1] - temp, cPosition[2] - temp]]
 						#temp = math.sqrt((temp2[0][1] - temp2[0][0])**2 + (temp2[1][1] - temp2[1][0])**2 + (temp2[2][1] - temp2[2][0])**2)
+						for x in range(2):
+							for y in range(3):
+								exi = ex[x][y] * i
+						temp = [[aPosition[0] - exi, aPosition[1] - exi, aPosition[2] - exi], [cPosition[0] - exi, cPosition[1] - exi, cPosition[2] - exi]]
+						temp = math.sqrt((cPosition[0]-aPosition[0])**2 + (cPosition[1]-aPosition[1])**2 + (cPosition[2]-aPosition[2])**2)
+						ey = [[aPosition[0]-exi, aPosition[1]-exi, aPosition[2]-exi], [cPosition[0]-exi, cPosition[1]-exi, cPosition[2]-exi]]
+						for x in range(2):
+							for y in range(3):
+								ey[x][y] = ey[x][y] * 1 / temp
+						ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]
+						d = math.sqrt((bPosition[0] - aPosition[0])**2 + (bPosition[1] - aPosition[1])**2 + (bPosition[2] - aPosition[2])**2)
+						j = aPosition[0] * cPosition[0] + aPosition[1] * cPosition[1] + aPosition[2] * cPosition[2]
+
+						x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
+						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / * (2 * j)) - ((i / j) * x)
+						z = math.sqrt(aDistance**2 - x**2 - y**2)
+
+						if (!(math.isnan(z) or math.isinf(z))):
+							
+							if abs(aPosition)
