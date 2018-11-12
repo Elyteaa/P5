@@ -194,7 +194,7 @@ class TrilaterateManyLinearEquations:
 						for x in range(2):
 							for y in range(3):
 								ey[x][y] = ey[x][y] * 1 / temp
-						ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
+						ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
 						d = math.sqrt((bPosition[0] - aPosition[0])**2 + (bPosition[1] - aPosition[1])**2 + (bPosition[2] - aPosition[2])**2)
 						j = aPosition[0] * cPosition[0] + aPosition[1] * cPosition[1] + aPosition[2] * cPosition[2]
 
