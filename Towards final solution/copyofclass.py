@@ -1,5 +1,9 @@
 #!/usr/bin/python
 import math
+import numpy.matlib 
+import numpy as np
+from numpy import array
+from numpy.linalg import norm
 
 class point3D:
 
@@ -66,7 +70,7 @@ class measurementToUseChooser:
 			for n in range(0,numSats):
 				#print('n in numSats: ', numSats)
 				if tempID != compareID[n] and compareID[n] == 0 and currentTime < measTime + 5000 and measLvl >= 5:
-					print('compareID values: ', compareID)
+					#print('compareID values: ', compareID)
 					compareID[n] = tempID
 					self.measurementsUse.append(measurementHistory[len(measurementHistory)-count])
 					break
@@ -167,43 +171,61 @@ class TrilaterateManyLinearEquations:
 					if n != nn and nn != nnn and n != nnn:
 						aPosition = SatPosUse[n]
 						bPosition = SatPosUse[nn]
+						abPosition = array([aPosition, bPosition])
 						cPosition = SatPosUse[nnn]
 						aDistance = measurementsUse[n]
 						bDistance = measurementsUse[nn]
 						cDistance = measurementsUse[nnn]
+						#print('a = ', aPosition.x, aPosition.y, aPosition.z)
+						#print('b = ', bPosition.x, bPosition.y, bPosition.z)
+						#print('c = ', cPosition.x, cPosition.y, cPosition.z)
 
-						temp = math.sqrt((bPosition.x-aPosition.x)**2 + (bPosition.y-aPosition.y)**2 + (bPosition.z-aPosition.z)**2)
-						ex = [[aPosition.x * 1/temp, aPosition.y * 1/temp, aPosition.z * 1/temp], [bPosition.x * 1/temp, bPosition.y * 1/temp, bPosition.z * 1/temp]]
-						i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
-						"""for x in range(2):
-							for y in range(3):
-								temp2[x][y] = ex[x][y] * i"""
-						#iteration of lists may be Jewish
-						"""for n in range(3):
+						temp = math.sqrt((aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2 + (bPosition.x)**2 + (bPosition.y)**2 + (bPosition.z)**2)
+						#print(temp)
+						#temptrue = norm(abPosition)
+						#print('numpy = ', temptrue, 'ours = ')
+						if temp != 0: #figure out why its 0
+							ex = [[aPosition.x * 1/temp, aPosition.y * 1/temp, aPosition.z * 1/temp], [bPosition.x * 1/temp, bPosition.y * 1/temp, bPosition.z * 1/temp]]
+							i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
+							exi = ex
 							for x in range(2):
 								for y in range(3):
-									temp = temp + ((cPosition[n] - ex[x][y] * i) - (aPosition[n] - ex[x][y]*i))**2"""
-						#temp = [[aPosition[0] - temp2, aPosition[1] - temp, aPosition[2] - temp], [cPosition[0] - temp, cPosition[1] - temp, cPosition[2] - temp]]
-						#temp = math.sqrt((temp2[0][1] - temp2[0][0])**2 + (temp2[1][1] - temp2[1][0])**2 + (temp2[2][1] - temp2[2][0])**2)
-						for x in range(2):
-							for y in range(3):
-								ex[x][y] = ex[x][y] * i
-						temp = [[aPosition.x - exi, aPosition.y - exi, aPosition.z - exi], [cPosition.x - exi, cPosition.y - exi, cPosition.z - exi]]
-						temp = math.sqrt((cPosition.x-aPosition.x)**2 + (cPosition.y-aPosition.y)**2 + (cPosition.z-aPosition.z)**2)
-						ey = [[aPosition.x-exi, aPosition.y-exi, aPosition.z-exi], [cPosition.x-exi, cPosition.y-exi, cPosition.z-exi]]
-						for x in range(2):
-							for y in range(3):
-								ey[x][y] = ey[x][y] * 1 / temp
-						ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
-						d = math.sqrt((bPosition.x - aPosition.x)**2 + (bPosition.y - aPosition.y)**2 + (bPosition.z - aPosition.z)**2)
-						j = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
+									exi[x][y] = exi[x][y] * i
+							#iteration of lists may be Jewish
+							#for n in range(3):
+								#for x in range(2):
+									#for y in range(3):
+										#temp = temp + ((cPosition[n] - ex[x][y] * i) - (aPosition[n] - ex[x][y]*i))**2
+							#temp = [[aPosition[0] - temp2, aPosition[1] - temp, aPosition[2] - temp], [cPosition[0] - temp, cPosition[1] - temp, cPosition[2] - temp]]
+							#temp = math.sqrt((temp2[0][1] - temp2[0][0])**2 + (temp2[1][1] - temp2[1][0])**2 + (temp2[2][1] - temp2[2][0])**2)
+							for x in range(2):
+								for y in range(3):
+									exi[x][y] = ex[x][y] * i
+							temp = [[aPosition.x - exi[0][0], aPosition.y - exi[0][1], aPosition.z - exi[0][2]], [cPosition.x - exi[1][0], cPosition.y - exi[1][1], cPosition.z - exi[1][2]]]
+							temp2 = math.sqrt((cPosition.x)**2 + (cPosition.y)**2 + (cPosition.z)**2 + (aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2)
+							ey = [[aPosition.x-exi[0][0], aPosition.y-exi[0][1], aPosition.z-exi[0][2]], [cPosition.x-exi[1][0], cPosition.y-exi[1][1], cPosition.z-exi[1][2]]]
+							print(ey)
+							for x in range(2):
+								for y in range(3):
+									ey[x][y] = ey[x][y] * 1 / temp
+							ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
+							d = math.sqrt((bPosition.x)**2 + (bPosition.y)**2 + (bPosition.z)**2 + (aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2)
+							tempvec1 = [(ey[1][0]-ey[0][0]), (ey[1][1]-ey[0][1]), (ey[1][2]-ey[0][2])]
+							tempvec2 = [(cPosition.x - aPosition.x),(cPosition.y - aPosition.y) , (cPosition.z - aPosition.z)] 
+							j = np.dot(tempvec1, tempvec2)
+							#j = tempvec1 * tempvec2
+							#print('j = ', j)
+							#if j < 1000 and j > 0:
 
-						x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
-						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
-						z = math.sqrt(aDistance**2 - x**2 - y**2)
+							x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
+							#print('x = ', x)
+							y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
+							#print('x = ', x, 'y = ', y)
+							z = math.sqrt(aDistance**2 - 353.6**2 - 985.9**2)
+							#print('x = ', x, 'y = ', y, 'z = ', z)
 
-						if math.isnan(z) == false and math.isinf(z) == false:
-							tempPos = aPosition.z + ex[2] * x + ey[2] * y + ez[2] * z
-							tempNeg = aPosition.z + ex[2] * x + ey[2] * y + ez[2] * (z * -1)
-							if abs(temp) <= abs(tempNeg):
-								print(tempPos)
+						#if math.isnan(z) == false and math.isinf(z) == false:
+						#	tempPos = aPosition.z + ex[2] * x + ey[2] * y + ez[2] * z
+						#	tempNeg = aPosition.z + ex[2] * x + ey[2] * y + ez[2] * (z * -1)
+						#	if abs(temp) <= abs(tempNeg):
+						#		print(tempPos)
