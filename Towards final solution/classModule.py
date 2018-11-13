@@ -188,7 +188,7 @@ class TrilaterateManyLinearEquations:
 						#temptrue = norm(abPosition)
 						#print('numpy = ', temptrue, 'ours = ')
 						ex = [[aPosition.x * 1/norm, aPosition.y * 1/norm, aPosition.z * 1/norm], [bPosition.x * 1/norm, bPosition.y * 1/norm, bPosition.z * 1/norm]]
-						print('aPosition =', aPosition[0], aPosition[1], aPosition[2], 'bPosition =', bPosition[0], bPosition[1], bPosition[2])
+						print('aPosition =', aPosition.x, aPosition.y, aPosition.z, 'bPosition =', bPosition.x, bPosition.y, bPosition.z)
 						print('ex =', ex)
 						i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
 						exi = ex
