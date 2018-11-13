@@ -177,6 +177,9 @@ if z1serial.is_open:
                             distance[n] = measurementForward.measurementForward.measurementsUse[n].distance
                             #result = ...
                         result = TrilaterateManyLinearEquations(SatPos, distance, measForwSize)
+                    if result.TruePosition:
+                        if :
+                            pass
 
 else:
     print('z1serial not open')

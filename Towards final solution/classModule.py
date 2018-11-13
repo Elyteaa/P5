@@ -230,4 +230,23 @@ class TrilaterateManyLinearEquations:
 							#tempPos[2] = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) + (ezz[1][2] - ezz[0][2])
 							#tempNeg = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) - (ezz[1][2] - ezz[0][2])
 							if abs(tempPos[2]) <= abs(tempNeg[2]):
-								tempResult.append()
+								tempResult.append(tempPos)
+							else:
+								tempResult.append(tempNeg)
+							counter += 1
+		if counter == 0:
+			self.TruePosition = False
+		else:
+			#the purpose of this for loop
+			tempPoint = [0] * 3
+			for i in range(counter):
+				tempPoint[0] = tempPoint[0] + tempResult[n][0]
+				tempPoint[1] = tempPoint[1] + tempResult[n][1]
+				tempPoint[2] = tempPoint[2] + tempResult[n][2]
+			tempPoint[0] = tempPoint[0] / counter
+			tempPoint[1] = tempPoint[1] / counter
+			tempPoint[2] = tempPoint[2] / counter
+
+			self.result1 = tempPoint
+			self.result2 = tempPoint
+			self.TruePosition = True
