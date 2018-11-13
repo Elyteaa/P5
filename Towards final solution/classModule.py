@@ -4,6 +4,7 @@ import numpy.matlib
 import numpy as np
 from numpy import array
 from numpy.linalg import norm
+import copy
 
 class point3D:
 
@@ -191,7 +192,7 @@ class TrilaterateManyLinearEquations:
 						#print('aPosition =', aPosition.x, aPosition.y, aPosition.z, 'bPosition =', bPosition.x, bPosition.y, bPosition.z)
 						print('ex =', ex)
 						i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
-						exi = list(ex)
+						exi = copy.deepcopy(ex)
 						for x in range(2):
 							for y in range(3):
 								exi[x][y] = exi[x][y] * i
