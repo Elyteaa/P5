@@ -173,20 +173,23 @@ class TrilaterateManyLinearEquations:
 					if n != nn and nn != nnn and n != nnn:
 						aPosition = SatPosUse[n]
 						bPosition = SatPosUse[nn]
-						abPosition = array([aPosition, bPosition])
+						#abPosition = array([aPosition, bPosition])
 						cPosition = SatPosUse[nnn]
 						aDistance = measurementsUse[n]
 						bDistance = measurementsUse[nn]
 						cDistance = measurementsUse[nnn]
-						print('a = ', aPosition.x, aPosition.y, aPosition.z)
-						print('b = ', bPosition.x, bPosition.y, bPosition.z)
+						#print('a = ', aPosition.x, aPosition.y, aPosition.z)
+						#print('b = ', bPosition.x, bPosition.y, bPosition.z)
 						#print('c = ', cPosition.x, cPosition.y, cPosition.z)
 
 						norm = math.sqrt((aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2 + (bPosition.x)**2 + (bPosition.y)**2 + (bPosition.z)**2)
+						print('norm =', norm)
 						#print(temp)
 						#temptrue = norm(abPosition)
 						#print('numpy = ', temptrue, 'ours = ')
 						ex = [[aPosition.x * 1/norm, aPosition.y * 1/norm, aPosition.z * 1/norm], [bPosition.x * 1/norm, bPosition.y * 1/norm, bPosition.z * 1/norm]]
+						print('aPosition =', aPosition, 'bPosition =', bPosition)
+						print('ex =', ex)
 						i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
 						exi = ex
 						for x in range(2):
