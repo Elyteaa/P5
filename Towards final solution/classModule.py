@@ -195,6 +195,7 @@ class TrilaterateManyLinearEquations:
 						for x in range(2):
 							for y in range(3):
 								exi[x][y] = exi[x][y] * i
+						print('ex after exi =', ex)
 						temp = [[aPosition.x-exi[0][0], aPosition.y-exi[0][1], aPosition.z-exi[0][2]], [cPosition.x-exi[1][0], cPosition.y-exi[1][1], cPosition.z-exi[1][2]]]
 						norm = math.sqrt(temp[0][0]**2 + temp[0][1]**2 + temp[0][2]**2 + temp[1][0]**2 + temp[1][1]**2 + temp[1][2])
 						ey = [[temp[0][0] * 1/norm, temp[0][1] * 1/norm, temp[0][2] * 1/norm], [temp[1][0] * 1/norm, temp[1][1] * 1/norm, temp[1][2] * 1/norm]]
