@@ -2,6 +2,7 @@
 import serial
 import time
 from classModule import *
+import math
 
 def StateIdLe():
     global messageState, receiveCounter
@@ -85,6 +86,8 @@ endbyte = 0x03
 messageState = "StateIdLe"
 newMeasReady = False
 measurementTimer = int(round(time.time()*1000))
+lastPos = [0, 0, 300]
+lastTimePos = 0
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
@@ -178,8 +181,13 @@ if z1serial.is_open:
                             #result = ...
                         result = TrilaterateManyLinearEquations(SatPos, distance, measForwSize)
                     if result.TruePosition:
-                        if :
-                            pass
+                        finalResult = result.result1
+                        if abs(finalResult[0] - lastPos[0]) > 750 and int(round(time.time()*1000)) < lastTimePos + 500 or abs(finalResult[1] - lastPos[1] and int(round(time.time()*1000)) < lastTimePos + 500):
+                            measurementsUse.usePosCalc = False
+                        else:
+                            lastTimePos = int(round(time.time()*1000))
+                            print('x =', finalResult[0], 'y =', finalResult[1], 'z =', finalResult[2])
+
 
 else:
     print('z1serial not open')
