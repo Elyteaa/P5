@@ -176,6 +176,7 @@ class TrilaterateManyLinearEquations:
 						if temp != 0: #figure out why its 0
 							ex = [[aPosition.x * 1/temp, aPosition.y * 1/temp, aPosition.z * 1/temp], [bPosition.x * 1/temp, bPosition.y * 1/temp, bPosition.z * 1/temp]]
 							i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
+							temp2 = ex
 							for x in range(2):
 								for y in range(3):
 									temp2[x][y] = ex[x][y] * i
