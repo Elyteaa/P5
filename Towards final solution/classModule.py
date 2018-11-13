@@ -168,6 +168,7 @@ class TrilaterateManyLinearEquations:
 
 	def themath(self, SatPosUse, measurementsUse, measForwSize):
 		counter = 0
+		tempResult = []
 		for n in range(measForwSize):
 			for nn in range(n+1, measForwSize):
 				for nnn in range(nn+1,measForwSize):
@@ -224,16 +225,9 @@ class TrilaterateManyLinearEquations:
 									eyy[n][nn] = eyy[n][nn] * y
 									ezz[n][nn] = ezz[n][nn] * z
 
-							tempPos = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) + (ezz[1][2] - ezz[0][2])
-							tempNeg = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) - (ezz[1][2] - ezz[0][2])
-							if abs(tempPos) <= abs(tempNeg):
-								print(tempPos)
-
-
-						"""if math.isnan(z) == False and math.isinf(z) == False:
-							
-
-
-							self.result1 = 
-							#temp = aPosition[2] + ex[]
-							#if abs(aPosition[])"""
+							tempPos = [aPosition.x + (exx[1][0] - exx[0][0]) + (eyy[1][0] - eyy[0][0]) + (ezz[1][0] - ezz[0][0]), aPosition.y + (exx[1][1] - exx[0][1]) + (eyy[1][1] - eyy[0][1]) + (ezz[1][1] - ezz[0][1]), aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) + (ezz[1][2] - ezz[0][2])]
+							tempNeg = [aPosition.x + (exx[1][0] - exx[0][0]) + (eyy[1][0] - eyy[0][0]) + (ezz[1][0] - ezz[0][0]), aPosition.y + (exx[1][1] - exx[0][1]) + (eyy[1][1] - eyy[0][1]) + (ezz[1][1] - ezz[0][1]), aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) - (ezz[1][2] - ezz[0][2])]
+							#tempPos[2] = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) + (ezz[1][2] - ezz[0][2])
+							#tempNeg = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) - (ezz[1][2] - ezz[0][2])
+							if abs(tempPos[2]) <= abs(tempNeg[2]):
+								tempResult.append()
