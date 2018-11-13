@@ -190,17 +190,7 @@ class TrilaterateManyLinearEquations:
 						for x in range(2):
 							for y in range(3):
 								exi[x][y] = exi[x][y] * i
-						#iteration of lists may be Jewish
-						#for n in range(3):
-							#for x in range(2):
-								#for y in range(3):
-									#temp = temp + ((cPosition[n] - ex[x][y] * i) - (aPosition[n] - ex[x][y]*i))**2
-						#temp = [[aPosition[0] - temp2, aPosition[1] - temp, aPosition[2] - temp], [cPosition[0] - temp, cPosition[1] - temp, cPosition[2] - temp]]
-						#temp = math.sqrt((temp2[0][1] - temp2[0][0])**2 + (temp2[1][1] - temp2[1][0])**2 + (temp2[2][1] - temp2[2][0])**2)
-						for x in range(2):
-							for y in range(3):
-								exi[x][y] = ex[x][y] * i
-						temp = [[aPosition.x - exi[0][0], aPosition.y - exi[0][1], aPosition.z - exi[0][2]], [cPosition.x - exi[1][0], cPosition.y - exi[1][1], cPosition.z - exi[1][2]]]
+						temp = [[(cPosition.x - aPosition.x) - exi[1][0], aPosition.y - exi[0][1], aPosition.z - exi[0][2]], [cPosition.x - exi[1][0], cPosition.y - exi[1][1], cPosition.z - exi[1][2]]]
 						temp = math.sqrt((cPosition.x)**2 + (cPosition.y)**2 + (cPosition.z)**2 + (cPosition.x)**2 + (cPosition.y)**2 + (cPosition.z)**2)
 						ey = [[aPosition.x-exi[0][0], aPosition.y-exi[0][1], aPosition.z-exi[0][2]], [cPosition.x-exi[1][0], cPosition.y-exi[1][1], cPosition.z-exi[1][2]]]
 						for x in range(2):
@@ -223,6 +213,10 @@ class TrilaterateManyLinearEquations:
 									exx[x][y] = exx[x][y] * x
 									eyy[x][y] = eyy[x][y] * y
 									ezz[x][y] = ezz[x][y] * z
+							for n in range(2):
+								for nn in range(3):
+									
+
 							self.result1 = 
 							#temp = aPosition[2] + ex[]
 							#if abs(aPosition[])
