@@ -191,7 +191,7 @@ class TrilaterateManyLinearEquations:
 								for y in range(3):
 									exi[x][y] = ex[x][y] * i
 							temp = [[aPosition.x - exi[0][0], aPosition.y - exi[0][1], aPosition.z - exi[0][2]], [cPosition.x - exi[1][0], cPosition.y - exi[1][1], cPosition.z - exi[1][2]]]
-							temp = math.sqrt((cPosition.x-aPosition.x)**2 + (cPosition.y-aPosition.y)**2 + (cPosition[2]-aPosition[2])**2)
+							temp = math.sqrt((cPosition.x-aPosition.x)**2 + (cPosition.y-aPosition.y)**2 + (cPosition.z-aPosition.z)**2)
 							ey = [[aPosition.x-exi[0][0], aPosition.y-exi[0][1], aPosition.z-exi[0][2]], [cPosition.x-exi[1][0], cPosition.y-exi[1][1], cPosition.z-exi[1][2]]]
 							for x in range(2):
 								for y in range(3):
