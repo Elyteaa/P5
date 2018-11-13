@@ -204,9 +204,10 @@ class TrilaterateManyLinearEquations:
 
 						x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
 						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
-						z = math.sqrt(aDistance**2 - x**2 - y**2)
-
-						if math.isnan(z) == False and math.isinf(z) == False:
+						
+						temp = aDistance**2 - x**2 - y**2
+						if temp < 0:
+							z = math.sqrt(temp)
 							exx = ex
 							eyy = ey
 							ezz = ez
@@ -215,8 +216,15 @@ class TrilaterateManyLinearEquations:
 									exx[x][y] = exx[x][y] * x
 									eyy[x][y] = eyy[x][y] * y
 									ezz[x][y] = ezz[x][y] * z
-							for n in range(2):
-								for nn in range(3):
+
+							tempPos = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) + (ezz[1][2] - ezz[0][2])
+							tempNeg = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) - (ezz[1][2] - ezz[0][2])
+							if abs(tempPos) <= abs(tempNeg):
+								print(tempPos)
+
+
+						if math.isnan(z) == False and math.isinf(z) == False:
+							
 
 
 							self.result1 = 
