@@ -223,10 +223,10 @@ class TrilaterateManyLinearEquations:
 								print(tempPos)
 
 
-						if math.isnan(z) == False and math.isinf(z) == False:
+						"""if math.isnan(z) == False and math.isinf(z) == False:
 							
 
 
 							self.result1 = 
 							#temp = aPosition[2] + ex[]
-							#if abs(aPosition[])
+							#if abs(aPosition[])"""
