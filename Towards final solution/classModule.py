@@ -158,7 +158,9 @@ class FindSatellitePos:
 class TrilaterateManyLinearEquations:
 
 	def __init__(self, SatPosUse, measurementsUse, measForwSize):
-		self.result = 0
+		self.result1 = 0
+		self.result2 = 0
+		self.TruePosition = False
 		self.themath(SatPosUse, measurementsUse, measForwSize)
 
 	def themath(self, SatPosUse, measurementsUse, measForwSize):
@@ -205,14 +207,22 @@ class TrilaterateManyLinearEquations:
 							for y in range(3):
 								ey[x][y] = ey[x][y] * 1 / temp
 						ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
-						#d = math.sqrt((bPosition.x - aPosition.x)**2 + (bPosition.y - aPosition.y)**2 + (bPosition.z - aPosition.z)**2)
-						#j = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
+						d = math.sqrt((bPosition.x - aPosition.x)**2 + (bPosition.y - aPosition.y)**2 + (bPosition.z - aPosition.z)**2)
+						j = 
 
-						#x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
-						#y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
-						#z = math.sqrt(aDistance**2 - x**2 - y**2)
+						x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
+						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
+						z = math.sqrt(aDistance**2 - x**2 - y**2)
 
-						#if math.isnan(z) == False and math.isinf(z) == False:
-						#	pass
+						if math.isnan(z) == False and math.isinf(z) == False:
+							exx = ex
+							eyy = ey
+							ezz = ez
+							for n in range(2):
+								for nn in range(3):
+									exx[x][y] = exx[x][y] * x
+									eyy[x][y] = eyy[x][y] * y
+									ezz[x][y] = ezz[x][y] * z
+							self.result1 = 
 							#temp = aPosition[2] + ex[]
 							#if abs(aPosition[])
