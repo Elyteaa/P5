@@ -206,7 +206,7 @@ class TrilaterateManyLinearEquations:
 						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
 						
 						temp = aDistance**2 - x**2 - y**2
-						if temp < 0:
+						if temp >= 0:
 							z = math.sqrt(temp)
 							exx = ex
 							eyy = ey
