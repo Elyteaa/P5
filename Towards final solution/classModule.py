@@ -215,9 +215,9 @@ class TrilaterateManyLinearEquations:
 						temp = aDistance**2 - x**2 - y**2
 						if temp >= 0:
 							z = math.sqrt(temp)
-							exx = ex
-							eyy = ey
-							ezz = ez
+							exx = copy.deepcopy(ex)
+							eyy = copy.deepcopy(ey)
+							ezz = copy.deepcopy(ez)
 							for n in range(2):
 								for nn in range(3):
 									exx[n][nn] = exx[n][nn] * x
