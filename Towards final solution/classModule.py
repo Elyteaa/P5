@@ -213,9 +213,9 @@ class TrilaterateManyLinearEquations:
 							ezz = ez
 							for n in range(2):
 								for nn in range(3):
-									exx[x][y] = exx[x][y] * x
-									eyy[x][y] = eyy[x][y] * y
-									ezz[x][y] = ezz[x][y] * z
+									exx[n][nn] = exx[n][nn] * x
+									eyy[n][nn] = eyy[n][nn] * y
+									ezz[n][nn] = ezz[n][nn] * z
 
 							tempPos = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) + (ezz[1][2] - ezz[0][2])
 							tempNeg = aPosition.z + (exx[1][2] - exx[0][2]) + (eyy[1][2] - eyy[0][2]) - (ezz[1][2] - ezz[0][2])
