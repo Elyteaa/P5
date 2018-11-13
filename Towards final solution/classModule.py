@@ -182,8 +182,8 @@ class TrilaterateManyLinearEquations:
 						#print('b = ', bPosition.x, bPosition.y, bPosition.z)
 						#print('c = ', cPosition.x, cPosition.y, cPosition.z)
 
-						#norm = math.sqrt((aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2 + (bPosition.x)**2 + (bPosition.y)**2 + (bPosition.z)**2)
-						print('norm =', norm)
+						norm = math.sqrt((aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2 + (bPosition.x)**2 + (bPosition.y)**2 + (bPosition.z)**2)
+						#print('norm =', norm)
 						#print(temp)
 						#temptrue = norm(abPosition)
 						#print('numpy = ', temptrue, 'ours = ')
