@@ -1,5 +1,7 @@
 #!/usr/bin/python
 import math
+import numpy.matlib 
+import numpy as np
 from numpy import array
 from numpy.linalg import norm
 
@@ -180,25 +182,25 @@ class TrilaterateManyLinearEquations:
 						print('b = ', bPosition.x, bPosition.y, bPosition.z)
 						#print('c = ', cPosition.x, cPosition.y, cPosition.z)
 
-						temp = math.sqrt((aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2 + (bPosition.x)**2 + (bPosition.y)**2 + (bPosition.z)**2)
-						print(temp)
+						norm = math.sqrt((aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2 + (bPosition.x)**2 + (bPosition.y)**2 + (bPosition.z)**2)
+						#print(temp)
 						#temptrue = norm(abPosition)
 						#print('numpy = ', temptrue, 'ours = ')
-						ex = [[aPosition.x * 1/temp, aPosition.y * 1/temp, aPosition.z * 1/temp], [bPosition.x * 1/temp, bPosition.y * 1/temp, bPosition.z * 1/temp]]
+						ex = [[aPosition.x * 1/norm, aPosition.y * 1/norm, aPosition.z * 1/norm], [bPosition.x * 1/norm, bPosition.y * 1/norm, bPosition.z * 1/norm]]
 						i = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
 						exi = ex
 						for x in range(2):
 							for y in range(3):
 								exi[x][y] = exi[x][y] * i
-						temp = [[(cPosition.x - aPosition.x) - exi[1][0], aPosition.y - exi[0][1], aPosition.z - exi[0][2]], [cPosition.x - exi[1][0], cPosition.y - exi[1][1], cPosition.z - exi[1][2]]]
-						temp = math.sqrt((cPosition.x)**2 + (cPosition.y)**2 + (cPosition.z)**2 + (cPosition.x)**2 + (cPosition.y)**2 + (cPosition.z)**2)
-						ey = [[aPosition.x-exi[0][0], aPosition.y-exi[0][1], aPosition.z-exi[0][2]], [cPosition.x-exi[1][0], cPosition.y-exi[1][1], cPosition.z-exi[1][2]]]
-						for x in range(2):
-							for y in range(3):
-								ey[x][y] = ey[x][y] * 1 / temp
+						temp = [[aPosition.x-exi[0][0], aPosition.y-exi[0][1], aPosition.z-exi[0][2]], [cPosition.x-exi[1][0], cPosition.y-exi[1][1], cPosition.z-exi[1][2]]]
+						norm = math.sqrt(temp[0][0]**2 + temp[0][1]**2 + temp[0][2]**2 + temp[1][0]**2 + temp[1][1]**2 + temp[1][2])
+						ey = [[temp[0][0] * 1/norm, temp[0][1] * 1/norm, temp[0][2] * 1/norm], [temp[1][0] * 1/norm, temp[1][1] * 1/norm, temp[1][2] * 1/norm]]
+						#double check the cross product
 						ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
-						d = math.sqrt((bPosition.x - aPosition.x)**2 + (bPosition.y - aPosition.y)**2 + (bPosition.z - aPosition.z)**2)
-						j = 
+						d = math.sqrt((bPosition.x)**2 + (bPosition.y)**2 + (bPosition.z)**2 + (aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2)
+						tempvec1 = [(ey[1][0]-ey[0][0]), (ey[1][1]-ey[0][1]), (ey[1][2]-ey[0][2])]
+						tempvec2 = [(cPosition.x - aPosition.x),(cPosition.y - aPosition.y) , (cPosition.z - aPosition.z)] 
+						j = np.dot(tempvec1, tempvec2) 
 
 						x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
 						y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
@@ -215,7 +217,7 @@ class TrilaterateManyLinearEquations:
 									ezz[x][y] = ezz[x][y] * z
 							for n in range(2):
 								for nn in range(3):
-									
+
 
 							self.result1 = 
 							#temp = aPosition[2] + ex[]
