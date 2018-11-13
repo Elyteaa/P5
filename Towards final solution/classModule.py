@@ -240,9 +240,9 @@ class TrilaterateManyLinearEquations:
 			#the purpose of this for loop
 			tempPoint = [0] * 3
 			for i in range(counter):
-				tempPoint[0] = tempPoint[0] + tempResult[n][0]
-				tempPoint[1] = tempPoint[1] + tempResult[n][1]
-				tempPoint[2] = tempPoint[2] + tempResult[n][2]
+				tempPoint[0] = tempPoint[0] + tempResult[i][0]
+				tempPoint[1] = tempPoint[1] + tempResult[i][1]
+				tempPoint[2] = tempPoint[2] + tempResult[i][2]
 			tempPoint[0] = tempPoint[0] / counter
 			tempPoint[1] = tempPoint[1] / counter
 			tempPoint[2] = tempPoint[2] / counter
