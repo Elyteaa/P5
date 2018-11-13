@@ -199,7 +199,7 @@ class TrilaterateManyLinearEquations:
 							ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
 							d = math.sqrt((bPosition.x - aPosition.x)**2 + (bPosition.y - aPosition.y)**2 + (bPosition.z - aPosition.z)**2)
 							j = aPosition.x * cPosition.x + aPosition.y * cPosition.y + aPosition.z * cPosition.z
-							print(j)
+							print('j =',j)
 
 							x = (aDistance**2 - bDistance**2 + d**2) / (2 * d)
 							#y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
