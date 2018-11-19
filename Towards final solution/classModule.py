@@ -203,7 +203,8 @@ class TrilaterateManyLinearEquations:
 						ey = [[temp[0][0] * 1/norm, temp[0][1] * 1/norm, temp[0][2] * 1/norm], [temp[1][0] * 1/norm, temp[1][1] * 1/norm, temp[1][2] * 1/norm]]
 						print('ey =', ey)
 						#double check the cross product
-						ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
+						#ez = [[ex[0][1] * ey[0][2] - ex[0][2] * ey[0][1], ex[0][2] * ey[0][0] - ex[0][0] * ey[0][2], ex[0][0] * ey[0][1] - ex[0][1] * ey[0][0]], [ex[1][1] * ey[1][2] - ex[1][2] * ey[1][1], ex[1][2] * ey[1][0] - ex[1][0] * ey[1][2], ex[1][0] * ey[1][1] - ex[1][1] * ey[1][0]]]
+						ez = np.cross(np.transpose(ex), np.transpose(ey)) #let's see if this works better
 						print('ez =', ez)
 						d = math.sqrt((bPosition.x)**2 + (bPosition.y)**2 + (bPosition.z)**2 + (aPosition.x)**2 + (aPosition.y)**2 + (aPosition.z)**2)
 						tempvec1 = [(ey[1][0]-ey[0][0]), (ey[1][1]-ey[0][1]), (ey[1][2]-ey[0][2])]
