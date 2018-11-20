@@ -176,21 +176,13 @@ class TrilaterateLinearEquations:
 
 		x = aDistance**2 - bDistance**2 + d**2 / (2 * d)
 		y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
-		z = math.sqrt(aDistance**2 - x**2 - y**2)
-
-		if (Double.isNaN(z) || Double.isInfinite(z))
-		{
-			result.result1 = new Point3D();
-			result.result2 = new Point3D();
-			result.TruePosition = false;
-			return result;
-		}
-
-		result.result1 = aPosition.plus(ex.times(x)).plus(ey.times(y)).plus(ez.times(z));
-		result.result2 = aPosition.plus(ex.times(x)).plus(ey.times(y)).plus(ez.times(-z));
-		//result.result1 = aPosition.plus(ex.times(x).plus(ey.times(y)).plus(ez.times(z)));
-		//result.result2 = aPosition.plus(ex.times(x).plus(ey.times(y)).plus(ez.times(-z)));
-		result.TruePosition = true;
+		
+		temp = aDistance**2 - x**2 - y**2
+		if temp >= 0:
+			z = math.sqrt(temp)
+			self.result1 = aPosition + ex * x + ey * y + ez * z
+			self.result2 = aPosition + ex * x + ey * y + ez * -z
+			self.TruePosition = True
 
 class TrilaterateManyLinearEquations:
 
