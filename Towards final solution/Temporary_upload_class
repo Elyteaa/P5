@@ -111,9 +111,9 @@ class ForwardCalculation:
 			while findPrevDist:
 				#count2 = 0
 				#print('for n', measSize, 'for count2[n]', numPrev+1, 'for count', len(measHist))
-				#print('n=   ', n,        'count2[n]=   ', count2[n], 'count=   ', count)
+				#print('n=   ', n,		'count2[n]=   ', count2[n], 'count=   ', count)
 				if measID == measHist[count].transmitterID and count2[n] < numPrev + 1 and measHist[count].ultrasoundLevel > 5:
-					#print('n=   ', n,        'count2[n]=   ', count2[n], 'count=   ', count)
+					#print('n=   ', n,		'count2[n]=   ', count2[n], 'count=   ', count)
 					prevDist[0][count2[n]][n] = measHist[count].distance
 					prevDist[1][count2[n]][n] = measHist[count].timestampMS
 					count2[n] += 1
@@ -168,38 +168,31 @@ class TrilaterateLinearEquations:
 
 	def themath(self, aPosition, aDistance, bPosition, bDistance, cPosition, cDistance):
 		ex = np.array([[aPosition], [bPosition]]) * (1 / np.linalg.norm(np.array([[aPosition], [bPosition]])))
+		i = np.dot(ex, np.array([[aPosition], [cPosition]]))
+		ey = np.array([[aPosition], [cPosition]]) - ex * i * (1/np.linalg.norm(np.array([[aPosition], [cPosition]]) - ex * i))
+		ez = np.cross(ex, ey)
+		d = np.linalg.norm(aPosition, bPosition)
+		j = np.dot(ey, np.array([aPosition, cPosition]))
 
-        i =  Vector3D.dotProduct(ex,new Vector3D(aPosition,cPosition));
+		double x = (Math.pow(aDistance, 2) - Math.pow(bDistance, 2) + Math.pow(d, 2)) / (2 * d);
+		double y = ((Math.pow(aDistance, 2) - Math.pow(cDistance, 2) + Math.pow(i, 2) + Math.pow(j, 2)) / (2 * j)) - ((i / j) * x);
+		double z = Math.sqrt(Math.pow(aDistance, 2) - Math.pow(x, 2) - Math.pow(y, 2));
 
-        Vector3D ey = new Vector3D(aPosition,cPosition).minus(ex.times(i)).times(1/(new Vector3D(aPosition,cPosition).minus(ex.times(i)).norm()));
+		"""
+		 if (Double.isNaN(z) || Double.isInfinite(z))
+		{
+			result.result1 = new Point3D();
+			result.result2 = new Point3D();
+			result.TruePosition = false;
+			return result;
+		}
 
-        Vector3D ez = Vector3D.crossProduct(ex, ey);
-
-        double d = new Vector3D(aPosition,bPosition).norm();
-
-        double j = Vector3D.dotProduct(ey, new Vector3D(aPosition,cPosition));
-
-        """
-        double x = (Math.pow(aDistance, 2) - Math.pow(bDistance, 2) + Math.pow(d, 2)) / (2 * d);
-        double y = ((Math.pow(aDistance, 2) - Math.pow(cDistance, 2) + Math.pow(i, 2) + Math.pow(j, 2)) / (2 * j)) - ((i / j) * x);
-        double z = Math.sqrt(Math.pow(aDistance, 2) - Math.pow(x, 2) - Math.pow(y, 2));
-        """
-
-        """
-         if (Double.isNaN(z) || Double.isInfinite(z))
-        {
-            result.result1 = new Point3D();
-            result.result2 = new Point3D();
-            result.TruePosition = false;
-            return result;
-        }
-
-        result.result1 = aPosition.plus(ex.times(x)).plus(ey.times(y)).plus(ez.times(z));
-        result.result2 = aPosition.plus(ex.times(x)).plus(ey.times(y)).plus(ez.times(-z));
-        //result.result1 = aPosition.plus(ex.times(x).plus(ey.times(y)).plus(ez.times(z)));
-        //result.result2 = aPosition.plus(ex.times(x).plus(ey.times(y)).plus(ez.times(-z)));
-        result.TruePosition = true;
-        """
+		result.result1 = aPosition.plus(ex.times(x)).plus(ey.times(y)).plus(ez.times(z));
+		result.result2 = aPosition.plus(ex.times(x)).plus(ey.times(y)).plus(ez.times(-z));
+		//result.result1 = aPosition.plus(ex.times(x).plus(ey.times(y)).plus(ez.times(z)));
+		//result.result2 = aPosition.plus(ex.times(x).plus(ey.times(y)).plus(ez.times(-z)));
+		result.TruePosition = true;
+		"""
 
 
 class TrilaterateManyLinearEquations:
