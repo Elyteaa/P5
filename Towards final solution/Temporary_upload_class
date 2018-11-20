@@ -187,7 +187,6 @@ class TrilaterateLinearEquations:
 class TrilaterateManyLinearEquations:
 
 	def __init__(self, SatPosUse, measurementsUse, measForwSize):
-		self.result = []
 		self.result1 = 0
 		self.result2 = 0
 		self.TruePosition = False
