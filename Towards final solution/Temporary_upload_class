@@ -167,9 +167,9 @@ class TrilaterateLinearEquations:
 		self.themath(aPosition, aDistance, bPosition, bDistance, cPosition, cDistance)
 
 	def themath(self, aPosition, aDistance, bPosition, bDistance, cPosition, cDistance):
-		Vector3D ex = new Vector3D(aPosition,bPosition).times(1/(new Vector3D(aPosition,bPosition).norm()));
+		ex = np.array([[aPosition], [bPosition]]) * (1 / np.linalg.norm(np.array([[aPosition], [bPosition]])))
 
-        double i = Vector3D.dotProduct(ex,new Vector3D(aPosition,cPosition));
+        i =  Vector3D.dotProduct(ex,new Vector3D(aPosition,cPosition));
 
         Vector3D ey = new Vector3D(aPosition,cPosition).minus(ex.times(i)).times(1/(new Vector3D(aPosition,cPosition).minus(ex.times(i)).norm()));
 
