@@ -174,12 +174,11 @@ class TrilaterateLinearEquations:
 		d = np.linalg.norm(aPosition, bPosition)
 		j = np.dot(ey, np.array([aPosition, cPosition]))
 
-		double x = (Math.pow(aDistance, 2) - Math.pow(bDistance, 2) + Math.pow(d, 2)) / (2 * d);
-		double y = ((Math.pow(aDistance, 2) - Math.pow(cDistance, 2) + Math.pow(i, 2) + Math.pow(j, 2)) / (2 * j)) - ((i / j) * x);
-		double z = Math.sqrt(Math.pow(aDistance, 2) - Math.pow(x, 2) - Math.pow(y, 2));
+		x = aDistance**2 - bDistance**2 + d**2 / (2 * d)
+		y = ((aDistance**2 - cDistance**2 + i**2 + j**2) / (2 * j)) - ((i / j) * x)
+		z = math.sqrt(aDistance**2 - x**2 - y**2)
 
-		"""
-		 if (Double.isNaN(z) || Double.isInfinite(z))
+		if (Double.isNaN(z) || Double.isInfinite(z))
 		{
 			result.result1 = new Point3D();
 			result.result2 = new Point3D();
@@ -192,8 +191,6 @@ class TrilaterateLinearEquations:
 		//result.result1 = aPosition.plus(ex.times(x).plus(ey.times(y)).plus(ez.times(z)));
 		//result.result2 = aPosition.plus(ex.times(x).plus(ey.times(y)).plus(ez.times(-z)));
 		result.TruePosition = true;
-		"""
-
 
 class TrilaterateManyLinearEquations:
 
