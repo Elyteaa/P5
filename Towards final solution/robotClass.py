@@ -26,8 +26,17 @@ class PlanThePath:
 		self.u0 = np.array([0, 0])
 
 	def plan(self):
+		atThePoint = False
 		self.u0 = self.W2 - self.W1
 		norm = np.linalg.norm(self.u0)
 		self.u0 = np.divide(self.u0, norm)
+		x = np.array([2, 2])
+		u = np.array([1, 0])
+		omf = 0.1
+		dt = 0.1
+		R = np.array([[0, -1], [1, 0]])
 
-		
+		while not atThePoint:
+			#If not near the final position
+			print(atThePoint)
+			atThePoint = True
