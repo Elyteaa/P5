@@ -6,12 +6,12 @@ from numpy import array
 from numpy.linalg import norm
 import copy
 
-class point3D:
+"""class point3D:
 
 	def __init__(self, x, y, z):
 		self.x = x
 		self.y = y
-		self.z = z
+		self.z = z """
 
 class SatellitePositions:
 
