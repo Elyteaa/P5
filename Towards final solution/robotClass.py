@@ -58,8 +58,8 @@ class PlanThePath:
 			ru = np.array([R[0][0] * u[0] + R[0][1] * u[1], R[1][0] * u[0] + R[1][1] * u[1]])
 			ru = ru * omd
 			#print('ru', ru, 'u', u)
-			print(u + ru)
-			#print(ru)
+			u = u + ru
+			#print(u)
 			#u = u + dt * ru * u * omd
 			#print(R * u)
 			#print(R[0][0], R[0][1], R[1][0], R[1][1])
