@@ -5,10 +5,10 @@ x2 = -500;
 x3 = 500;
 x4 = -500;
 
-distance1 = 800;
-distance2 = 300;
-distance3 = 100;
-distance4 = 1000;
+distance1 = 1855.992;
+distance2 = 1342.744;
+distance3 = 1777.216;
+distance4 = 1474.152;
 
 d12 = abs(x1) + abs(x2);
 d34 = abs(x3) + abs(x4);
@@ -20,3 +20,4 @@ xx = d12 * (2 * a12 - 1);
 xy = d34 * (2 * a34 - 1);
 
 xcm = xx/10;
+ycm = xy/10;
