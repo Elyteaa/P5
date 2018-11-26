@@ -149,16 +149,16 @@ if z1serial.is_open:
                         if len(measurementHistory):
                             for n in range(len(measurementHistory)):
                                 #Don't include older values if some have been registered
-                                if measurementHistory[len(measurementHistory[n]-1)].transmitterID == Satid1:
+                                if measurementHistory[len(measurementHistory-1)].transmitterID == Satid1:
                                     ID1 = measurementHistory[n]
                                     d12 = d12 + abs(S1X)
-                                if measurementHistory[len(measurementHistory[n]-1)].transmitterID == Satid2:
+                                if measurementHistory[len(measurementHistory-1)].transmitterID == Satid2:
                                     ID2 = measurementHistory[n]
                                     d12 = d12 + abs(S2X)
-                                if measurementHistory[len(measurementHistory[n]-1)].transmitterID == Satid3:
+                                if measurementHistory[len(measurementHistory-1)].transmitterID == Satid3:
                                     ID3 = measurementHistory[n]
                                     d34 = d34 + abd(S3Y)
-                                if measurementHistory[len(measurementHistory[n]-1)].transmitterID == Satid4:
+                                if measurementHistory[len(measurementHistory-1)].transmitterID == Satid4:
                                     ID4 = measurementHistory[n]
                                     d34 = d34 + abs(S4Y)
                                 if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
