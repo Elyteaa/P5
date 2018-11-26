@@ -137,14 +137,26 @@ if z1serial.is_open:
                         #print(incomingMeasurement.ultrasoundLevel)
 
                         measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
-
                         measurementHistory.append(measurement)
 
-                        if len(measurementHistory):
-                            for x in range(len(measurementHistory)):
-                                print(measurementHistory[x].transmitterID, measurementHistory[x].distance)
-                            print(' ')
+                        ID1 = False
+                        ID2 = False
+                        ID3 = False
+                        ID4 = False
 
+                        if len(measure
+                            mentHistory):
+                            for x in range(len(measurementHistory)):
+                                if measurementHistory[n].transmitterID == Satid1:
+                                    ID1 = True
+                                if measurementHistory[n]:transmitterID == Satid2:
+                                    ID2 = True
+                                if measurementHistory[n].transmitterID == Satid3:
+                                    ID3 = True
+                                if measurementHistory[n].transmitterID == Satid4:
+                                    ID4 = True
+                                if ID4 and ID3 and ID2 and ID1:
+                                    break
                         newMeasGood = True
 
                     else:
@@ -154,7 +166,7 @@ if z1serial.is_open:
 
             #print(measurementHistory[-1])
 
-            if len(measurementHistory) > 20 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))):
+            if len(measurementHistory) > 4 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))):
                 #print('measurement history: ', len(measurementHistory))
                 measurementTimer = int(round(time.time()*1000))
                 measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
