@@ -74,6 +74,7 @@ class Astar_Solver:
 						self.path = child.path 
 						break # this breaks inner for loop and program goes back into while loop
 					self.PriorityQueue.put((child.dist, count, child))
+		print(len(self.path))
 		if not self.path:
 			pass
 			#print ("Goal of " + self.goal "is not possible")
@@ -82,7 +83,6 @@ class Astar_Solver:
 ### main 
 start1 = "qwerty"
 goal1 = "wtreqy"
-#print 'kurwa'
 a = Astar_Solver (start1, goal1) #initialize the solver
 a.Solve() #call solve function
 for i in range(len(a.path)): #get the result
