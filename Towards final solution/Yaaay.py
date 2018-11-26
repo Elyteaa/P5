@@ -139,24 +139,23 @@ if z1serial.is_open:
                         measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
                         measurementHistory.append(measurement)
 
-                        ID1 = False
-                        ID2 = False
-                        ID3 = False
-                        ID4 = False
+                        ID1 = 0
+                        ID2 = 0
+                        ID3 = 0
+                        ID4 = 0
 
-                        if len(measure
-                            mentHistory):
-                            for x in range(len(measurementHistory)):
+                        if len(measurementHistory):
+                            for n in range(len(measurementHistory)):
                                 if measurementHistory[n].transmitterID == Satid1:
-                                    ID1 = True
-                                if measurementHistory[n]:transmitterID == Satid2:
-                                    ID2 = True
+                                    ID1 = measurementHistory[n]
+                                if measurementHistory[n].transmitterID == Satid2:
+                                    ID2 = measurementHistory[n]
                                 if measurementHistory[n].transmitterID == Satid3:
-                                    ID3 = True
+                                    ID3 = measurementHistory[n]
                                 if measurementHistory[n].transmitterID == Satid4:
-                                    ID4 = True
-                                if ID4 and ID3 and ID2 and ID1:
-                                    break
+                                    ID4 = measurementHistory[n]
+                                if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
+                                    
                         newMeasGood = True
 
                     else:
