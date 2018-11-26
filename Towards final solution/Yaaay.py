@@ -41,12 +41,12 @@ switchCase = {
 #Callibration
 numSats = 4
 SatPosList = []
-Satid1 = 42928
-Satid2 = 42929
-Satid3 = 42497
-Satid4 = 42498
-S1X = 0
-S1Y = 500
+Satid2 = 42928
+Satid4 = 42929
+Satid1 = 42497
+Satid3 = 42498
+S1X = -500
+S1Y = 0
 S1Z = 0
 S2X = 500
 S2Y = 0
@@ -54,8 +54,8 @@ S2Z = 0
 S3X = 0
 S3Y = -500
 S3Z = 0
-S4X = -500
-S4Y = 0
+S4X = 0
+S4Y = 500
 S4Z = 0
 
 """temp = SatellitePositions([0, 0, 0], Satid1, [S1X, S1Y, S1Z])
@@ -143,20 +143,33 @@ if z1serial.is_open:
                         ID2 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
                         ID3 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
                         ID4 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                        d12 = 0
+                        d34 = 0
 
                         if len(measurementHistory):
                             for n in range(len(measurementHistory)):
-                                if measurementHistory[n].transmitterID == Satid1:
+                                #Don't include older values if some have been registered
+                                if measurementHistory[len(measurementHistory[n]-1)].transmitterID == Satid1:
                                     ID1 = measurementHistory[n]
-                                if measurementHistory[n].transmitterID == Satid2:
+                                    d12 = d12 + abs(S1X)
+                                if measurementHistory[len(measurementHistory[n]-1)].transmitterID == Satid2:
                                     ID2 = measurementHistory[n]
-                                if measurementHistory[n].transmitterID == Satid3:
+                                    d12 = d12 + abs(S2X)
+                                if measurementHistory[len(measurementHistory[n]-1)].transmitterID == Satid3:
                                     ID3 = measurementHistory[n]
-                                if measurementHistory[n].transmitterID == Satid4:
+                                    d34 = d34 + abd(S3Y)
+                                if measurementHistory[len(measurementHistory[n]-1)].transmitterID == Satid4:
                                     ID4 = measurementHistory[n]
+                                    d34 = d34 + abs(S4Y)
                                 if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
-                                    pass
-                                    
+                                    break
+                            a12 = (ID1.distance**2 - ID2.distance**2) / (2 * d12**2) + 0.5
+                            a34 = (ID3.distance**2 - ID4.distance**2) / (2 * d34**2) + 0.5
+
+                            xx = d12 * (2 * a12 - 1)
+                            xy = d34 * (2 * a34 - 1)
+                            
+
                         newMeasGood = True
 
                     else:
