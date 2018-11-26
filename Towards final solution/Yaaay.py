@@ -148,26 +148,25 @@ if z1serial.is_open:
 
                         if len(measurementHistory):
                             for n in range(len(measurementHistory)):
-                                #Don't include older values if some have been registered
-                                if measurementHistory[len(measurementHistory)-1].transmitterID == Satid1:
+                                if ID1.transmitterID == 0 and measurementHistory[len(measurementHistory)-1].transmitterID == Satid1:
                                     ID1 = measurementHistory[n]
                                     d12 = d12 + abs(S1X)
-                                if measurementHistory[len(measurementHistory)-1].transmitterID == Satid2:
+                                if ID2.transmitterID == 0 and measurementHistory[len(measurementHistory)-1].transmitterID == Satid2:
                                     ID2 = measurementHistory[n]
                                     d12 = d12 + abs(S2X)
-                                if measurementHistory[len(measurementHistory)-1].transmitterID == Satid3:
+                                if ID3.transmitterID == 0 and measurementHistory[len(measurementHistory)-1].transmitterID == Satid3:
                                     ID3 = measurementHistory[n]
-                                    d34 = d34 + abd(S3Y)
-                                if measurementHistory[len(measurementHistory)-1].transmitterID == Satid4:
+                                    d34 = d34 + abs(S3Y)
+                                if ID4.transmitterID == 0 and measurementHistory[len(measurementHistory)-1].transmitterID == Satid4:
                                     ID4 = measurementHistory[n]
                                     d34 = d34 + abs(S4Y)
                                 if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
+                                    a12 = (ID1.distance**2 - ID2.distance**2) / (2 * d12**2) + 0.5
+                                    a34 = (ID3.distance**2 - ID4.distance**2) / (2 * d34**2) + 0.5
+                                    xx = d12 * (2 * a12 - 1)
+                                    xy = d34 * (2 * a34 - 1)
                                     break
-                            a12 = (ID1.distance**2 - ID2.distance**2) / (2 * d12**2) + 0.5
-                            a34 = (ID3.distance**2 - ID4.distance**2) / (2 * d34**2) + 0.5
-
-                            xx = d12 * (2 * a12 - 1)
-                            xy = d34 * (2 * a34 - 1)
+                            
                             
 
                         newMeasGood = True
@@ -179,7 +178,7 @@ if z1serial.is_open:
 
             #print(measurementHistory[-1])
 
-            if len(measurementHistory) > 4 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))):
+           """ if len(measurementHistory) > 4 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))):
                 #print('measurement history: ', len(measurementHistory))
                 measurementTimer = int(round(time.time()*1000))
                 measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
@@ -216,7 +215,7 @@ if z1serial.is_open:
                             measurementsUse.usePosCalc = False
                         else:
                             lastTimePos = int(round(time.time()*1000))
-                            print('x =', finalResult[0], 'y =', finalResult[1], 'z =', finalResult[2])
+                            print('x =', finalResult[0], 'y =', finalResult[1], 'z =', finalResult[2])"""
 
 
 else:
