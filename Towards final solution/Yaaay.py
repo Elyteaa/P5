@@ -139,10 +139,10 @@ if z1serial.is_open:
                         measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
                         measurementHistory.append(measurement)
 
-                        ID1 = 0
-                        ID2 = 0
-                        ID3 = 0
-                        ID4 = 0
+                        ID1 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                        ID2 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                        ID3 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                        ID4 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
 
                         if len(measurementHistory):
                             for n in range(len(measurementHistory)):
@@ -155,6 +155,7 @@ if z1serial.is_open:
                                 if measurementHistory[n].transmitterID == Satid4:
                                     ID4 = measurementHistory[n]
                                 if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
+                                    pass
                                     
                         newMeasGood = True
 
