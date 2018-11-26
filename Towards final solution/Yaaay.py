@@ -140,6 +140,11 @@ if z1serial.is_open:
 
                         measurementHistory.append(measurement)
 
+                        if len(measurementHistory):
+                            for x in range(len(measurementHistory)):
+                                print(measurementHistory[x].transmitterID, measurementHistory[x].distance)
+                            print(' ')
+
                         newMeasGood = True
 
                     else:
