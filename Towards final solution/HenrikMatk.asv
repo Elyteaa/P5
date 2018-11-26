@@ -5,9 +5,9 @@ x2 = -500;
 x3 = 500;
 x4 = -500;
 
-distance1 = 1726.648;
-distance2 = 1929.952;
-distance3 = 1922.728;
+distance1 = 1708.76;
+distance2 = 1754;
+distance3 = 19;
 distance4 = 1738.344;
 
 d12 = abs(x1) + abs(x2);
