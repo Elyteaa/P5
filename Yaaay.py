@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import serial
 import time
-from positionsClass import *
+from classModule import *
 import math
 
 def StateIdLe():
@@ -9,6 +9,7 @@ def StateIdLe():
     if byteRead == startbyte:
         messageState = "StateData"
         receiveCounter = 0
+    #print('StateIdLe reached', receiveCounter)
 
 def StateData():
     global messageState, newMeasReady, singleRead, receivedMessage, receiveCounter
@@ -22,12 +23,14 @@ def StateData():
     else:
         receivedMessage[receiveCounter] = byteRead
         receiveCounter += 1
+    #print('StateData reached', receiveCounter)
 
 def StateDataDLE():
     global receivedMessage, receiveCounter, messageState
-    receivedMessage[receiveCounter] = byteRead - 0x20
+    receivedMessage[receiveCounter] = byteRead - 0x20 #types?
     receiveCounter += 1
     messageState = "StateData"
+    #print('StateDataDLE reached', receiveCounter)
 
 switchCase = {
 "StateIdLe": StateIdLe,
@@ -55,9 +58,25 @@ S4X = 0
 S4Y = 500
 S4Z = 0
 
+"""temp = SatellitePositions([0, 0, 0], Satid1, [S1X, S1Y, S1Z])
+SatPosList.append(temp)
+SatPosList.append([0, 0, 0], Satid2, [S2X, S2Y, S2Z])
+SatPosList.append([0, 0, 0], Satid3, [S3X, S3Y, S3Z])
+SatPosList.append([0, 0, 0], Satid4, [S4X, S4Y, S4Z])"""
+
+temp = SatellitePositions([0, 0, 0], Satid1, [S1X, S1Y, S1Z])
+SatPosList.append(temp)
+temp = SatellitePositions([0, 0, 0], Satid2, [S2X, S2Y, S2Z])
+SatPosList.append(temp)
+temp = SatellitePositions([0, 0, 0], Satid3, [S3X, S3Y, S3Z])
+SatPosList.append(temp)
+temp = SatellitePositions([0, 0, 0], Satid4, [S4X, S4Y, S4Z])
+SatPosList.append(temp)
+
 z1baudrate = 115200
 z1port = '/dev/ttyUSB0'  # set the correct port before running it
-measurementHistory = []
+measurementHistory = [] #.append()
+#positionHistory = []
 receiveCounter = 0
 receivedMessage = [0]*255
 inputBuffer = [0]*255
@@ -66,14 +85,20 @@ DLEChar = 0x10
 endbyte = 0x03
 messageState = "StateIdLe"
 newMeasReady = False
+measurementTimer = int(round(time.time()*1000))
+lastPos = [0, 0, 300]
+lastTimePos = 0
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
+# print z1serial  # debug serial.
+#print(z1serial.is_open)  # True for opened
 if z1serial.is_open:
     while True:
         size = z1serial.inWaiting()
         if size > 255:
             z1serial.reset_input_buffer()
+            #print('no data')
         else:
             if len(measurementHistory) > 1000:
                 measurementHistory.clear()
@@ -83,8 +108,10 @@ if z1serial.is_open:
                 switchCase[messageState]()
             if newMeasReady:
                 newMeasReady = False
+                #inputBuffer = [0]*receiveCounter
                 for i in range(0, receiveCounter):
                     inputBuffer[i] = receivedMessage[i]
+                    #print(i, ' ', inputBuffer[i])
                 sum1 = 0
                 sum2 = 0
                 checksumcalculated = 0
@@ -102,9 +129,12 @@ if z1serial.is_open:
                     checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
                     if checksum == checksumcalculated and incomingMeasurement.CPRID > 0:
                         incomingMeasurement.ultrasoundLevel = inputBuffer[5] & 0xff
+                        #The following would be performed in for loop if more masters are present
                         incomingMeasurement.RSSI = inputBuffer[7] & 0xff
                         incomingMeasurement.timeDifference = ((inputBuffer[12] & 0xff) << 8) | (inputBuffer[11] & 0xff)
                         incomingMeasurement.transmitterID = ((inputBuffer[10]) & 0xff) << 16 | (inputBuffer[9] & 0xff) << 8 | (inputBuffer[8] & 0xff)
+
+                        #print(incomingMeasurement.ultrasoundLevel)
 
                         measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
                         measurementHistory.append(measurement)
@@ -115,9 +145,9 @@ if z1serial.is_open:
                         ID4 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
                         d12 = 0
                         d34 = 0
+
                         stop = False
                         n = 1
-
                         if len(measurementHistory):
                             while not stop and n < len(measurementHistory):
                                 n += 1
@@ -136,12 +166,58 @@ if z1serial.is_open:
                                 if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
                                     a12 = (ID1.distance**2 - ID2.distance**2) / (2 * d12**2) + 0.5
                                     a34 = (ID3.distance**2 - ID4.distance**2) / (2 * d34**2) + 0.5
-                                    xy = d12 * (2 * a12 - 1)
-                                    xx = d34 * (2 * a34 - 1)
+                                    xx = d12 * (2 * a12 - 1)
+                                    xy = d34 * (2 * a34 - 1)
                                     stop = True
                         newMeasGood = True
 
                     else:
                         newMeasGood = False
+
+            #measurementUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
+
+            #print(measurementHistory[-1])
+
+           """ if len(measurementHistory) > 4 and (newMeasGood or (measurementTimer + 250 < int(round(time.time()*1000)) and measurementTimer + 5000 > int(round(time.time()*1000)))):
+                #print('measurement history: ', len(measurementHistory))
+                measurementTimer = int(round(time.time()*1000))
+                measurementsUse = measurementToUseChooser(measurementHistory, numSats, int(round(time.time()*1000)))
+                #print(measurementsUse.usePosCalc)
+                    #print(len(measurementsUse.measurementsUse), '1 ', i, ' ', measurementsUse.measurementsUse[i].transmitterID)
+                if measurementsUse.usePosCalc:
+                    measurementForward = ForwardCalculation(measurementHistory, measurementsUse, int(round(time.time()*1000)))
+                    #print('2 ', measurementForward.measurementForward.measurementsUse[0].transmitterID)
+                    #Maybe we need sorting, maybe we don't
+                    SatPosUse = FindSatellitePos(measurementForward, SatPosList)
+                    measForwSize = len(measurementForward.measurementForward.measurementsUse)
+                    if measForwSize == 3:
+                        distance = [0] * measForwSize
+                        SatPos = []
+                        for n in range(3):
+                            temp = point3D(SatPosUse.SatPosUse[n].position[0], SatPosUse.SatPosUse[n].position[1], SatPosUse.SatPosUse[n].position[2])
+                            SatPos.append(temp)
+                            distance[n] = measurementForward.measurementForward.measurementsUse[n].distance
+                            pass #result = ...
+                    elif measForwSize > 3:
+                        if measForwSize > 5:
+                            measForwSize = 5
+                        SatPos = []
+                        distance = [0] * measForwSize
+                        for n in range(measForwSize):
+                            temp = point3D(SatPosUse.SatPosUse[n].position[0], SatPosUse.SatPosUse[n].position[1], SatPosUse.SatPosUse[n].position[2])
+                            SatPos.append(temp)
+                            distance[n] = measurementForward.measurementForward.measurementsUse[n].distance
+                            #result = ...
+                        result = TrilaterateManyLinearEquations(SatPos, distance, measForwSize)
+                    if result.TruePosition:
+                        finalResult = result.result1
+                        if abs(finalResult[0] - lastPos[0]) > 750 and int(round(time.time()*1000)) < lastTimePos + 500 or abs(finalResult[1] - lastPos[1] and int(round(time.time()*1000)) < lastTimePos + 500):
+                            measurementsUse.usePosCalc = False
+                        else:
+                            lastTimePos = int(round(time.time()*1000))
+                            print('x =', finalResult[0], 'y =', finalResult[1], 'z =', finalResult[2])"""
+
+
 else:
     print('z1serial not open')
+#z1serial.close()  # close z1serial if z1serial is open.
