@@ -144,15 +144,14 @@ class AStarGraph(object):
 class PlanThePath:
 #Add functions to find the next point, calculate needed values
    
-	def __init__(self, W1, W2):
-		self.W1 = W1
-		self.W2 = W2
-		self.u0 = np.array([0, 0])
+	def __init__(self, path):
+		self.waypoints = path		
 
 	def robot_drive(self, x):
 		#Move towards the x point
 
-	def plan(self):
+	def move(self):
+		
 		atThePoint = False
 		self.u0 = self.W2 - self.W1
 		norm = np.linalg.norm(self.u0)

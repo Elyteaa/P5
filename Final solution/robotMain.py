@@ -13,4 +13,8 @@ from robotClass import *
 
 #path = PlanThePath(map1.wayPoint[0], map1.wayPoint[1])
 #print(path.W1, path.W2)
-path.plan()
+
+graph = AStarGraph()
+result, cost = AStarSearch(start, end, graph)
+path = PlanThePath(result)
+path.move()
