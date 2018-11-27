@@ -107,9 +107,6 @@ char BELT_STOP = '"';
 			iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 			if (iResult > 0) {
 				printf("Bytes received: %d\n", iResult);
-
-				//If the recived CarrierID is between 1-8, the belt will continue going
-				//If it's greater than that, the belt will stop for couple of seconds
 				int temp = recvbuf[0];
 				if ((temp >= 1) && (temp <= 8)) {
 					iSendResult = send(ClientSocket, &BELT_CONTINUE, sizeof(BELT_CONTINUE), 0);
@@ -119,24 +116,8 @@ char BELT_STOP = '"';
 					iSendResult = send(ClientSocket, &BELT_STOP, sizeof(BELT_STOP), 0);
 					printf("The bigger 0th byte: %d\n", temp);
 				}
-				//iSendResult = send(ClientSocket, recvbuf, iResult, 0);
-				/*if (iSendResult == SOCKET_ERROR) {
-					printf("send failed with error: %d\n", WSAGetLastError());
-					closesocket(ClientSocket);
-					WSACleanup();
-					return 1;
-				}*/
-				printf("Bytes sent: %d\n", iSendResult);
 			}
-			/*else if (iResult == 0)
-				printf("Connection closing...\n");
-			else {
-				printf("recv failed with error: %d\n", WSAGetLastError());
-				closesocket(ClientSocket);
-				WSACleanup();
-				return 1;
-			}*/
-
+			
 		} while (iResult > 0);
 	}
 
