@@ -15,6 +15,8 @@ from robotClass import *
 #print(path.W1, path.W2)
 
 graph = AStarGraph()
+start = (500, 500)
+end = (600, 600)
 result, cost = AStarSearch(start, end, graph)
 path = PlanThePath(result)
 path.move()

@@ -151,29 +151,27 @@ class PlanThePath:
 		#Move towards the x point
 
 	def move(self):
-		
 		atThePoint = False
-		self.u0 = self.W2 - self.W1
-		norm = np.linalg.norm(self.u0)
-		self.u0 = np.divide(self.u0, norm)
-		x = np.array([2, 2])
-		u = np.array([1, 0])
-		omf = 0.1
-		dt = 0.1
-		Robot = np.array([[0, -1], [1, 0]])
-
-		tempCounter = 0
-		while tempCounter <= 10:
-			#Substitute with 'if not near the final position'
-			tempCounter += 1
-			#print(atThePoint)
-			x = x + dt * u * omf
-			self.robot_drive(x)
-			xf = self.W2 + (omf - np.transpose(self.u0) * (self.W2 - x)) * self.u0
-			v = xf - x
-			v = v / np.linalg.norm(v)
-			omd = (u[0] * v[1] - u[1] * v[0]) * 2
-			R = Robot * dt
-			ru = np.array([R[0][0] * u[0] + R[0][1] * u[1], R[1][0] * u[0] + R[1][1] * u[1]])
-			ru = ru * omd
-			u = u + ru
+		for n in range(0,len(self.waypoints) - 1):
+			self.u0 = self.waypoints[n] - self.waypoints[n+1]
+			norm = np.linalg.norm(self.u0)
+			self.u0 = np.divide(self.u0, norm)
+			x = np.array([500, 500])
+			u = np.array([1, 0])
+			#wanted speed of the robot
+			omf = 0.1
+			#still don't know what this is
+			dt = 0.1
+			#or this
+			Robot = np.array([[0, -1], [1, 0]])
+			while not atThePoint:
+				x = x + dt * u * omf
+				self.robot_drive(x)
+				xf = self.W2 + (omf - np.transpose(self.u0) * (self.W2 - x)) * self.u0
+				v = xf - x
+				v = v / np.linalg.norm(v)
+				omd = (u[0] * v[1] - u[1] * v[0]) * 2
+				R = Robot * dt
+				ru = np.array([R[0][0] * u[0] + R[0][1] * u[1], R[1][0] * u[0] + R[1][1] * u[1]])
+				ru = ru * omd
+				u = u + ru
