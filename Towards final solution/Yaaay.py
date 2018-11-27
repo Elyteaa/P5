@@ -146,18 +146,21 @@ if z1serial.is_open:
                         d12 = 0
                         d34 = 0
 
+                        stop = False
+                        n = 1
                         if len(measurementHistory):
-                            for n in range(len(measurementHistory)):
-                                if ID1.transmitterID == 0 and measurementHistory[len(measurementHistory)-1].transmitterID == Satid1:
+                            while not stop and n <= len(measurementHistory):
+                                n += 1
+                                if ID1.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid1:
                                     ID1 = measurementHistory[n]
                                     d12 = d12 + abs(S1X)
-                                if ID2.transmitterID == 0 and measurementHistory[len(measurementHistory)-1].transmitterID == Satid2:
+                                if ID2.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid2:
                                     ID2 = measurementHistory[n]
                                     d12 = d12 + abs(S2X)
-                                if ID3.transmitterID == 0 and measurementHistory[len(measurementHistory)-1].transmitterID == Satid3:
+                                if ID3.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid3:
                                     ID3 = measurementHistory[n]
                                     d34 = d34 + abs(S3Y)
-                                if ID4.transmitterID == 0 and measurementHistory[len(measurementHistory)-1].transmitterID == Satid4:
+                                if ID4.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid4:
                                     ID4 = measurementHistory[n]
                                     d34 = d34 + abs(S4Y)
                                 if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
@@ -165,10 +168,7 @@ if z1serial.is_open:
                                     a34 = (ID3.distance**2 - ID4.distance**2) / (2 * d34**2) + 0.5
                                     xx = d12 * (2 * a12 - 1)
                                     xy = d34 * (2 * a34 - 1)
-                                    break
-                            
-                            
-
+                                    stop = True
                         newMeasGood = True
 
                     else:
