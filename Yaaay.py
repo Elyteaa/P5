@@ -149,19 +149,19 @@ if z1serial.is_open:
                         stop = False
                         n = 1
                         if len(measurementHistory):
-                            while not stop and n <= len(measurementHistory):
+                            while not stop and n < len(measurementHistory):
                                 n += 1
                                 if ID1.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid1:
-                                    ID1 = measurementHistory[n]
+                                    ID1 = measurementHistory[len(measurementHistory)-n]
                                     d12 = d12 + abs(S1X)
                                 if ID2.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid2:
-                                    ID2 = measurementHistory[n]
+                                    ID2 = measurementHistory[len(measurementHistory)-n]
                                     d12 = d12 + abs(S2X)
                                 if ID3.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid3:
-                                    ID3 = measurementHistory[n]
+                                    ID3 = measurementHistory[len(measurementHistory)-n]
                                     d34 = d34 + abs(S3Y)
                                 if ID4.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid4:
-                                    ID4 = measurementHistory[n]
+                                    ID4 = measurementHistory[len(measurementHistory)-n]
                                     d34 = d34 + abs(S4Y)
                                 if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
                                     a12 = (ID1.distance**2 - ID2.distance**2) / (2 * d12**2) + 0.5
