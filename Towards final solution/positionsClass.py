@@ -1,10 +1,4 @@
 #!/usr/bin/python
-import math
-import numpy.matlib 
-import numpy as np
-from numpy import array
-from numpy.linalg import norm
-import copy
 
 class CPRMeasurement:
 
