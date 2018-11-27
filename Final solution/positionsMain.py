@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import serial
 import time
-from classModule import *
+from positionsClass import *
 import math
 
 def StateIdLe():
