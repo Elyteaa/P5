@@ -13,6 +13,23 @@ def inCircle(center, radius, point):
 		return True
 	return False
 
+def isBetween(a, b, c):
+	crossproduct = (c[1] - a[1]) * (b[0] - a[0]) - (c[0] - a[0]) * (b[1] - a[1])
+
+	# compare versus epsilon for floating point values, or != 0 if using integers
+	if abs(crossproduct) > sys.float_info.epsilon:
+		return False
+
+	dotproduct = (c[0] - a[0]) * (b[0] - a[0]) + (c[1] - a[1])*(b[1] - a[1])
+	if dotproduct < 0:
+		return False
+
+	squaredlengthba = (b[0] - a[0])*(b[0] - a[0]) + (b[1] - a[1])*(b[1] - a[1])
+	if dotproduct > squaredlengthba:
+		return False
+
+	return True
+
 def AStarSearch(start, end, graph):
  
 	G = {} #Actual movement cost to each position from the start position
@@ -96,29 +113,6 @@ class AStarGraph(object):
 			n.append((x2, y2))
 		return n
 
-	def isBetween(self, a, b, c):
-		crossproduct = (c[1] - a[1]) * (b[0] - a[0]) - (c[0] - a[0]) * (b[1] - a[1])
-
-		"""#If it's equal to either of the dots, return True as well
-		print('a', a, 'b', b, 'c', c)
-		if a == c or b == c:
-			print('recognized')
-			return True"""
-
-		# compare versus epsilon for floating point values, or != 0 if using integers
-		if abs(crossproduct) > sys.float_info.epsilon:
-			return False
-
-		dotproduct = (c[0] - a[0]) * (b[0] - a[0]) + (c[1] - a[1])*(b[1] - a[1])
-		if dotproduct < 0:
-			return False
-
-		squaredlengthba = (b[0] - a[0])*(b[0] - a[0]) + (b[1] - a[1])*(b[1] - a[1])
-		if dotproduct > squaredlengthba:
-			return False
-
-		return True
-
 	def isTheDot(self, barrier, x):
 		for i in range(0,5):
 			if barrier[i] == x:
@@ -127,7 +121,7 @@ class AStarGraph(object):
 
 	def move_cost(self, a, b):
 		for barrier in self.barriers:
-			if self.isTheDot(barrier, b) or xor(self.isBetween(barrier[0], barrier[1], b), self.isBetween(barrier[1], barrier[2], b), self.isBetween(barrier[2], barrier[3], b), self.isBetween(barrier[3], barrier[4], b)):
+			if self.isTheDot(barrier, b) or xor(isBetween(barrier[0], barrier[1], b), isBetween(barrier[1], barrier[2], b), isBetween(barrier[2], barrier[3], b), isBetween(barrier[3], barrier[4], b)):
 				return 100 #Extremely high cost to enter barrier squares
 		return 1 #Normal movement cost
 

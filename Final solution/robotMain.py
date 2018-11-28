@@ -14,9 +14,19 @@ from robotClass import *
 #path = PlanThePath(map1.wayPoint[0], map1.wayPoint[1])
 #print(path.W1, path.W2)
 
+def optimizeWaypoints(waypoints):
+	if len(waypoints) > 2:
+		for x in range(0,len(waypoints)-2):
+			if isBetween(waypoints[x], waypoints[x+2], waypoints[x+1]):
+				#print(waypoints[x], waypoints[x+2], waypoints[x+1])
+				del waypoints[x+1]
+				#print(waypoints)
+				return optimizeWaypoints(waypoints)
+
 graph = AStarGraph()
 start = (600, 600)
 end = (700, 700)
 result, cost = AStarSearch(start, end, graph)
+result = optimizeWaypoints(result)
 path = PlanThePath(result)
 path.move()
