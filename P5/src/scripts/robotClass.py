@@ -91,7 +91,7 @@ class AStarGraph(object):
 	def __init__(self):
 		self.barriers = []
 		#The Steffen's tower base
-		self.barriers.append([(402, -627),(-554,-582),(-435,700),(638,419)])
+		self.barriers.append([(402, -627),(-554,-582),(-435,700),(638,419),(402,-627)])
  
 	def heuristic(self, start, goal):
 		#Use Chebyshev distance heuristic if we can move one square either
