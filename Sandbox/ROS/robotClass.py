@@ -4,7 +4,6 @@ import math
 import numpy as np
 
 #For Points we use np.array
-
 class WayPoints:
 
 	def __init__(self):

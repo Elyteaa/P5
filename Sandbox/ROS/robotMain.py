@@ -1,12 +1,24 @@
 #!/usr/bin/python
 import rospy
-from std_msgs.msg import Float32MultiArray
 import math
 import numpy as np
 import time #may be not needed
 from robotClass import *
+from std_msgs.msg import Float32MultiArray
 
-positions = []
+#positions = []
+class Subscriber(object):
+
+    def __init__(self):
+        self.position = []
+        rospy.Subscriber("position", Float32MultiArray, callback)
+
+    def callback(data):
+        rospy.loginfo("I receive %s", data.data)
+        self.position = data.data
+
+    #def start(self):
+    #   self
 
 def callback(data):
     rospy.loginfo("I receive %s", data.data)
@@ -27,20 +39,23 @@ def listener():
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
     
-rospy.init_node('listener', anonymous=True)
-while True:
-    #listener()
-    rospy.Subscriber("position", Float32MultiArray, callback)
-    rospy.spin()
-    print("position", positions)
-    map1 = WayPoints() #the object that stores all way points of a map
+if __name__ == '__main__':
+    while True:
+        print('yes')
+        rospy.init_node('listener', anonymous=True)
+        my_node = Subscriber()
+        #listener()
+        rospy.Subscriber("position", Float32MultiArray, callback)
+        rospy.spin()
+        print("position", positions)
+        map1 = WayPoints() #the object that stores all way points of a map
 
-    map1.addWayPoint(1, 0)
-    map1.addWayPoint(0, 1)
+        map1.addWayPoint(1, 0)
+        map1.addWayPoint(0, 1)
 
-    #print(map1.wayPoint[0])
+        #print(map1.wayPoint[0])
 
-    path = PlanThePath(map1.wayPoint[0], map1.wayPoint[1])
-    #print(path.W1, path.W2)
-    path.plan()
-    rospy.spin()
+        path = PlanThePath(map1.wayPoint[0], map1.wayPoint[1])
+        #print(path.W1, path.W2)
+        path.plan()
+        rospy.spin()
