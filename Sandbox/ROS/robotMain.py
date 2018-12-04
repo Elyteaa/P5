@@ -25,10 +25,13 @@ def listener():
     rospy.Subscriber("position", Float32MultiArray, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
-    #rospy.spin()
+    rospy.spin()
     
+rospy.init_node('listener', anonymous=True)
 while True:
-    listener()
+    #listener()
+    rospy.Subscriber("position", Float32MultiArray, callback)
+    rospy.spin()
     print("position", positions)
     map1 = WayPoints() #the object that stores all way points of a map
 
