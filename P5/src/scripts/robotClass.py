@@ -108,7 +108,7 @@ class AStarGraph(object):
 		for dx, dy in [(1,0),(-1,0),(0,1),(0,-1),(1,1),(-1,1),(1,-1),(-1,-1)]:
 			x2 = pos[0] + dx
 			y2 = pos[1] + dy
-			if x2 < 0 or x2 > 7 or y2 < 0 or y2 > 7:
+			if x2 < -200 or x2 > 200 or y2 < -200 or y2 > 200:
 				continue
 			n.append((x2, y2))
 		return n

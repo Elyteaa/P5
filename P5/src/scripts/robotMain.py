@@ -18,12 +18,14 @@ def optimizeWaypoints(waypoints):
 
 def callback(data):
 	graph = AStarGraph()
-	start = (600, 600)
+	start = data.data
 	end = (700, 700)
-	result, cost = AStarSearch(start, end, graph)
-	result = optimizeWaypoints(result)
-	path = PlanThePath(result)
-	path.move()
+	if abs(data.data[0]) <= 200 and abs(data.data[1]) <= 200:
+		result, cost = AStarSearch(start, end, graph)
+		result = optimizeWaypoints(result)
+		path = PlanThePath(result)
+		path.move()
+	else: print('The robot is out of bounds')
 
 def listener():
 
