@@ -6,17 +6,18 @@ import time #may be not needed
 from robotClass import *
 from std_msgs.msg import Float32MultiArray
 
-#positions = []
+positions = []
 def diagnostics_callback(diagnostics):
-    print diagnostics
+    positions = diagnostics.data
 
-def clock_callback(clock):
+#def clock_callback(clock):
     print clock
 
 if __name__ == '__main__':
     rospy.init_node('listener', anonymous=True)
     diagnostics_sub = rospy.Subscriber('diagnostics', DiagnosticArray, diagnostics_callback)
-    clock_sub = rospy.Subscriber('clock', Clock, clock_callback)
+    #clock_sub = rospy.Subscriber('clock', Clock, clock_callback)
+    print(positions)
     rospy.spin()
 
     #def start(self):
