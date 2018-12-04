@@ -7,15 +7,17 @@ from robotClass import *
 from std_msgs.msg import Float32MultiArray
 
 #positions = []
-class Listener():
+def diagnostics_callback(diagnostics):
+    print diagnostics
 
-    def __init__(self):
-        self.position = []
-        self.sub = rospy.Subscriber("position", Float32MultiArray, self.callback)
+def clock_callback(clock):
+    print clock
 
-    def callback(data):
-        rospy.loginfo("I receive %s", data.data)
-        self.position = data.data
+if __name__ == '__main__':
+    rospy.init_node('listener', anonymous=True)
+    diagnostics_sub = rospy.Subscriber('diagnostics', DiagnosticArray, diagnostics_callback)
+    clock_sub = rospy.Subscriber('clock', Clock, clock_callback)
+    rospy.spin()
 
     #def start(self):
     #   self
@@ -39,7 +41,7 @@ class Listener():
     # spin() simply keeps python from exiting until this node is stopped
     #rospy.spin()
     
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     #while True:
     print('yes')
     rospy.init_node('listener', anonymous=True)
@@ -59,3 +61,4 @@ if __name__ == '__main__':
     #print(path.W1, path.W2)
     path.plan()
     rospy.spin()
+"""
