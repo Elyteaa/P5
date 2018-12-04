@@ -6,7 +6,7 @@ from positionsClass import *
 import math
 from std_msgs.msg import Float32MultiArray
 
-pub = rospy.Publisher('chatter', Float32MultiArray, queue_size=10)
+pub = rospy.Publisher('position', Float32MultiArray, queue_size=10)
 rospy.init_node('talker', anonymous=True)
 rate = rospy.Rate(10) # 10hz
 
