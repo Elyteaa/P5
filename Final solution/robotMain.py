@@ -23,6 +23,8 @@ def callback(data):
     if abs(data.data[0]) <= 200 and abs(data.data[1]) <= 200:
         result, cost = AStarSearch(start, end, graph)
         result = optimizeWaypoints(result)
+        heading = imu.getHeading()
+        print(heading)
         path = PlanThePath(result)
         path.move()
     else: print('The robot is out of bounds')
@@ -42,5 +44,6 @@ def listener():
     rospy.spin()
 
 if __name__ == '__main__':
+    imu = IMU()
     listener()
 
