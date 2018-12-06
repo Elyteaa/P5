@@ -1,7 +1,7 @@
 #!/usr/bin/python
+from __future__ import print_function
 import math
 import numpy as np
-from __future__ import print_function
 import matplotlib.pyplot as plt
 import sys
 
@@ -132,6 +132,7 @@ class PlanThePath:
 		self.waypoints = path		
 
 	def robot_drive(self, x):
+		pass
 		#Move towards the x point
 
 	def move(self):

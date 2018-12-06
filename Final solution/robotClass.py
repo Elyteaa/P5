@@ -1,6 +1,9 @@
 #!/usr/bin/python
 from __future__ import print_function
+from __future__ import division
+from di_sensors.inertial_measurement_unit import InertialMeasurementUnit
 import math
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
@@ -85,6 +88,46 @@ def AStarSearch(start, end, graph):
  
     raise RuntimeError("A* failed to find a solution")
  
+class IMU:
+
+    def __init__(self):
+        self.imu = InertialMeasurementUnit(bus = "GPG3_AD1") #RPI_1 GPG3_AD1
+
+    def getHeading(self):
+        #Read the magnetometer, gyroscope, accelerometer, euler, and temperature values
+        mag   = self.imu.read_magnetometer()
+        gyro  = self.imu.read_gyroscope()
+        accel = self.imu.read_accelerometer()
+        euler = self.imu.read_euler()
+        temp  = self.imu.read_temperature()
+
+        """string_to_print = "Magnetometer X: {:.1f}  Y: {:.1f}  Z: {:.1f} " \
+                          "Gyroscope X: {:.1f}  Y: {:.1f}  Z: {:.1f} " \
+                          "Accelerometer X: {:.1f}  Y: {:.1f} Z: {:.1f} " \
+                          "Euler Heading: {:.1f}  Roll: {:.1f}  Pitch: {:.1f} " \
+                          "Temperature: {:.1f}C".format(mag[0], mag[1], mag[2],
+                                                        gyro[0], gyro[1], gyro[2],
+                                                        accel[0], accel[1], accel[2],
+                                                        euler[0], euler[1], euler[2],
+                                                        temp)"""
+        
+        #angle = math.atan2(accel[1], accel[0])
+        #xyu = math.degrees(angle)
+        #print(string_to_print)
+        #print("angle first = ", xyu)
+        #anglez = (180/math.pi * math.atan2(accel[0], accel[1]) % 360)
+        #print("angle z = ", anglez)
+        angley = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
+        print("angle y = ", angley)
+        #anglex = (180/math.pi * math.atan2(accel[1], accel[2]) % 360)
+        #print("angle x = ", anglex)
+        #angle1 = (180/math.pi * math.atan2(accel[1], accel[0]) % 360)
+        #angle1 = (180/math.pi * math.atan2(accel[1], accel[0]) % 360)
+        #print("angle 2 = ", angle1)
+        return angley
+
+
+
 class AStarGraph(object):
     #Define a class board like grid with two barriers
  
