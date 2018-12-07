@@ -13,8 +13,10 @@ def optimizeWaypoints(waypoints):
             if isBetween(waypoints[x], waypoints[x+2], waypoints[x+1]):
                 #print(waypoints[x], waypoints[x+2], waypoints[x+1])
                 del waypoints[x+1]
-                #print(waypoints)
+                #print('new:', waypoints)
                 return optimizeWaypoints(waypoints)
+            elif x == len(waypoints)-3:
+                return waypoints
 
 def callback(data):
     graph = AStarGraph()
