@@ -117,14 +117,15 @@ class IMU:
         #print("angle first = ", xyu)
         #anglez = (180/math.pi * math.atan2(accel[0], accel[1]) % 360)
         #print("angle z = ", anglez)
-        angley = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
-        print("angle y = ", angley)
+        angle = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
+        #print("angle y = ", angley)
+        orientation = np.array([np.cos(angle),np.sin(angle)])
         #anglex = (180/math.pi * math.atan2(accel[1], accel[2]) % 360)
         #print("angle x = ", anglex)
         #angle1 = (180/math.pi * math.atan2(accel[1], accel[0]) % 360)
         #angle1 = (180/math.pi * math.atan2(accel[1], accel[0]) % 360)
         #print("angle 2 = ", angle1)
-        return angley
+        return orientation
 
 
 
@@ -178,8 +179,11 @@ class PlanThePath:
         #Move towards the x point
         pass
 
-    def move(self):
+    def move(self, imu):
+        Robot = np.array([[0, -1], [1, 0]])
         atThePoint = False
+        dt = 0.1
+        omf = 0.1
         for n in range(0,len(self.waypoints) - 1):
             W1 = np.array([self.waypoints[n][0],self.waypoints[n][1]])
             W2 = np.array([self.waypoints[n+1][0],self.waypoints[n+1][1]])
@@ -187,13 +191,10 @@ class PlanThePath:
             norm = np.linalg.norm(u0)
             u0 = np.divide(u0, norm)
             x = np.array([0,0])
-            u = np.array([1, 0])
+            u = imu.getHeading()
             #wanted speed of the robot
-            omf = 0.1
             #still don't know what this is
-            dt = 0.1
             #or this
-            Robot = np.array([[0, -1], [1, 0]])
             while not atThePoint:
                 x = x + dt * u * omf
                 xf = W2 + (omf - np.transpose(u0) * (W2 - x)) * u0
