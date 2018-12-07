@@ -197,7 +197,7 @@ class PlanThePath:
             while not atThePoint:
                 x = x + dt * u * omf
                 self.robot_drive(x)
-                xf = self.W2 + (omf - np.transpose(u0) * (self.W2 - x)) * self.u0
+                xf = W2 + (omf - np.transpose(u0) * (W2 - x)) * u0
                 v = xf - x
                 v = v / np.linalg.norm(v)
                 omd = (u[0] * v[1] - u[1] * v[0]) * 2
