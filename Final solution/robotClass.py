@@ -134,7 +134,7 @@ class AStarGraph(object):
     def __init__(self):
         self.barriers = []
         #The Steffen's tower base
-        self.barriers.append([(402, -627),(-554,-582),(-435,700),(638,419),(402, -627)])
+        self.barriers.append([(25, -25),(-25,-25),(-25,25),(25,25),(25, -25)])
  
     def heuristic(self, start, goal):
         #Use Chebyshev distance heuristic if we can move one square either
@@ -174,7 +174,7 @@ class PlanThePath:
     def __init__(self, path):
         self.waypoints = path       
 
-    def robot_drive(self, x):
+    def robot_drive(self, heading):
         #Move towards the x point
         pass
 
@@ -196,7 +196,6 @@ class PlanThePath:
             Robot = np.array([[0, -1], [1, 0]])
             while not atThePoint:
                 x = x + dt * u * omf
-                self.robot_drive(x)
                 xf = W2 + (omf - np.transpose(u0) * (W2 - x)) * u0
                 v = xf - x
                 v = v / np.linalg.norm(v)
@@ -205,6 +204,8 @@ class PlanThePath:
                 ru = np.array([R[0][0] * u[0] + R[0][1] * u[1], R[1][0] * u[0] + R[1][1] * u[1]])
                 ru = ru * omd
                 u = u + ru
+                u = u / np.norm(u)
+                self.robot_drive(u)
                 #If the robot's position is within 10 centimeters from the goal, we move on
                 if inCircle(self.waypoints[n+1], 100, x):
                     atThePoint = True
