@@ -28,7 +28,7 @@ def callback(data):
         heading = imu.getHeading()
         print(heading)
         path = PlanThePath(result)
-        path.move(start)
+        path.move()
     else: print('The robot is out of bounds')
 
 def listener():

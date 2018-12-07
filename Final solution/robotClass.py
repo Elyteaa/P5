@@ -178,7 +178,7 @@ class PlanThePath:
         #Move towards the x point
         pass
 
-    def move(self, position):
+    def move(self):
         atThePoint = False
         for n in range(0,len(self.waypoints) - 1):
             W1 = np.array([self.waypoints[n][0],self.waypoints[n][1]])
@@ -186,7 +186,7 @@ class PlanThePath:
             u0 = np.array([W2 - W1])
             norm = np.linalg.norm(u0)
             u0 = np.divide(u0, norm)
-            x = np.array([position[0], position[1]])
+            x = np.array([0,0])
             u = np.array([1, 0])
             #wanted speed of the robot
             omf = 0.1
