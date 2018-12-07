@@ -181,9 +181,9 @@ class PlanThePath:
     def move(self):
         atThePoint = False
         for n in range(0,len(self.waypoints) - 1):
-            self.u0 = self.waypoints[n] - self.waypoints[n+1]
-            norm = np.linalg.norm(self.u0)
-            self.u0 = np.divide(self.u0, norm)
+            u0 = np.array([self.waypoints[n+1][0] - self.waypoints[n][0],self.waypoints[n+1][1] - self.waypoints[n][1]])
+            norm = np.linalg.norm(u0)
+            u0 = np.divide(u0, norm)
             x = np.array([600,600])
             u = np.array([1, 0])
             #wanted speed of the robot
@@ -195,7 +195,7 @@ class PlanThePath:
             while not atThePoint:
                 x = x + dt * u * omf
                 self.robot_drive(x)
-                xf = self.W2 + (omf - np.transpose(self.u0) * (self.W2 - x)) * self.u0
+                xf = self.W2 + (omf - np.transpose(u0) * (self.W2 - x)) * self.u0
                 v = xf - x
                 v = v / np.linalg.norm(v)
                 omd = (u[0] * v[1] - u[1] * v[0]) * 2
