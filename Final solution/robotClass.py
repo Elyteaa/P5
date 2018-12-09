@@ -94,13 +94,25 @@ class IMU:
         self.imu = InertialMeasurementUnit(bus = "GPG3_AD1") #RPI_1 GPG3_AD1
 
     def getHeading(self):
-        #Read the magnetometer, gyroscope, accelerometer
+        #Read the magnetometer, gyroscope, accelerometer in rad
         mag   = self.imu.read_magnetometer()
         gyro  = self.imu.read_gyroscope()
         accel = self.imu.read_accelerometer()
 
+
+        pitch = np.arcsin(-accel[1] / np.linalg.norm(accel))
+        roll = np.arcsin(accel[0] / n.linalg.norm(accel))
+
+        y = -mag[0] * np.cos(roll) + mag[2] * np.sin(roll)
+        x = mag[0] * np.sin(pitch) * np.sin(roll) + mag[1] * cos(pitch) + mag[2] * np.sin(pitch) * np.cos(roll)
+
+        azimuth = np.arctan2(y, x)
+
+        orientation = np.array([azimuth, pitch])
+
+
         angle = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
-        orientation = np.array([np.cos(np.deg2rad(angle)), np.sin(np.deg2rad(angle))])
+        #orientation = np.array([np.cos(np.deg2rad(angle)), np.sin(np.deg2rad(angle))])
         print('angle = ', angle)
         print('orientation = ', orientation)
         return orientation
@@ -186,3 +198,4 @@ class PlanThePath:
                 #If the robot's position is within 10 centimeters from the goal, we move on
                 if inCircle(self.waypoints[n+1], 100, x):
                     atThePoint = True
+
