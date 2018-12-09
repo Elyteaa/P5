@@ -111,7 +111,7 @@ class IMU:
         orientation = np.array([azimuth, pitch])"""
 
         angle = (math.atan2(mag[0], mag[2]))
-        orientation = np.array([np.cos(np.deg2rad(angle)), np.sin(np.deg2rad(angle))])
+        orientation = np.array([np.cos(angle), np.sin(angle)])
         print('angle = ', angle)
         print('orientation = ', orientation)
         return orientation
