@@ -14,7 +14,6 @@ def StateIdLe():
     global messageState, receiveCounter
     if byteRead == startbyte:
         messageState = "StateData"
-        print('hello')
         receiveCounter = 0
 
 def StateData():
@@ -140,34 +139,40 @@ while not rospy.is_shutdown():
                             n = 1
                             
                             if len(measurementHistory):
+                                
                                 while not stop and n < len(measurementHistory):
                                     n += 1
                                     if ID1.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid1:
                                         ID1 = measurementHistory[len(measurementHistory)-n]
                                         d12 = d12 + abs(S1X)
-                                        print(ID1.distance)
+                                        print("Distance 1 = ", ID1.distance)
                                     if ID2.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid2:
                                         ID2 = measurementHistory[len(measurementHistory)-n]
                                         d12 = d12 + abs(S2X)
+                                        print("Distance 1 = ",ID2.distance)
                                     if ID3.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid3:
                                         ID3 = measurementHistory[len(measurementHistory)-n]
                                         d34 = d34 + abs(S3Y)
+                                        print("Distance 1 = ",ID3.distance)
                                     if ID4.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid4:
                                         ID4 = measurementHistory[len(measurementHistory)-n]
                                         d34 = d34 + abs(S4Y)
+                                        print("Distance 1 = ",ID4.distance)
                                     if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
+                                        print('d12', d12, 'd34', d34)
                                         a12 = (ID1.distance**2 - ID2.distance**2) / (2 * d12**2) + 0.5
                                         a34 = (ID3.distance**2 - ID4.distance**2) / (2 * d34**2) + 0.5
+                                        print("a12 = ", a12, "a34 = ", a34)
                                         xx = d12 * (2 * a12 - 1)
                                         xy = d34 * (2 * a34 - 1)
-                                        #print('xx = ', xx, 'xy = ', xy)
-                                        xx = xx/2
-                                        xy = xy/2
-                                        coordset =Int32MultiArray()
-                                        coordset.data = [xx/10, xy/10]
+                                        print('xx = ', xx, 'xy = ', xy)
+                                        xx = xx/20
+                                        xy = xy/20
+                                        data = Int32MultiArray()
+                                        data.data = [xx, xy]
                                         stop = True
-                                        rospy.loginfo(coordset)
-                                        pub.publish(coordset)
+                                        rospy.loginfo(data)
+                                        pub.publish(data)
                                         rate.sleep()
                                         #rospy.spin()
                             newMeasGood = True
