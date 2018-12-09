@@ -7,6 +7,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
+from easygopigo3 import EasyGoPiGo3
 
 def xor(*args):
     return sum(args) == 1
@@ -110,11 +111,11 @@ class IMU:
 
         orientation = np.array([azimuth, pitch])"""
 
-        angle = (math.atan2(mag[0], mag[2]))
+        angle = (math.atan2(mag[0], mag[2]) % 360)
         orientation = np.array([np.cos(angle), np.sin(angle)])
-        print('angle = ', angle)
-        print('orientation = ', orientation)
-        return orientation
+        #print('angle = ', angle)
+        #print('orientation = ', orientation)
+        return orientation, angle
 
 class AStarGraph(object):
     #Define a class board like grid with two barriers
@@ -159,18 +160,58 @@ class AStarGraph(object):
 class PlanThePath:
 #Add functions to find the next point, calculate needed values
    
-    def __init__(self, path):
-        self.waypoints = path       
+    def __init__(self, path, imu):
+        self.waypoints = path
+        self.imu = imu
 
-    def robot_drive(self, heading):
-        #Move towards the x point
-        pass
+    def robot_drive(self, heading, omf, uangle):
+        gpg = EasyGoPiGo3()
+        gpg.set_speed(omf)
+        drive = gpg.forward()
+        orientationangle = self.imu.getHeading()
+        print("orientationangle = ", orientationangle)
+        n = 1
+        print(n)
+        #while n < 5:
+        #    if orientationangle[0] != uangle[0] and orientationangle[1] != uangle[1]:
+        #        #drive
+        #        print("same though")
+        #    elif orientationangle[0] < uangle[0] and orientationangle[1] < uangle[1]:
+        #        diff_head0 = orientationangle[0] - uangle[0]
+        #        diff_head1 = orientationangle[1] - uangle[1]
+        #        #orientationangle = orientationangle + abs(diff_head)
+        #        gpg.turn_degrees(abs(diff_head0))
+        #        gpg.turn_degrees(abs(diff_head1))
+        #        #drive
+        #        print("not same less", orientationangle)
+        #    elif orientationangle[0] > uangle[0] and orientationangle[1] > uangle[1]:
+        #        diff_head0 = orientationangle[0] - uangle[0]
+        #        diff_head1 = orientationangle[1] - uangle[1]
+        #        #orientationangle = orientationangle - abs(diff_head)
+        #        gpg.turn_degrees(diff_head0)
+        #        gpg.turn_degrees(diff_head1)
+        #        #drive
+        #        print("not same more", orientationangle)
+        #    elif orientationangle[0] < uangle[0] and orentationangle[1] > uangle:
+        #        diff_head0 = orientationangle[0] - uangle[0]
+        #        diff_head1 = orientationangle[1] - uangle[1]
+        #        #orientationangle = orientationangle + abs(diff_head)
+        #        gpg.turn_degrees(abs(diff_head0))
+        #        gpg.turn_degrees(diff_head1)
+        #    elif orientationangle[0] > uangle[0] and orentationangle[1] < uangle:
+        #        diff_head0 = orientationangle[0] - uangle[0]
+        #        diff_head1 = orientationangle[1] - uangle[1]
+        #        #orientationangle = orientationangle + abs(diff_head)
+        #        gpg.turn_degrees(diff_head0)
+        #        gpg.turn_degrees(abs(diff_head1))
+        #    n += 1
+
 
     def move(self, imu):
         Robot = np.array([[0, -1], [1, 0]])
         atThePoint = False
         dt = 0.1
-        omf = 0.1
+        omf = 100
         for n in range(0,len(self.waypoints) - 1):
             W1 = np.array([self.waypoints[n][0],self.waypoints[n][1]])
             W2 = np.array([self.waypoints[n+1][0],self.waypoints[n+1][1]])
@@ -193,8 +234,12 @@ class PlanThePath:
                 ru = ru * omd
                 u = u + ru
                 u = u / np.linalg.norm(u)
-                self.robot_drive(u)
+                #uangle = np.array([math.sqrt(u[0]**2 +, np.sin(u)])
+                uangle = np.arctan2(u[1], u[0])
+                print("uangle = ", uangle)
+                self.robot_drive(u, omf, uangle)
                 #If the robot's position is within 10 centimeters from the goal, we move on
                 if inCircle(self.waypoints[n+1], 100, x):
                     atThePoint = True
+
 
