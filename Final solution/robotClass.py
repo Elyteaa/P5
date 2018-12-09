@@ -100,7 +100,7 @@ class IMU:
         accel = self.imu.read_accelerometer()
 
 
-        pitch = np.arcsin(-accel[1] / np.linalg.norm(accel))
+        """pitch = np.arcsin(-accel[1] / np.linalg.norm(accel))
         roll = np.arcsin(accel[0] / n.linalg.norm(accel))
 
         y = -mag[0] * np.cos(roll) + mag[2] * np.sin(roll)
@@ -108,11 +108,11 @@ class IMU:
 
         azimuth = np.arctan2(y, x)
 
-        orientation = np.array([azimuth, pitch])
+        orientation = np.array([azimuth, pitch])"""
 
 
         angle = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
-        #orientation = np.array([np.cos(np.deg2rad(angle)), np.sin(np.deg2rad(angle))])
+        orientation = np.array([np.cos(np.deg2rad(angle)), np.sin(np.deg2rad(angle))])
         print('angle = ', angle)
         print('orientation = ', orientation)
         return orientation
