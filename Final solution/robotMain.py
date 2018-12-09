@@ -21,12 +21,14 @@ def optimizeWaypoints(waypoints):
 def callback(data):
     graph = AStarGraph()
     start = data.data
-    end = (700, 700)
+    end = (200, 200)
     if abs(data.data[0]) <= 200 and abs(data.data[1]) <= 200:
         result, cost = AStarSearch(start, end, graph)
         result = optimizeWaypoints(result)
-        print(heading)
+        print(result)
+        #print(heading)
         path = PlanThePath(result)
+        print(imu.getHeading)
         path.move(imu)
     else: print('The robot is out of bounds')
 
@@ -47,4 +49,5 @@ def listener():
 if __name__ == '__main__':
     imu = IMU()
     listener()
+
 
