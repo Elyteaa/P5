@@ -85,7 +85,7 @@ def AStarSearch(start, end, graph):
             G[neighbour] = candidateG
             H = graph.heuristic(neighbour, end)
             F[neighbour] = G[neighbour] + H
- 
+        print(current)
     raise RuntimeError("A* failed to find a solution")
  
 class IMU:
@@ -101,10 +101,35 @@ class IMU:
         euler = self.imu.read_euler()
         temp  = self.imu.read_temperature()
 
+        """string_to_print = "Magnetometer X: {:.1f}  Y: {:.1f}  Z: {:.1f} " \
+                          "Gyroscope X: {:.1f}  Y: {:.1f}  Z: {:.1f} " \
+                          "Accelerometer X: {:.1f}  Y: {:.1f} Z: {:.1f} " \
+                          "Euler Heading: {:.1f}  Roll: {:.1f}  Pitch: {:.1f} " \
+                          "Temperature: {:.1f}C".format(mag[0], mag[1], mag[2],
+                                                        gyro[0], gyro[1], gyro[2],
+                                                        accel[0], accel[1], accel[2],
+                                                        euler[0], euler[1], euler[2],
+                                                        temp)"""
+        
+        #angle = math.atan2(accel[1], accel[0])
+        #xyu = math.degrees(angle)
+        #print(string_to_print)
+        #print("angle first = ", xyu)
+        #anglez = (180/math.pi * math.atan2(accel[0], accel[1]) % 360)
+        #print("angle z = ", anglez)
         angle = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
         #print("angle y = ", angley)
-        orientation = np.array([np.cos(angle),np.sin(angle)])
+        orientation = np.array([np.cos(angle), np.sin(angle)])
+        print('angle = ', angle)
+        print('oreientation = ', orientation)
+        #anglex = (180/math.pi * math.atan2(accel[1], accel[2]) % 360)
+        #print("angle x = ", anglex)
+        #angle1 = (180/math.pi * math.atan2(accel[1], accel[0]) % 360)
+        #angle1 = (180/math.pi * math.atan2(accel[1], accel[0]) % 360)
+        #print("angle 2 = ", angle1)
         return orientation
+
+
 
 class AStarGraph(object):
     #Define a class board like grid with two barriers
@@ -182,8 +207,9 @@ class PlanThePath:
                 ru = np.array([R[0][0] * u[0] + R[0][1] * u[1], R[1][0] * u[0] + R[1][1] * u[1]])
                 ru = ru * omd
                 u = u + ru
-                u = u / np.norm(u)
+                u = u / np.linalg.norm(u)
                 self.robot_drive(u)
                 #If the robot's position is within 10 centimeters from the goal, we move on
                 if inCircle(self.waypoints[n+1], 100, x):
                     atThePoint = True
+
