@@ -12,11 +12,6 @@ from easygopigo3 import EasyGoPiGo3
 def xor(*args):
     return sum(args) == 1
 
-def inCircle(center, radius, point):
-    if (point[0] - center[0])**2 + (point[1] - center[1])**2 < radius**2:
-        return True
-    return False
-
 def isBetween(a, b, c):
     crossproduct = (c[1] - a[1]) * (b[0] - a[0]) - (c[0] - a[0]) * (b[1] - a[1])
 
@@ -103,12 +98,9 @@ class IMU:
 
         """pitch = np.arcsin(-accel[1] / np.linalg.norm(accel))
         roll = np.arcsin(accel[0] / n.linalg.norm(accel))
-
         y = -mag[0] * np.cos(roll) + mag[2] * np.sin(roll)
         x = mag[0] * np.sin(pitch) * np.sin(roll) + mag[1] * cos(pitch) + mag[2] * np.sin(pitch) * np.cos(roll)
-
         azimuth = np.arctan2(y, x)
-
         orientation = np.array([azimuth, pitch])"""
 
         angle = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
@@ -122,7 +114,6 @@ class IMU:
         angle = np.deg2rad(angle)
         orientation = np.array([np.cos(angle), np.sin(angle)])
         return orientation
-        
 
 class AStarGraph(object):
     #Define a class board like grid with two barriers
@@ -170,9 +161,9 @@ class PlanThePath:
     def __init__(self, path, imu):
         self.waypoints = path
         self.imu = imu
+        self.n = 0
 
     def robot_drive(self, heading, omf, uangle):
-        pass
         gpg = EasyGoPiGo3()
         gpg.set_speed(omf)
         #drive = gpg.forward()
@@ -202,15 +193,18 @@ class PlanThePath:
                 print("not same more", orientationangle)
             n += 1
 
-    def nearTheGoal():
-        pass
+    def nearTheGoal(center, radius, point):
+        if (point[0] - center[0])**2 + (point[1] - center[1])**2 < radius**2:
+            return True
+        return False
 
     def move(self, current):
         Robot = np.array([[0, -1], [1, 0]])
-        atThePoint = False
+        #atThePoint = False
         dt = 0.1
         omf = 100
-        for n in range(0,len(self.waypoints) - 1):
+
+        if self.n <= len(self.waypoints)-2:
             W1 = np.array([self.waypoints[n][0],self.waypoints[n][1]])
             W2 = np.array([self.waypoints[n+1][0],self.waypoints[n+1][1]])
             u0 = np.array([W2 - W1])
@@ -218,10 +212,8 @@ class PlanThePath:
             u0 = np.divide(u0, norm)
             x = np.array([current[0], current[1]])
             u = self.imu.getHeading()
-            #wanted speed of the robot
-            #still don't know what this is
-            #or this
-            while not atThePoint:
+
+            while not self.nearTheGoal(W2, 5, x):
                 x = x + dt * u * omf
                 xf = W2 + (omf - np.transpose(u0) * (W2 - x)) * u0
                 v = xf - x
@@ -234,9 +226,6 @@ class PlanThePath:
                 u = u / np.linalg.norm(u)
                 #uangle = np.array([math.sqrt(u[0]**2 +, np.sin(u)])
                 uangle = np.arctan2(u[1], u[0])
-                uangle = 180/math.pi * uangle % 360
                 print("uangle = ", uangle)
                 self.robot_drive(u, omf, uangle)
-                #If the robot's position is within 10 centimeters from the goal, we move on
-                if inCircle(self.waypoints[n+1], 100, x):
-                    atThePoint = True
+            self.n += 1
