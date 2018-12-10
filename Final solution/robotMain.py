@@ -16,7 +16,10 @@ def optimizeWaypoints(waypoints):
                 #print('new:', waypoints)
                 return optimizeWaypoints(waypoints)
             elif x == len(waypoints)-3:
+                #print('hooope', wayponts)
                 return waypoints
+    else:
+        return waypoints
 
 def callback(data):
     global start
@@ -43,7 +46,7 @@ def listener():
     #rospy.spin()
 
 start = None
-end = None
+end = (20, 75)
 
 if __name__ == '__main__':
     imu = IMU()
@@ -55,10 +58,10 @@ if __name__ == '__main__':
                 print('goal read:', end)
                 result, cost = AStarSearch(start, end, graph)
                 result = optimizeWaypoints(result)
-                print(result)
+                #print('ffff', result, type(result))
                 #print(heading)
                 path = PlanThePath(result, imu)
-                #print(imu.getHeading())
+                print('heading = ', imu.getHeading())
                 path.move(start)
             else: print('The robot is out of bounds')
 
