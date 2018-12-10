@@ -49,13 +49,16 @@ if __name__ == '__main__':
     imu = IMU()
     listener()
     graph = AStarGraph()
-    while not rospy.is_shtdown() and start and end:
-        if abs(data.data[0]) <= 200 and abs(data.data[1]) <= 200:
-            result, cost = AStarSearch(start, end, graph)
-            result = optimizeWaypoints(result)
-            print(result)
-            #print(heading)
-            path = PlanThePath(result)
-            print(imu.getHeading())
-            path.move()
-        else: print('The robot is out of bounds')
+    while not rospy.is_shutdown():
+        if start and end:
+            if abs(start[0]) <= 200 and abs(start[1]) <= 200:
+                print('goal read:', end)
+                result, cost = AStarSearch(start, end, graph)
+                result = optimizeWaypoints(result)
+                print(result)
+                #print(heading)
+                path = PlanThePath(result, imu)
+                #print(imu.getHeading())
+                path.move(start)
+            else: print('The robot is out of bounds')
+
