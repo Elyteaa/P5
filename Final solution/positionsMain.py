@@ -75,111 +75,110 @@ newMeasReady = False
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
-    if z1serial.is_open:
-        while not rospy.is_shutdown():
-            size = z1serial.inWaiting()
-            if size > 255:
-                z1serial.reset_input_buffer()
-            else:
-                if len(measurementHistory) > 10:
-                    #measurementHistory.clear()
-                    del measurementHistory[:]
-                singleRead = True
-                while singleRead:
-                    byteRead = z1serial.read(1)
-                    #byteRead = bytes(byteRead, 'utf-8')
-                    #byteRead = bytearray(byteRead).hex()
-                    #byteRead = codecs.decode(z1serial.read(1).strip, 'hex')
-                    byteRead = (ord(byteRead))#bytes(z1serial.read(1))#int(z1serial.read(1).hex(),16)
-                    #byteRead = byteRead % 255
-                    #byteRead = int(byteRead.hex(), 16)
-                    #byteRead = bytes.fromhex(byteRead2)
-                    #print('print = ', byteRead, 'type = ', type(byteRead))
-                    #print("print = ", byteRead, "type = ", type(byteRead))
-                    #byteRead2 = bytes(z1serial.read(1))
-                    #byy = int(byteRead2, 16)
-                    #print(type(byy))
-                    switchCase[messageState]()
-                if newMeasReady:
-                    newMeasReady = False
-                    for i in range(0, receiveCounter):
-                        inputBuffer[i] = receivedMessage[i]
-                    sum1 = 0
-                    sum2 = 0
-                    checksumcalculated = 0
-                    for i in range(1, receiveCounter-2):
-                        sum1 = (sum1+(inputBuffer[i] & 0xff)) % 255
-                        sum2 = (sum2 + sum1) % 255
-                    checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)
+if z1serial.is_open:
+    while not rospy.is_shutdown():
+        size = z1serial.inWaiting()
+        if size > 255:
+            z1serial.reset_input_buffer()
+        else:
+            if len(measurementHistory) > 10:
+                #measurementHistory.clear()
+                del measurementHistory[:]
+            singleRead = True
+            while singleRead:
+                byteRead = z1serial.read(1)
+                #byteRead = bytes(byteRead, 'utf-8')
+                #byteRead = bytearray(byteRead).hex()
+                #byteRead = codecs.decode(z1serial.read(1).strip, 'hex')
+                byteRead = (ord(byteRead))#bytes(z1serial.read(1))#int(z1serial.read(1).hex(),16)
+                #byteRead = byteRead % 255
+                #byteRead = int(byteRead.hex(), 16)
+                #byteRead = bytes.fromhex(byteRead2)
+                #print('print = ', byteRead, 'type = ', type(byteRead))
+                #print("print = ", byteRead, "type = ", type(byteRead))
+                #byteRead2 = bytes(z1serial.read(1))
+                #byy = int(byteRead2, 16)
+                #print(type(byy))
+                switchCase[messageState]()
+            if newMeasReady:
+                newMeasReady = False
+                for i in range(0, receiveCounter):
+                    inputBuffer[i] = receivedMessage[i]
+                sum1 = 0
+                sum2 = 0
+                checksumcalculated = 0
+                for i in range(1, receiveCounter-2):
+                    sum1 = (sum1+(inputBuffer[i] & 0xff)) % 255
+                    sum2 = (sum2 + sum1) % 255
+                checksumcalculated = ((sum2 & 0xff) << 8) | (sum1 & 0xff)
 
-                    if inputBuffer[0] == 12 and inputBuffer[1] == 1:
-                        incomingMeasurement = CPRMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
-                        incomingMeasurement.timestampMS = int(round(time.time()*1000))
-                        incomingMeasurement.numMaster = (inputBuffer[6] & 0xff)
-                        incomingMeasurement.CPRID = ((inputBuffer[4] & 0xff) << 16) | ((inputBuffer[3] & 0xff) << 8) | ((inputBuffer[2] & 0xff))
+                if inputBuffer[0] == 12 and inputBuffer[1] == 1:
+                    incomingMeasurement = CPRMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                    incomingMeasurement.timestampMS = int(round(time.time()*1000))
+                    incomingMeasurement.numMaster = (inputBuffer[6] & 0xff)
+                    incomingMeasurement.CPRID = ((inputBuffer[4] & 0xff) << 16) | ((inputBuffer[3] & 0xff) << 8) | ((inputBuffer[2] & 0xff))
 
-                        checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
-                        if checksum == checksumcalculated and incomingMeasurement.CPRID > 0:
-                            incomingMeasurement.ultrasoundLevel = inputBuffer[5] & 0xff
-                            incomingMeasurement.RSSI = inputBuffer[7] & 0xff
-                            incomingMeasurement.timeDifference = ((inputBuffer[12] & 0xff) << 8) | (inputBuffer[11] & 0xff)
-                            incomingMeasurement.transmitterID = ((inputBuffer[10]) & 0xff) << 16 | (inputBuffer[9] & 0xff) << 8 | (inputBuffer[8] & 0xff)
+                    checksum = (inputBuffer[14] & 0xff) << 8 | (inputBuffer[13] & 0xff)
+                    if checksum == checksumcalculated and incomingMeasurement.CPRID > 0:
+                        incomingMeasurement.ultrasoundLevel = inputBuffer[5] & 0xff
+                        incomingMeasurement.RSSI = inputBuffer[7] & 0xff
+                        incomingMeasurement.timeDifference = ((inputBuffer[12] & 0xff) << 8) | (inputBuffer[11] & 0xff)
+                        incomingMeasurement.transmitterID = ((inputBuffer[10]) & 0xff) << 16 | (inputBuffer[9] & 0xff) << 8 | (inputBuffer[8] & 0xff)
 
-                            measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
-                            measurementHistory.append(measurement)
+                        measurement = trueMeasurement(incomingMeasurement.transmitterID, 0, incomingMeasurement.RSSI, incomingMeasurement.ultrasoundLevel, incomingMeasurement.timestampMS, incomingMeasurement.CPRID, incomingMeasurement.timeDifference, 21)
+                        measurementHistory.append(measurement)
 
-                            ID1 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
-                            ID2 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
-                            ID3 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
-                            ID4 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
-                            d12 = 0
-                            d34 = 0
-                            stop = False
-                            n = 1
-                            
-                            if len(measurementHistory):
-                                
-                                while not stop and n < len(measurementHistory):
-                                    n += 1
-                                    if ID1.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid1:
-                                        ID1 = measurementHistory[len(measurementHistory)-n]
-                                        d12 = d12 + abs(S1X)
-                                        print("Distance 1 = ", ID1.distance)
-                                    if ID2.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid2:
-                                        ID2 = measurementHistory[len(measurementHistory)-n]
-                                        d12 = d12 + abs(S2X)
-                                        print("Distance 2 = ",ID2.distance)
-                                    if ID3.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid3:
-                                        ID3 = measurementHistory[len(measurementHistory)-n]
-                                        d34 = d34 + abs(S3Y)
-                                        print("Distance 3 = ",ID3.distance)
-                                    if ID4.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid4:
-                                        ID4 = measurementHistory[len(measurementHistory)-n]
-                                        d34 = d34 + abs(S4Y)
-                                        print("Distance 4 = ",ID4.distance)
-                                    if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
-                                        print('d12', d12, 'd34', d34)
-                                        a12 = (ID1.distance**2 - ID2.distance**2) / (2 * d12**2) + 0.5
-                                        a34 = (ID3.distance**2 - ID4.distance**2) / (2 * d34**2) + 0.5
-                                        print("a12 = ", a12, "a34 = ", a34)
-                                        xx = d12 * (2 * a12 - 1)
-                                        xy = d34 * (2 * a34 - 1)
-                                        print('xx = ', xx, 'xy = ', xy)
-                                        xx = xx/20
-                                        xy = xy/20
-                                        data = Int32MultiArray()
-                                        data.data = [xx, xy]
-                                        stop = True
-                                        rospy.loginfo(data)
-                                        pub.publish(data)
-                                        rate.sleep()
-                                        #rospy.spin()
-                            newMeasGood = True
+                        ID1 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                        ID2 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                        ID3 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                        ID4 = trueMeasurement(0, 0, 0, 0, 0, 0, 0, 0)
+                        d12 = 0
+                        d34 = 0
+                        stop = False
+                        n = 0
+                        
+                        if len(measurementHistory):
+                            while not stop and n < len(measurementHistory):
+                                n += 1
+                                if ID1.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid1:
+                                    ID1 = measurementHistory[len(measurementHistory)-n]
+                                    d12 = d12 + abs(S1X)
+                                    print("Distance 1 = ", ID1.distance)
+                                if ID2.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid2:
+                                    ID2 = measurementHistory[len(measurementHistory)-n]
+                                    d12 = d12 + abs(S2X)
+                                    print("Distance 2 = ",ID2.distance)
+                                if ID3.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid3:
+                                    ID3 = measurementHistory[len(measurementHistory)-n]
+                                    d34 = d34 + abs(S3Y)
+                                    print("Distance 3 = ",ID3.distance)
+                                if ID4.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid4:
+                                    ID4 = measurementHistory[len(measurementHistory)-n]
+                                    d34 = d34 + abs(S4Y)
+                                    print("Distance 4 = ",ID4.distance)
+                                if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
+                                    print('d12', d12, 'd34', d34)
+                                    a12 = (ID1.distance**2 - ID2.distance**2) / (2 * d12**2) + 0.5
+                                    a34 = (ID3.distance**2 - ID4.distance**2) / (2 * d34**2) + 0.5
+                                    print("a12 = ", a12, "a34 = ", a34)
+                                    xx = d12 * (2 * a12 - 1)
+                                    xy = d34 * (2 * a34 - 1)
+                                    print('xx = ', xx, 'xy = ', xy)
+                                    xx = xx/20
+                                    xy = xy/20
+                                    data = Int32MultiArray()
+                                    data.data = [xx, xy]
+                                    stop = True
+                                    rospy.loginfo(data)
+                                    pub.publish(data)
+                                    rate.sleep()
+                                    #rospy.spin()
+                        newMeasGood = True
 
-                        else:
-                            newMeasGood = False
-    else:
-        print('z1serial not open')
+                    else:
+                        newMeasGood = False
+else:
+    print('z1serial not open')
 #if __name__ == '__main__':
 #    try:
 #        talker()
