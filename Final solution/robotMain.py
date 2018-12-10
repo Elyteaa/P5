@@ -19,18 +19,12 @@ def optimizeWaypoints(waypoints):
                 return waypoints
 
 def callback(data):
-    graph = AStarGraph()
+    global start
     start = data.data
-    end = (200, 200)
-    if abs(data.data[0]) <= 200 and abs(data.data[1]) <= 200:
-        result, cost = AStarSearch(start, end, graph)
-        result = optimizeWaypoints(result)
-        print(result)
-        #print(heading)
-        path = PlanThePath(result)
-        print(imu.getHeading())
-        path.move(imu)
-    else: print('The robot is out of bounds')
+
+def callback2(data):
+    global end
+    end = data.data
 
 def listener():
 
@@ -43,11 +37,25 @@ def listener():
 
     rospy.Subscriber("position", Int32MultiArray, callback)
 
+    rospy.Subscriber("goal", Int32MultiArray, callback2)
     # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin()
+    #spin() fucks everything up and is not necesssary in rospy !
+    #rospy.spin()
+
+start = None
+end = None
 
 if __name__ == '__main__':
     imu = IMU()
     listener()
-
-
+    graph = AStarGraph()
+    while not rospy.is_shtdown() and start and end:
+        if abs(data.data[0]) <= 200 and abs(data.data[1]) <= 200:
+            result, cost = AStarSearch(start, end, graph)
+            result = optimizeWaypoints(result)
+            print(result)
+            #print(heading)
+            path = PlanThePath(result)
+            print(imu.getHeading())
+            path.move(imu)
+        else: print('The robot is out of bounds')
