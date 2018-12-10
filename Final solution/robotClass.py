@@ -170,15 +170,18 @@ class PlanThePath:
         #print("orientationangle = ", orientationangle)
         n = 1
         #print(n)
-        while n < 50:
+        while n < 10:
             if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
-                gpg.forward()
+                gpg.forward(2)
+                print("orientationangle = ", orientationangle, 'uangle = ', uangle)
                 #print("same though")
             elif uangle - 10 < orientationangle:
                 diff_head = orientationangle - uangle
 
                 #orientationangle = orientationangle + abs(diff_head)
                 gpg.turn_degrees(abs(diff_head))
+                gpg.forward(2)
+                print("orientationangle = ", orientationangle, 'uangle = ', uangle)
 
                #drive
                 #print("not same less", orientationangle)
@@ -187,6 +190,8 @@ class PlanThePath:
 
                 #orientationangle = orientationangle - abs(diff_head)
                 gpg.turn_degrees(diff_head)
+                gpg.forward(2)
+                print("orientationangle = ", orientationangle, 'uangle = ', uangle)
 
                 #drive
                 #print("not same more", orientationangle)
