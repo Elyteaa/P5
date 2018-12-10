@@ -161,9 +161,8 @@ class PlanThePath:
     def __init__(self, path, imu):
         self.waypoints = path
         self.imu = imu
-        self.n = 0
 
-    def robot_drive(self, heading, omf, uangle):
+    def robot_drive(self, omf, uangle):
         gpg = EasyGoPiGo3()
         gpg.set_speed(omf)
         #drive = gpg.forward()
@@ -172,8 +171,8 @@ class PlanThePath:
         n = 1
         #print(n)
         while n < 50:
-            if uangle - 10 <= orientationangle or uangle + 10 >= orientationangle:
-                #gpg.forward()
+            if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
+                gpg.forward()
                 #print("same though")
             elif uangle - 10 < orientationangle:
                 diff_head = orientationangle - uangle
@@ -193,20 +192,20 @@ class PlanThePath:
                 #print("not same more", orientationangle)
             n += 1
 
-    def nearTheGoal(center, radius, point):
+    def nearTheGoal(self, center, radius, point):
         if (point[0] - center[0])**2 + (point[1] - center[1])**2 < radius**2:
             return True
         return False
 
-    def move(self, current):
+"""    def move(self, current):
         Robot = np.array([[0, -1], [1, 0]])
         #atThePoint = False
         dt = 0.1
         omf = 100
 
         if self.n <= len(self.waypoints)-2:
-            W1 = np.array([self.waypoints[n][0],self.waypoints[n][1]])
-            W2 = np.array([self.waypoints[n+1][0],self.waypoints[n+1][1]])
+            W1 = np.array([self.waypoints[self.n][0],self.waypoints[self.n][1]])
+            W2 = np.array([self.waypoints[self.n+1][0],self.waypoints[self.n+1][1]])
             u0 = np.array([W2 - W1])
             norm = np.linalg.norm(u0)
             u0 = np.divide(u0, norm)
@@ -231,3 +230,4 @@ class PlanThePath:
                 #print("uangle = ", uangle)
                 self.robot_drive(u, omf, uangle)
             self.n += 1
+"""

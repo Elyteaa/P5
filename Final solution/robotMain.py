@@ -59,6 +59,36 @@ if __name__ == '__main__':
                 result = optimizeWaypoints(result)
                 path = PlanThePath(result, imu)
                 #print(imu.getHeading())
-                while not path.nearTheGoal(end, 10, start):
-                    path.move(start)
+
+                R = np.array([[0, -1], [1, 0]])
+                dt = 0.1 #resolution
+                vel = 100
+
+                n = 0
+                while n <= len(path.waypoints)-2:
+                    W1 = np.array([path.waypoints[n][0],path.waypoints[n][1]])
+                    W2 = np.array([path.waypoints[n+1][0],path.waypoints[n+1][1]])
+                    u0 = np.array([W2 - W1])
+                    norm = np.linalg.norm(u0)
+                    u0 = np.divide(u0, norm)
+                    x = np.array([start[0], start[1]])
+                    u = path.imu.getHeading()
+
+                    while not path.nearTheGoal(W2, 5, start):
+                        x = x + dt * u * vel
+                        print('x=',x)
+                        xf = W2 + (vel - np.transpose(u0) * (W2 - x)) * u0
+                        v = xf - x
+                        v = v / np.linalg.norm(v)
+                        omd = (u[0] * v[1] - u[1] * v[0]) * 2
+                        R = Robot * dt
+                        ru = np.array([R[0][0] * u[0] + R[0][1] * u[1], R[1][0] * u[0] + R[1][1] * u[1]])
+                        ru = ru * omd
+                        u = u + ru
+                        u = u / np.linalg.norm(u)
+                        print('u=',u)
+                        #uangle = np.array([math.sqrt(u[0]**2 +, np.sin(u)])
+                        uangle = np.arctan2(u[1], u[0])
+                        #print("uangle = ", uangle)
+                        path.robot_drive(vel, uangle)
             else: print('The robot is out of bounds')
