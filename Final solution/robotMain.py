@@ -16,7 +16,6 @@ def optimizeWaypoints(waypoints):
                 #print('new:', waypoints)
                 return optimizeWaypoints(waypoints)
             elif x == len(waypoints)-3:
-                #print('hooope', wayponts)
                 return waypoints
     else:
         return waypoints
@@ -58,10 +57,8 @@ if __name__ == '__main__':
                 print('goal read:', end)
                 result, cost = AStarSearch(start, end, graph)
                 result = optimizeWaypoints(result)
-                #print('ffff', result, type(result))
-                #print(heading)
                 path = PlanThePath(result, imu)
-                print('heading = ', imu.getHeading())
-                path.move(start)
+                #print(imu.getHeading())
+                while not path.nearTheGoal(end, 10, start):
+                    path.move(start)
             else: print('The robot is out of bounds')
-
