@@ -57,5 +57,5 @@ if __name__ == '__main__':
             #print(heading)
             path = PlanThePath(result)
             print(imu.getHeading())
-            path.move(imu)
+            path.move()
         else: print('The robot is out of bounds')
