@@ -172,7 +172,7 @@ class PlanThePath:
         gpg.set_speed(omf)
         drive = gpg.forward()
         orientationangle = imu.getHeading()
-        orientationangle = 'orientationangle'
+        orientationangle = 'angle'
         print("orientationangle = ", orientationangle)
         n = 1
         print(n)
@@ -208,6 +208,7 @@ class PlanThePath:
             u0 = np.divide(u0, norm)
             x = np.array([0,0])
             u = imu.getHeading()
+            u = 'orientation'
             #wanted speed of the robot
             #still don't know what this is
             #or this
