@@ -81,7 +81,7 @@ if __name__ == '__main__':
                         v = xf - x
                         v = v / np.linalg.norm(v)
                         omd = (u[0] * v[1] - u[1] * v[0]) * 2
-                        R = Robot * dt
+                        R = R * dt
                         ru = np.array([R[0][0] * u[0] + R[0][1] * u[1], R[1][0] * u[0] + R[1][1] * u[1]])
                         ru = ru * omd
                         u = u + ru
