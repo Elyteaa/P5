@@ -81,7 +81,7 @@ def AStarSearch(start, end, graph):
             G[neighbour] = candidateG
             H = graph.heuristic(neighbour, end)
             F[neighbour] = G[neighbour] + H
-        print(current)
+        #print(current)
     raise RuntimeError("A* failed to find a solution")
  
 class IMU:
@@ -104,7 +104,7 @@ class IMU:
         orientation = np.array([azimuth, pitch])"""
 
         angle = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
-        print('angle = ', angle)
+        #print('angle = ', angle)
         #print('angle = ', angle)
         #print('orientation = ', orientation)
         return angle #,angle
@@ -168,13 +168,13 @@ class PlanThePath:
         gpg.set_speed(omf)
         #drive = gpg.forward()
         orientationangle = self.imu.getHeadingDeg()
-        print("orientationangle = ", orientationangle)
+        #print("orientationangle = ", orientationangle)
         n = 1
-        print(n)
+        #print(n)
         while n < 50:
             if uangle - 10 <= orientationangle or uangle + 10 >= orientationangle:
                 #gpg.forward()
-                print("same though")
+                #print("same though")
             elif uangle - 10 < orientationangle:
                 diff_head = orientationangle - uangle
 
@@ -182,7 +182,7 @@ class PlanThePath:
                 gpg.turn_degrees(abs(diff_head))
 
                #drive
-                print("not same less", orientationangle)
+                #print("not same less", orientationangle)
             elif uangle + 10 > orientationangle:
                 diff_head = orientationangle - uangle
 
@@ -190,7 +190,7 @@ class PlanThePath:
                 gpg.turn_degrees(diff_head)
 
                 #drive
-                print("not same more", orientationangle)
+                #print("not same more", orientationangle)
             n += 1
 
     def nearTheGoal(center, radius, point):
@@ -215,6 +215,7 @@ class PlanThePath:
 
             while not self.nearTheGoal(W2, 5, x):
                 x = x + dt * u * omf
+                print('x=',x)
                 xf = W2 + (omf - np.transpose(u0) * (W2 - x)) * u0
                 v = xf - x
                 v = v / np.linalg.norm(v)
@@ -224,8 +225,9 @@ class PlanThePath:
                 ru = ru * omd
                 u = u + ru
                 u = u / np.linalg.norm(u)
+                print('u=',u)
                 #uangle = np.array([math.sqrt(u[0]**2 +, np.sin(u)])
                 uangle = np.arctan2(u[1], u[0])
-                print("uangle = ", uangle)
+                #print("uangle = ", uangle)
                 self.robot_drive(u, omf, uangle)
             self.n += 1

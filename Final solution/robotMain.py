@@ -54,7 +54,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         if start and end:
             if abs(start[0]) <= 200 and abs(start[1]) <= 200:
-                print('goal read:', end)
+                #print('goal read:', end)
                 result, cost = AStarSearch(start, end, graph)
                 result = optimizeWaypoints(result)
                 path = PlanThePath(result, imu)
