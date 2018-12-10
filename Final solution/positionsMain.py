@@ -75,9 +75,8 @@ newMeasReady = False
 
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, bytesize=serial.EIGHTBITS, stopbits=serial.STOPBITS_ONE)
 z1serial.timeout = None  # set read timeout
-while not rospy.is_shutdown():
     if z1serial.is_open:
-        while True:
+        while not rospy.is_shutdown():
             size = z1serial.inWaiting()
             if size > 255:
                 z1serial.reset_input_buffer()
@@ -149,15 +148,15 @@ while not rospy.is_shutdown():
                                     if ID2.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid2:
                                         ID2 = measurementHistory[len(measurementHistory)-n]
                                         d12 = d12 + abs(S2X)
-                                        print("Distance 1 = ",ID2.distance)
+                                        print("Distance 2 = ",ID2.distance)
                                     if ID3.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid3:
                                         ID3 = measurementHistory[len(measurementHistory)-n]
                                         d34 = d34 + abs(S3Y)
-                                        print("Distance 1 = ",ID3.distance)
+                                        print("Distance 3 = ",ID3.distance)
                                     if ID4.transmitterID == 0 and measurementHistory[len(measurementHistory)-n].transmitterID == Satid4:
                                         ID4 = measurementHistory[len(measurementHistory)-n]
                                         d34 = d34 + abs(S4Y)
-                                        print("Distance 1 = ",ID4.distance)
+                                        print("Distance 4 = ",ID4.distance)
                                     if ID4.transmitterID and ID3.transmitterID and ID2.transmitterID and ID1.transmitterID:
                                         print('d12', d12, 'd34', d34)
                                         a12 = (ID1.distance**2 - ID2.distance**2) / (2 * d12**2) + 0.5
@@ -185,4 +184,4 @@ while not rospy.is_shutdown():
 #    try:
 #        talker()
 #    except rospy.ROSInterruptException:
-#        pass
+#        passd
