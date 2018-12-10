@@ -95,6 +95,7 @@ class IMU:
         self.imu = InertialMeasurementUnit(bus = "GPG3_AD1") #RPI_1 GPG3_AD1
 
     def getHeading(self):
+        d = dict()
         #Read the magnetometer, gyroscope, accelerometer in rad
         mag   = self.imu.read_magnetometer()
         gyro  = self.imu.read_gyroscope()
@@ -115,7 +116,9 @@ class IMU:
         orientation = np.array([np.cos(angle), np.sin(angle)])
         #print('angle = ', angle)
         #print('orientation = ', orientation)
-        return orientation, angle
+        d['angle'] = angle
+        d['orientation'] = orientation
+        return d
 
 class AStarGraph(object):
     #Define a class board like grid with two barriers
@@ -168,43 +171,28 @@ class PlanThePath:
         gpg = EasyGoPiGo3()
         gpg.set_speed(omf)
         drive = gpg.forward()
-        orientationangle = self.imu.getHeading()
+        orientationangle = imu.getHeading()
+        orientationangle = 'orientationangle'
         print("orientationangle = ", orientationangle)
         n = 1
         print(n)
-        #while n < 5:
-        #    if orientationangle[0] != uangle[0] and orientationangle[1] != uangle[1]:
-        #        #drive
-        #        print("same though")
-        #    elif orientationangle[0] < uangle[0] and orientationangle[1] < uangle[1]:
-        #        diff_head0 = orientationangle[0] - uangle[0]
-        #        diff_head1 = orientationangle[1] - uangle[1]
-        #        #orientationangle = orientationangle + abs(diff_head)
-        #        gpg.turn_degrees(abs(diff_head0))
-        #        gpg.turn_degrees(abs(diff_head1))
-        #        #drive
-        #        print("not same less", orientationangle)
-        #    elif orientationangle[0] > uangle[0] and orientationangle[1] > uangle[1]:
-        #        diff_head0 = orientationangle[0] - uangle[0]
-        #        diff_head1 = orientationangle[1] - uangle[1]
-        #        #orientationangle = orientationangle - abs(diff_head)
-        #        gpg.turn_degrees(diff_head0)
-        #        gpg.turn_degrees(diff_head1)
-        #        #drive
-        #        print("not same more", orientationangle)
-        #    elif orientationangle[0] < uangle[0] and orentationangle[1] > uangle:
-        #        diff_head0 = orientationangle[0] - uangle[0]
-        #        diff_head1 = orientationangle[1] - uangle[1]
-        #        #orientationangle = orientationangle + abs(diff_head)
-        #        gpg.turn_degrees(abs(diff_head0))
-        #        gpg.turn_degrees(diff_head1)
-        #    elif orientationangle[0] > uangle[0] and orentationangle[1] < uangle:
-        #        diff_head0 = orientationangle[0] - uangle[0]
-        #        diff_head1 = orientationangle[1] - uangle[1]
-        #        #orientationangle = orientationangle + abs(diff_head)
-        #        gpg.turn_degrees(diff_head0)
-        #        gpg.turn_degrees(abs(diff_head1))
-        #    n += 1
+        while n < 5:
+            if orientationangle != uangle:
+                #drive
+                print("same though")
+            elif orientationangle < uangle:
+                diff_head0 = orientationangle - uangle
+                #orientationangle = orientationangle + abs(diff_head)
+                gpg.turn_degrees(abs(diff_head))
+                #drive
+                print("not same less", orientationangle)
+            elif orientationangle > uangle:
+                diff_head = orientationangle - uangle
+                #orientationangle = orientationangle - abs(diff_head)
+                gpg.turn_degrees(diff_head)
+                #drive
+                print("not same more", orientationangle)
+            n += 1
 
 
     def move(self, imu):
