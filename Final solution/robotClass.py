@@ -95,7 +95,6 @@ class IMU:
         self.imu = InertialMeasurementUnit(bus = "GPG3_AD1") #RPI_1 GPG3_AD1
 
     def getHeading(self):
-        d = dict()
         #Read the magnetometer, gyroscope, accelerometer in rad
         mag   = self.imu.read_magnetometer()
         gyro  = self.imu.read_gyroscope()
@@ -116,9 +115,7 @@ class IMU:
         orientation = np.array([np.cos(angle), np.sin(angle)])
         #print('angle = ', angle)
         #print('orientation = ', orientation)
-        d['angle'] = angle
-        d['orientation'] = orientation
-        return d
+        return orientation #,angle
 
 class AStarGraph(object):
     #Define a class board like grid with two barriers
@@ -168,34 +165,51 @@ class PlanThePath:
         self.imu = imu
 
     def robot_drive(self, heading, omf, uangle):
-        gpg = EasyGoPiGo3()
-        gpg.set_speed(omf)
-        drive = gpg.forward()
-        orientationangle = imu.getHeading()
-        orientationangle = 'angle'
-        print("orientationangle = ", orientationangle)
-        n = 1
-        print(n)
-        while n < 5:
-            if orientationangle != uangle:
-                #drive
-                print("same though")
-            elif orientationangle < uangle:
-                diff_head0 = orientationangle - uangle
-                #orientationangle = orientationangle + abs(diff_head)
-                gpg.turn_degrees(abs(diff_head))
-                #drive
-                print("not same less", orientationangle)
-            elif orientationangle > uangle:
-                diff_head = orientationangle - uangle
-                #orientationangle = orientationangle - abs(diff_head)
-                gpg.turn_degrees(diff_head)
-                #drive
-                print("not same more", orientationangle)
-            n += 1
+        pass
+        #gpg = EasyGoPiGo3()
+        #gpg.set_speed(omf)
+        #drive = gpg.forward()
+        #orientationangle = self.imu.getHeading()
+        #print("orientationangle = ", orientationangle)
+        #n = 1
+        #print(n)
+        #while n < 5:
+        #    if orientationangle[0] != uangle[0] and orientationangle[1] != uangle[1]:
+        #        #drive
+        #        print("same though")
+        #    elif orientationangle[0] < uangle[0] and orientationangle[1] < uangle[1]:
+        #        diff_head0 = orientationangle[0] - uangle[0]
+        #        diff_head1 = orientationangle[1] - uangle[1]
+        #        #orientationangle = orientationangle + abs(diff_head)
+        #        gpg.turn_degrees(abs(diff_head0))
+        #        gpg.turn_degrees(abs(diff_head1))
+        #        #drive
+        #        print("not same less", orientationangle)
+        #    elif orientationangle[0] > uangle[0] and orientationangle[1] > uangle[1]:
+        #        diff_head0 = orientationangle[0] - uangle[0]
+        #        diff_head1 = orientationangle[1] - uangle[1]
+        #        #orientationangle = orientationangle - abs(diff_head)
+        #        gpg.turn_degrees(diff_head0)
+        #        gpg.turn_degrees(diff_head1)
+        #        #drive
+        #        print("not same more", orientationangle)
+        #    elif orientationangle[0] < uangle[0] and orentationangle[1] > uangle:
+        #        diff_head0 = orientationangle[0] - uangle[0]
+        #        diff_head1 = orientationangle[1] - uangle[1]
+        #        #orientationangle = orientationangle + abs(diff_head)
+        #        gpg.turn_degrees(abs(diff_head0))
+        #        gpg.turn_degrees(diff_head1)
+        #    elif orientationangle[0] > uangle[0] and orentationangle[1] < uangle:
+        #        diff_head0 = orientationangle[0] - uangle[0]
+        #        diff_head1 = orientationangle[1] - uangle[1]
+        #        #orientationangle = orientationangle + abs(diff_head)
+        #        gpg.turn_degrees(diff_head0)
+        #        gpg.turn_degrees(abs(diff_head1))
+        #    n += 1
 
+    def nearTheGoal():
 
-    def move(self, imu):
+    def move(self, current):
         Robot = np.array([[0, -1], [1, 0]])
         atThePoint = False
         dt = 0.1
@@ -206,9 +220,8 @@ class PlanThePath:
             u0 = np.array([W2 - W1])
             norm = np.linalg.norm(u0)
             u0 = np.divide(u0, norm)
-            x = np.array([0,0])
-            u = imu.getHeading()
-            u = 'orientation'
+            x = np.array([current[0], current[1]])
+            u = self.imu.getHeading()
             #wanted speed of the robot
             #still don't know what this is
             #or this
@@ -230,5 +243,3 @@ class PlanThePath:
                 #If the robot's position is within 10 centimeters from the goal, we move on
                 if inCircle(self.waypoints[n+1], 100, x):
                     atThePoint = True
-
-
