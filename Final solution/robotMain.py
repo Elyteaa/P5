@@ -88,7 +88,7 @@ if __name__ == '__main__':
                         u = u / np.linalg.norm(u)
                         print('u=',u)
                         #uangle = np.array([math.sqrt(u[0]**2 +, np.sin(u)])
-                        uangle = np.arctan2(u[1], u[0])
+                        uangle = (180/math.pi * np.arctan2(u[1], u[0]) % 360)
                         #print("uangle = ", uangle)
                         path.robot_drive(vel, uangle)
             else: print('The robot is out of bounds')
