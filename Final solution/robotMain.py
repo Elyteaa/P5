@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
                     while not path.nearTheGoal(W2, 5, start):
                         x = x + dt * u * vel
-                        print('x=',x)
+                        print('x=', x)
                         xf = W2 + (vel - np.transpose(u0) * (W2 - x)) * u0
                         v = xf - x
                         v = v / np.linalg.norm(v)
@@ -92,3 +92,4 @@ if __name__ == '__main__':
                         #print("uangle = ", uangle)
                         path.robot_drive(vel, uangle)
             else: print('The robot is out of bounds')
+
