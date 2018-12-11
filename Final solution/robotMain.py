@@ -59,12 +59,13 @@ if __name__ == '__main__':
                 result = optimizeWaypoints(result)
                 path = PlanThePath(result, imu)
                 #print(imu.getHeading())
+                print(result)
 
                 R = np.array([[0, -1], [1, 0]])
                 dt = 0.1 #resolution
 
                 n = 0
-                while n <= len(path.waypoints)-2:
+                while n <= len(path.waypoints)-2 and (not rospy.is_shutdown()):
                     W1 = np.array([path.waypoints[n][0],path.waypoints[n][1]])
                     W2 = np.array([path.waypoints[n+1][0],path.waypoints[n+1][1]])
                     u0 = np.array([W2 - W1])
@@ -75,12 +76,15 @@ if __name__ == '__main__':
                     temp = W2 - W1
                     temp = 180/math.pi * np.arctan2(temp[1], temp[0]) % 360
                     path.robot_drive(vel, temp)
+                    print('new orientation set')
                     x = np.array([start[0], start[1]])
                     u = path.imu.getHeading()
+                    print('new u set')
 
-                    while not path.nearTheGoal(W2, 5, start):
-                        vel = 100
-                        x = x + dt * u * vel
+                    while not path.nearTheGoal(W2, 5, start) and (not rospy.is_shutdown()):
+                        vel = 0.105
+                        #x = x + dt * u * vel
+                        x = start + dt * u * vel
                         print('x=', x)
                         xf = W2 + (vel - np.transpose(u0) * (W2 - x)) * u0
                         v = xf - x
@@ -91,13 +95,14 @@ if __name__ == '__main__':
                         ru = ru * omd
                         u = u + ru
                         u = u / np.linalg.norm(u)
-                        print('u=',u)
+                        #print('u=',u)
                         #uangle = np.array([math.sqrt(u[0]**2 +, np.sin(u)])
                         uangle = (180/math.pi * np.arctan2(u[1], u[0]) % 360)
-                        #print("uangle = ", uangle)
+                        print("uangle = ", uangle)
                         path.robot_drive(vel, uangle)
                     path.robot_drive(-1, 0)
                     print(n, 'out of', len(path.waypoints))
                     n += 1
             else: print('The robot is out of bounds')
+
 
