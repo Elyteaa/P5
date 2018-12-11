@@ -180,7 +180,28 @@ class PlanThePath:
                     gpg.forward()
                 #print("1 orientationangle = ", orientationangle, 'uangle = ', uangle)
                 #print("same though")
-            elif uangle - 10 < orientationangle:
+            else:
+                temp = 0
+                temp2 = 0
+                for i in range(5, 359):
+                    #temp += 1
+                    #tempCurrent
+                    if orientationangle + i == int(uangle):
+                        temp = i
+                    if orientationangle - i == int(uangle):
+                        temp2 = i
+                    if temp != 0 and temp2 != 0:
+                        break
+                if temp2 < temp:
+                    gpg.turn_degrees(-1 * temp2)
+                    print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cc=', temp2)
+                else:
+                    gpg.turn_degrees(temp)
+                    print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cw=', temp)
+                if omf > 0:
+                    gpg.forward()
+
+            """elif uangle - 10 < orientationangle:
                 diff_head = orientationangle - uangle
                 gpg.turn_degrees(-diff_head)
                 if omf > 0:
@@ -198,7 +219,7 @@ class PlanThePath:
                 gpg.turn_degrees((-1)*diff_head)
                 if omf > 0:
                     #gpg.drive_cm(2, True)
-                    gpg.forward()
+                    gpg.forward()"""
                 #print("3 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff =', diff_head)
 
                 #drive
