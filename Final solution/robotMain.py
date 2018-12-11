@@ -45,7 +45,7 @@ def listener():
     #rospy.spin()
 
 start = None
-end = (20, 75)
+end = (50, 50)
 
 if __name__ == '__main__':
     imu = IMU()
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         if start and end:
             if abs(start[0]) <= 200 and abs(start[1]) <= 200:
-                #print('goal read:', end)
+                print('goal read:', end)
                 result, cost = AStarSearch(start, end, graph)
                 result = optimizeWaypoints(result)
                 path = PlanThePath(result, imu)
@@ -91,5 +91,7 @@ if __name__ == '__main__':
                         uangle = (180/math.pi * np.arctan2(u[1], u[0]) % 360)
                         #print("uangle = ", uangle)
                         path.robot_drive(vel, uangle)
+                    print(n, 'out of', len(path.waypoints))
+                    n += 1
             else: print('The robot is out of bounds')
 
