@@ -168,9 +168,9 @@ class PlanThePath:
         #drive = gpg.forward()
         orientationangle = self.imu.getHeadingDeg()
         #print("orientationangle = ", orientationangle)
-        n = 1
+        n = 0
         #print(n)
-        while n < 10:
+        while n < 1:
             if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
                 gpg.drive_cm(2)
                 print("orientationangle = ", orientationangle, 'uangle = ', uangle)
