@@ -81,7 +81,7 @@ def AStarSearch(start, end, graph):
             G[neighbour] = candidateG
             H = graph.heuristic(neighbour, end)
             F[neighbour] = G[neighbour] + H
-        #print(current)
+        print(current)
     raise RuntimeError("A* failed to find a solution")
  
 class IMU:
@@ -172,16 +172,16 @@ class PlanThePath:
         #print(n)
         while n < 1:
             if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
-                gpg.drive_cm(2)
-                print("orientationangle = ", orientationangle, 'uangle = ', uangle)
+                gpg.drive_cm(20)
+                #print("1 orientationangle = ", orientationangle, 'uangle = ', uangle)
                 #print("same though")
             elif uangle - 10 < orientationangle:
                 diff_head = orientationangle - uangle
 
                 #orientationangle = orientationangle + abs(diff_head)
-                gpg.turn_degrees(abs(diff_head))
-                gpg.drive_cm(2)
-                print("orientationangle = ", orientationangle, 'uangle = ', uangle)
+                gpg.turn_degrees(-diff_head)
+                gpg.drive_cm(20, True)
+                #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff =', diff_head)
 
                #drive
                 #print("not same less", orientationangle)
@@ -189,9 +189,9 @@ class PlanThePath:
                 diff_head = orientationangle - uangle
 
                 #orientationangle = orientationangle - abs(diff_head)
-                gpg.turn_degrees(diff_head)
-                gpg.drive_cm(2)
-                print("orientationangle = ", orientationangle, 'uangle = ', uangle)
+                gpg.turn_degrees((-1)*diff_head)
+                gpg.drive_cm(2, True)
+                #print("3 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff =', diff_head)
 
                 #drive
                 #print("not same more", orientationangle)
@@ -202,7 +202,7 @@ class PlanThePath:
             return True
         return False
 
-"""    def move(self, current):
+    """def move(self, current):
         Robot = np.array([[0, -1], [1, 0]])
         #atThePoint = False
         dt = 0.1
@@ -234,5 +234,4 @@ class PlanThePath:
                 uangle = np.arctan2(u[1], u[0])
                 #print("uangle = ", uangle)
                 self.robot_drive(u, omf, uangle)
-            self.n += 1
-"""
+            self.n += 1"""
