@@ -62,7 +62,6 @@ if __name__ == '__main__':
 
                 R = np.array([[0, -1], [1, 0]])
                 dt = 0.1 #resolution
-                vel = 100
 
                 n = 0
                 while n <= len(path.waypoints)-2:
@@ -71,10 +70,16 @@ if __name__ == '__main__':
                     u0 = np.array([W2 - W1])
                     norm = np.linalg.norm(u0)
                     u0 = np.divide(u0, norm)
+                    #wanted heading from W1 to W2
+                    vel = 0
+                    temp = W2 - W1
+                    temp = 180/math.pi * np.arctan2(temp[1], temp[0]) % 360
+                    path.robot_drive(vel, temp)
                     x = np.array([start[0], start[1]])
                     u = path.imu.getHeading()
 
                     while not path.nearTheGoal(W2, 5, start):
+                        vel = 100
                         x = x + dt * u * vel
                         print('x=', x)
                         xf = W2 + (vel - np.transpose(u0) * (W2 - x)) * u0
@@ -91,6 +96,7 @@ if __name__ == '__main__':
                         uangle = (180/math.pi * np.arctan2(u[1], u[0]) % 360)
                         #print("uangle = ", uangle)
                         path.robot_drive(vel, uangle)
+                    path.robot_drive(-1, 0)
                     print(n, 'out of', len(path.waypoints))
                     n += 1
             else: print('The robot is out of bounds')

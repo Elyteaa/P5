@@ -171,26 +171,34 @@ class PlanThePath:
         n = 0
         #print(n)
         while n < 1:
+            if omf < 0:
+                gpg.stop()
+                break
             if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
-                gpg.drive_cm(20)
+                if omf > 0:
+                    #gpg.drive_cm(20)
+                    gpg.forward()
                 #print("1 orientationangle = ", orientationangle, 'uangle = ', uangle)
                 #print("same though")
             elif uangle - 10 < orientationangle:
                 diff_head = orientationangle - uangle
-
-                #orientationangle = orientationangle + abs(diff_head)
                 gpg.turn_degrees(-diff_head)
-                gpg.drive_cm(20, True)
-                #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff =', diff_head)
+                if omf > 0:
+                    #orientationangle = orientationangle + abs(diff_head)
+                    #gpg.drive_cm(20, True)
+                    gpg.forward()
+                    #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff =', diff_head)
 
-               #drive
-                #print("not same less", orientationangle)
+                    #drive
+                    #print("not same less", orientationangle)
             elif uangle + 10 > orientationangle:
                 diff_head = orientationangle - uangle
 
                 #orientationangle = orientationangle - abs(diff_head)
                 gpg.turn_degrees((-1)*diff_head)
-                gpg.drive_cm(2, True)
+                if omf > 0:
+                    #gpg.drive_cm(2, True)
+                    gpg.forward()
                 #print("3 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff =', diff_head)
 
                 #drive
