@@ -81,13 +81,13 @@ def AStarSearch(start, end, graph):
             G[neighbour] = candidateG
             H = graph.heuristic(neighbour, end)
             F[neighbour] = G[neighbour] + H
-        print(current)
+        #print(current)
     raise RuntimeError("A* failed to find a solution")
  
 class IMU:
 
     def __init__(self):
-        self.imu = InertialMeasurementUnit(bus = "GPG3_AD1") #RPI_1 GPG3_AD1
+        self.imu = InertialMeasurementUnit(bus = "RPI_1") #RPI_1 GPG3_AD1
 
     def getHeadingDeg(self):
         #Read the magnetometer, gyroscope, accelerometer in rad
@@ -164,7 +164,7 @@ class PlanThePath:
 
     def robot_drive(self, omf, uangle):
         gpg = EasyGoPiGo3()
-        gpg.set_speed(omf)
+        gpg.set_speed(180)
         #drive = gpg.forward()
         orientationangle = self.imu.getHeadingDeg()
         #print("orientationangle = ", orientationangle)
@@ -175,9 +175,7 @@ class PlanThePath:
                 gpg.stop()
                 break
             if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
-                if omf > 0:
-                    #gpg.drive_cm(20)
-                    gpg.forward()
+                pass
                 #print("1 orientationangle = ", orientationangle, 'uangle = ', uangle)
                 #print("same though")
             else:
@@ -186,20 +184,34 @@ class PlanThePath:
                 for i in range(5, 359):
                     #temp += 1
                     #tempCurrent
-                    if orientationangle + i == int(uangle):
+                    #print('i', i)
+                    #print(int(orientationangle), int(uangle))
+                    if int(orientationangle) + i > 360:
+                        if (int(orientationangle) + i) - 360 == int(uangle):
+                            temp = i
+                            #print('temp assigned: special', temp, i)
+                    if int(orientationangle) + i == int(uangle):
                         temp = i
-                    if orientationangle - i == int(uangle):
+                        #print('temp assigned:', temp, i)
+                    if int(orientationangle) - i < 0:
+                        if 360 + (int(orientationangle) - i) == int(uangle):
+                            temp2 = i
+                    if int(orientationangle) - i == int(uangle):
                         temp2 = i
+                        #print('temp2 assigned:', temp2, i)
                     if temp != 0 and temp2 != 0:
+                        #print('breaks at', i)
                         break
+                    #print('1:', temp, '2:', temp2)
                 if temp2 < temp:
                     gpg.turn_degrees(-1 * temp2)
-                    print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cc=', temp2)
+                    #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cc=', temp2)
                 else:
                     gpg.turn_degrees(temp)
-                    print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cw=', temp)
-                if omf > 0:
-                    gpg.forward()
+                    #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cw=', temp)
+            if omf > 0:
+                gpg.forward()
+            print('moved')
 
             """elif uangle - 10 < orientationangle:
                 diff_head = orientationangle - uangle
@@ -264,3 +276,4 @@ class PlanThePath:
                 #print("uangle = ", uangle)
                 self.robot_drive(u, omf, uangle)
             self.n += 1"""
+
