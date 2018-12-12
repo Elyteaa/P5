@@ -53,7 +53,7 @@ if __name__ == '__main__':
     graph = AStarGraph()
     while not rospy.is_shutdown():
         if start and end:
-            if abs(start[0]) <= 200 and abs(start[1]) <= 200:
+            if abs(start[0]) <= 90 and abs(start[1]) <= 90:
                 print('goal read:', end)
                 result, cost = AStarSearch(start, end, graph)
                 result = optimizeWaypoints(result)
@@ -65,23 +65,28 @@ if __name__ == '__main__':
                 dt = 0.1 #resolution
 
                 n = 0
+                newPath = False
                 while n <= len(path.waypoints)-2 and (not rospy.is_shutdown()):
                     W1 = np.array([path.waypoints[n][0],path.waypoints[n][1]])
                     W2 = np.array([path.waypoints[n+1][0],path.waypoints[n+1][1]])
                     u0 = np.array([W2 - W1])
                     norm = np.linalg.norm(u0)
                     u0 = np.divide(u0, norm)
-                    #wanted heading from W1 to W2
-                    vel = 0
-                    temp = W2 - W1
-                    temp = 180/math.pi * np.arctan2(temp[1], temp[0]) % 360
-                    path.robot_drive(vel, temp)
-                    print('new orientation set')
-                    x = np.array([start[0], start[1]])
+                    
+                    if path.nearTheGoal(W2, 10, start):
+                        path.robot_drive(-1, 0)
+                    else:
+                        #wanted heading from W1 to W2
+                        temp = W2 - W1
+                        temp = (180/math.pi * np.arctan2(temp[1], temp[0])) % 360
+                        path.robot_drive(-1, temp)
+                        print('new orientation set')
+
                     u = path.imu.getHeading()
                     print('new u set')
+                    x = np.array([start[0], start[1]])
 
-                    while not path.nearTheGoal(W2, 5, start) and (not rospy.is_shutdown()):
+                    while not path.nearTheGoal(W2, 10, start) and (not rospy.is_shutdown()):
                         vel = 0.105
                         #x = x + dt * u * vel
                         x = start + dt * u * vel
@@ -100,6 +105,25 @@ if __name__ == '__main__':
                         uangle = (180/math.pi * np.arctan2(u[1], u[0]) % 360)
                         print("uangle = ", uangle)
                         path.robot_drive(vel, uangle)
+                        if not path.nearTheGoal((0, 0), 85, start): #not path.nearTheGoal(W2, 30, start)
+                            path.robot_drive(-1, 0)
+                            print('finding new path')
+                            newPath = True
+                            break
+                        if path.nearTheGoal(end, 10, start):
+                            path.robot_drive(-1, 0)
+                        if path.nearTheGoal((0, 0), 25, start):
+                            temp = np.array([0, 0]) - start
+                            temp = (180/math.pi * np.arctan2(temp[1], temp[0]) + 180) % 360
+                            path.robot_drive(vel, temp)                            
+                    if newPath and abs(start[0]) < 25 and abs(start[1]) < 25:
+                        #temp = (35, 35) - start
+                        temp = np.array([0, 0]) - start
+                        temp = (180/math.pi * np.arctan2(temp[1], temp[0]) + 180) % 360
+                        path.robot_drive(vel, temp)
+                        break
+                    elif newPath:
+                        break
                     path.robot_drive(-1, 0)
                     print(n, 'out of', len(path.waypoints))
                     n += 1
