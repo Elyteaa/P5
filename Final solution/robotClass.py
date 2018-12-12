@@ -239,7 +239,7 @@ class PlanThePath:
             n += 1
 
     def nearTheGoal(self, center, radius, point):
-        if (point[0] - center[0])**2 + (point[1] - center[1])**2 < radius**2:
+        if (abs(point[0]) - abs(center[0]))**2 + (abs(point[1]) - abs(center[1]))**2 < radius**2:
             return True
         return False
 
