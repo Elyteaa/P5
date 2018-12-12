@@ -152,7 +152,7 @@ class AStarGraph(object):
     def move_cost(self, a, b):
         for barrier in self.barriers:
             if self.isTheDot(barrier, b) or xor(isBetween(barrier[0], barrier[1], b), isBetween(barrier[1], barrier[2], b), isBetween(barrier[2], barrier[3], b), isBetween(barrier[3], barrier[4], b)):
-                return 100 #Extremely high cost to enter barrier squares
+                return 1000 #Extremely high cost to enter barrier squares
         return 1 #Normal movement cost
 
 class PlanThePath:
@@ -167,15 +167,16 @@ class PlanThePath:
         gpg.set_speed(180)
         #drive = gpg.forward()
         orientationangle = self.imu.getHeadingDeg()
-        #print("orientationangle = ", orientationangle)
+        print("orientationangle = ", orientationangle)
         n = 0
+        rightAngle = False
         #print(n)
-        while n < 1:
+        while not rightAngle:
             if omf < 0:
                 gpg.stop()
                 break
             if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
-                pass
+                rightAngle = True
                 #print("1 orientationangle = ", orientationangle, 'uangle = ', uangle)
                 #print("same though")
             else:
@@ -211,7 +212,7 @@ class PlanThePath:
                     #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cw=', temp)
             if omf > 0:
                 gpg.forward()
-            print('moved')
+                print('moved')
 
             """elif uangle - 10 < orientationangle:
                 diff_head = orientationangle - uangle
@@ -236,7 +237,7 @@ class PlanThePath:
 
                 #drive
                 #print("not same more", orientationangle)
-            n += 1
+            orientationangle = self.imu.getHeadingDeg()
 
     def nearTheGoal(self, center, radius, point):
         if (abs(point[0]) - abs(center[0]))**2 + (abs(point[1]) - abs(center[1]))**2 < radius**2:
@@ -276,4 +277,5 @@ class PlanThePath:
                 #print("uangle = ", uangle)
                 self.robot_drive(u, omf, uangle)
             self.n += 1"""
+
 
