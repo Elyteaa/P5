@@ -87,7 +87,7 @@ def AStarSearch(start, end, graph):
 class IMU:
 
     def __init__(self):
-        self.imu = InertialMeasurementUnit(bus = "RPI_1") #RPI_1 GPG3_AD1
+        self.imu = InertialMeasurementUnit(bus = "GPG3_AD1") #RPI_1 GPG3_AD1
 
     def getHeadingDeg(self):
         #Read the magnetometer, gyroscope, accelerometer in rad
