@@ -91,6 +91,7 @@ class IMU:
 
     def getHeadingDeg(self):
         #Read the magnetometer, gyroscope, accelerometer in rad
+        print('IMU getting the data ...')
         mag   = self.imu.read_magnetometer()
         gyro  = self.imu.read_gyroscope()
         accel = self.imu.read_accelerometer()
@@ -107,6 +108,7 @@ class IMU:
         #print('angle = ', angle)
         #print('angle = ', angle)
         #print('orientation = ', orientation)
+        print('returning the angle')
         return angle #,angle
     
     def getHeading(self):
@@ -171,10 +173,9 @@ class PlanThePath:
         n = 0
         rightAngle = False
         #print(n)
+        if omf < 0:
+            rightAngle = True
         while not rightAngle:
-            if omf < 0:
-                gpg.stop()
-                break
             if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
                 rightAngle = True
                 #print("1 orientationangle = ", orientationangle, 'uangle = ', uangle)
@@ -210,10 +211,12 @@ class PlanThePath:
                 else:
                     gpg.turn_degrees(temp)
                     #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cw=', temp)
-            if omf > 0:
-                gpg.forward()
-                print('moved')
-
+        if omf > 0:
+            gpg.forward()
+            print('moved')
+        if omf < 0:
+            gpg.stop()
+            print('stopped')
             """elif uangle - 10 < orientationangle:
                 diff_head = orientationangle - uangle
                 gpg.turn_degrees(-diff_head)
