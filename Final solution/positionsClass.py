@@ -1,5 +1,4 @@
 #!/usr/bin/python
-#~
 class CPRMeasurement:
 
     def __init__(self, CPRID, ultrasoundLevel, numMasters, timeDifference, timestampMS, transmitterID, masterID, RSSI):
@@ -8,7 +7,7 @@ class CPRMeasurement:
         self.numMasters = numMasters
         self.timeDifference = timeDifference
         self.timestampMS = timestampMS
-        self.transmitterID = transmitterID
+        self.transmitterID = transmitterIDA
         self.masterID = masterID
         self.RSSI = RSSI
 
