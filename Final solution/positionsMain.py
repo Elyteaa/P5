@@ -163,8 +163,8 @@ if z1serial.is_open:
                                     #print("a12 = ", a12, "a34 = ", a34)
                                     xx = d12 * (2 * a12 - 1)
                                     xy = d34 * (2 * a34 - 1)
-                                    xx = xx/20
-                                    xy = xy/20
+                                    xy = xx/20
+                                    xx = xy/20
                                     print('xx = ', xx, 'xy = ', xy)
                                     data = Int32MultiArray()
                                     data.data = [xx, xy]
