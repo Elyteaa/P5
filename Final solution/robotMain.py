@@ -65,7 +65,6 @@ if __name__ == '__main__':
                 dt = 0.1 #resolution
 
                 n = 0
-                newPath = False
                 while n <= len(path.waypoints)-2 and (not rospy.is_shutdown()):
                     W1 = np.array([path.waypoints[n][0],path.waypoints[n][1]])
                     W2 = np.array([path.waypoints[n+1][0],path.waypoints[n+1][1]])

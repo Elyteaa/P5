@@ -1,128 +1,230 @@
 #!/usr/bin/python
-
+from __future__ import print_function
+from __future__ import division
+from di_sensors.inertial_measurement_unit import InertialMeasurementUnit
 import math
+import time
 import numpy as np
-import time #may be not needed
-from robotClass import *
-import rospy
-from std_msgs.msg import Int32MultiArray
+import matplotlib.pyplot as plt
+import sys
+from easygopigo3 import EasyGoPiGo3
 
-def optimizeWaypoints(waypoints):
-    if len(waypoints) > 2:
-        for x in range(0,len(waypoints)-2):
-            if isBetween(waypoints[x], waypoints[x+2], waypoints[x+1]):
-                #print(waypoints[x], waypoints[x+2], waypoints[x+1])
-                del waypoints[x+1]
-                #print('new:', waypoints)
-                return optimizeWaypoints(waypoints)
-            elif x == len(waypoints)-3:
-                return waypoints
-    else:
-        return waypoints
+def xor(*args):
+    return sum(args) == 1
 
-def callback(data):
-    global start
-    start = data.data
+def isBetween(a, b, c):
+    crossproduct = (c[1] - a[1]) * (b[0] - a[0]) - (c[0] - a[0]) * (b[1] - a[1])
 
-def callback2(data):
-    global end
-    end = data.data
+    # compare versus epsilon for floating point values, or != 0 if using integers
+    if abs(crossproduct) > sys.float_info.epsilon:
+        return False
 
-def listener():
+    dotproduct = (c[0] - a[0]) * (b[0] - a[0]) + (c[1] - a[1])*(b[1] - a[1])
+    if dotproduct < 0:
+        return False
 
-    # In ROS, nodes are uniquely named. If two nodes with the same
-    # node are launched, the previous one is kicked off. The
-    # anonymous=True flag means that rospy will choose a unique
-    # name for our 'listener' node so that multiple listeners can
-    # run simultaneously.
-    rospy.init_node('listener', anonymous=True)
+    squaredlengthba = (b[0] - a[0])*(b[0] - a[0]) + (b[1] - a[1])*(b[1] - a[1])
+    if dotproduct > squaredlengthba:
+        return False
 
-    rospy.Subscriber("position", Int32MultiArray, callback)
+    return True
 
-    rospy.Subscriber("goal", Int32MultiArray, callback2)
-    # spin() simply keeps python from exiting until this node is stopped
-    #spin() fucks everything up and is not necesssary in rospy !
-    #rospy.spin()
+def AStarSearch(start, end, graph):
+ 
+    G = {} #Actual movement cost to each position from the start position
+    F = {} #Estimated movement cost of start to end going via this position
+ 
+    #Initialize starting values
+    G[start] = 0 
+    F[start] = graph.heuristic(start, end)
+ 
+    closedVertices = set()
+    openVertices = set([start])
+    cameFrom = {}
+ 
+    while len(openVertices) > 0:
+        #Get the vertex in the open list with the lowest F score
+        current = None
+        currentFscore = None
+        for pos in openVertices:
+            if current is None or F[pos] < currentFscore:
+                currentFscore = F[pos]
+                current = pos
+ 
+        #Check if we have reached the goal
+        if current == end:
+            #Retrace our route backward
+            path = [current]
+            while current in cameFrom:
+                current = cameFrom[current]
+                path.append(current)
+            path.reverse()
+            return path, F[end] #Done!
+ 
+        #Mark the current vertex as closed
+        openVertices.remove(current)
+        closedVertices.add(current)
+ 
+        #Update scores for vertices near the current position
+        for neighbour in graph.get_vertex_neighbours(current):
+            if neighbour in closedVertices: 
+                continue #We have already processed this node exhaustively
+            candidateG = G[current] + graph.move_cost(current, neighbour)
+ 
+            if neighbour not in openVertices:
+                openVertices.add(neighbour) #Discovered a new vertex
+            elif candidateG >= G[neighbour]:
+                continue #This G score is worse than previously found
+ 
+            #Adopt this G score
+            cameFrom[neighbour] = current
+            G[neighbour] = candidateG
+            H = graph.heuristic(neighbour, end)
+            F[neighbour] = G[neighbour] + H
+        #print(current)
+    raise RuntimeError("A* failed to find a solution")
+ 
+class IMU:
 
-start = None
-end = (-50, -50)
+    def __init__(self):
+        self.imu = InertialMeasurementUnit(bus = "GPG3_AD1") #RPI_1 GPG3_AD1
 
-if __name__ == '__main__':
-    imu = IMU()
-    listener()
-    graph = AStarGraph()
-    while not rospy.is_shutdown():
-        if start and end:
-            if abs(start[0]) <= 90 and abs(start[1]) <= 90:
-                print('goal read:', end)
-                result, cost = AStarSearch(start, end, graph)
-                result = optimizeWaypoints(result)
-                path = PlanThePath(result, imu)
-                #print(imu.getHeading())
-                print(result)
-
-                R = np.array([[0, -1], [1, 0]])
-                dt = 0.1 #resolution
-
-                n = 0
-                newPath = False
-                while n <= len(path.waypoints)-2 and (not rospy.is_shutdown()):
-                    W1 = np.array([path.waypoints[n][0],path.waypoints[n][1]])
-                    W2 = np.array([path.waypoints[n+1][0],path.waypoints[n+1][1]])
-                    u0 = np.array([W2 - W1])
-                    norm = np.linalg.norm(u0)
-                    u0 = np.divide(u0, norm)
-                    
-                    if path.nearTheGoal(W2, 10, start):
-                        path.robot_drive(-1, 0)
-                    else:
-                        #wanted heading from W1 to W2
-                        temp = W2 - W1
-                        temp = (180/math.pi * np.arctan2(temp[1], temp[0])) % 360
-                        path.robot_drive(-1, temp)
-                        print('new orientation set')
-
-                    u = path.imu.getHeading()
-                    print('new u set')
-                    #x = np.array([start[0], start[1]])
-
-                    while not path.nearTheGoal(W2, 10, start) and (not rospy.is_shutdown()):
-                        vel = 0.105
-                        #x = x + dt * u * vel
-                        x = start + dt * u * vel
-                        print('x=', x)
-                        xf = W2 + (vel - np.transpose(u0) * (W2 - x)) * u0
-                        v = xf - x
-                        v = v / np.linalg.norm(v)
-                        omd = (u[0] * v[1] - u[1] * v[0]) * 2
-                        R = R * dt
-                        ru = np.array([R[0][0] * u[0] + R[0][1] * u[1], R[1][0] * u[0] + R[1][1] * u[1]])
-                        ru = ru * omd
-                        u = u + ru
-                        u = u / np.linalg.norm(u)
-                        #print('u=',u)
-                        #uangle = np.array([math.sqrt(u[0]**2 +, np.sin(u)])
-                        uangle = (180/math.pi * np.arctan2(u[1], u[0]) % 360)
-                        print("uangle = ", uangle)
-                        if not path.nearTheGoal((0, 0), 85, start): #not path.nearTheGoal(W2, 30, start)
-                            path.robot_drive(-1, 0)
-                            print('put me closer to the center')
-                            print('finding new path')
-                            break
-                        if path.nearTheGoal(end, 30, start):
-                            path.robot_drive(-1, 0)
-                            print('the goal reached')
-                            break
-                        if path.nearTheGoal((0, 0), 25, start):
-                            temp = np.array([0, 0]) - start
-                            temp = (180/math.pi * np.arctan2(temp[1], temp[0]) + 180) % 360
-                            while path.nearTheGoal((0, 0), 25, start):
-                                path.robot_drive(vel, temp)
-                        path.robot_drive(vel, uangle)                            
-                    path.robot_drive(-1, 0)
-                    print(n, 'out of', len(path.waypoints))
-                    n += 1
-            else: print('The robot is out of bounds')
+    def getHeadingDeg(self):
+        #Read the magnetometer, gyroscope, accelerometer in rad
+        print('IMU getting the data ...')
+        mag   = self.imu.read_magnetometer()
+        gyro  = self.imu.read_gyroscope()
+        accel = self.imu.read_accelerometer()
 
 
+        """pitch = np.arcsin(-accel[1] / np.linalg.norm(accel))
+        roll = np.arcsin(accel[0] / n.linalg.norm(accel))
+        y = -mag[0] * np.cos(roll) + mag[2] * np.sin(roll)
+        x = mag[0] * np.sin(pitch) * np.sin(roll) + mag[1] * cos(pitch) + mag[2] * np.sin(pitch) * np.cos(roll)
+        azimuth = np.arctan2(y, x)
+        orientation = np.array([azimuth, pitch])"""
 
+        angle = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
+        #print('angle = ', angle)
+        #print('angle = ', angle)
+        #print('orientation = ', orientation)
+        print('returning the angle')
+        return angle #,angle
+    
+    def getHeading(self):
+        angle = self.getHeadingDeg()
+        angle = np.deg2rad(angle)
+        orientation = np.array([np.cos(angle), np.sin(angle)])
+        return orientation
+
+class AStarGraph(object):
+    #Define a class board like grid with two barriers
+ 
+    def __init__(self):
+        self.barriers = []
+        #The Steffen's tower base
+        self.barriers.append([(25, -25),(-25,-25),(-25,25),(25,25),(25, -25)])
+ 
+    def heuristic(self, start, goal):
+        #Use Chebyshev distance heuristic if we can move one square either
+        #adjacent or diagonal
+        D = 1
+        D2 = 1
+        dx = abs(start[0] - goal[0])
+        dy = abs(start[1] - goal[1])
+        return D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
+ 
+    def get_vertex_neighbours(self, pos):
+        n = []
+        #Moves allow link a chess king
+        #Basically just means it can move between waypoints like a king in chess. Movement in every direction but only one waypoint at a time
+        for dx, dy in [(1,0),(-1,0),(0,1),(0,-1),(1,1),(-1,1),(1,-1),(-1,-1)]:
+            x2 = pos[0] + dx
+            y2 = pos[1] + dy
+            if x2 < -200 or x2 > 200 or y2 < -200 or y2 > 200:
+                continue
+            n.append((x2, y2))
+        return n
+
+    def isTheDot(self, barrier, x):
+        for i in range(0,5):
+            if barrier[i] == x:
+                return True
+        return False
+
+    def move_cost(self, a, b):
+        for barrier in self.barriers:
+            if self.isTheDot(barrier, b) or xor(isBetween(barrier[0], barrier[1], b), isBetween(barrier[1], barrier[2], b), isBetween(barrier[2], barrier[3], b), isBetween(barrier[3], barrier[4], b)):
+                return 1000 #Extremely high cost to enter barrier squares
+        return 1 #Normal movement cost
+
+class PlanThePath:
+#Add functions to find the next point, calculate needed values
+   
+    def __init__(self, path, imu):
+        self.waypoints = path
+        self.imu = imu
+
+    def robot_drive(self, omf, uangle):
+        gpg = EasyGoPiGo3()
+        gpg.set_speed(180)
+        #drive = gpg.forward()
+        orientationangle = self.imu.getHeadingDeg()
+        print("orientationangle = ", orientationangle)
+        n = 0
+        rightAngle = False
+        #print(n)
+        if omf < 0:
+            rightAngle = True
+        while not rightAngle:
+            if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
+                rightAngle = True
+                #print("1 orientationangle = ", orientationangle, 'uangle = ', uangle)
+                #print("same though")
+            else:
+                temp = 0
+                temp2 = 0
+                for i in range(5, 359):
+                    #temp += 1
+                    #tempCurrent
+                    #print('i', i)
+                    #print(int(orientationangle), int(uangle))
+                    if int(orientationangle) + i > 360:
+                        if (int(orientationangle) + i) - 360 == int(uangle):
+                            temp = i
+                            #print('temp assigned: special', temp, i)
+                    if int(orientationangle) + i == int(uangle):
+                        temp = i
+                        #print('temp assigned:', temp, i)
+                    if int(orientationangle) - i < 0:
+                        if 360 + (int(orientationangle) - i) == int(uangle):
+                            temp2 = i
+                    if int(orientationangle) - i == int(uangle):
+                        temp2 = i
+                        #print('temp2 assigned:', temp2, i)
+                    if temp != 0 and temp2 != 0:
+                        #print('breaks at', i)
+                        break
+                    #print('1:', temp, '2:', temp2)
+                if temp2 < temp:
+                    gpg.turn_degrees(-1 * temp2)
+                    #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cc=', temp2)
+                else:
+                    gpg.turn_degrees(temp)
+                    #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cw=', temp)
+        if omf > 0:
+            gpg.forward()
+            print('moved')
+        if omf < 0:
+            gpg.stop()
+            print('stopped')
+                #print("3 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff =', diff_head)
+
+                #drive
+                #print("not same more", orientationangle)
+            orientationangle = self.imu.getHeadingDeg()
+
+    def nearTheGoal(self, center, radius, point):
+        if (abs(point[0]) - abs(center[0]))**2 + (abs(point[1]) - abs(center[1]))**2 < radius**2:
+            return True
+        return False
