@@ -222,7 +222,7 @@ class PlanThePath:
 
                 #drive
                 #print("not same more", orientationangle)
-            orientationangle = self.imu.getHeadingDeg()
+        orientationangle = self.imu.getHeadingDeg()
 
     def nearTheGoal(self, center, radius, point):
         if (abs(point[0]) - abs(center[0]))**2 + (abs(point[1]) - abs(center[1]))**2 < radius**2:
