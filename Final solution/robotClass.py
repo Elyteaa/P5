@@ -212,6 +212,7 @@ class PlanThePath:
                 else:
                     gpg.turn_degrees(temp)
                     #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cw=', temp)
+            orientationangle = self.imu.getHeadingDeg()
         if omf > 0:
             gpg.forward()
             print('moved')
@@ -222,7 +223,6 @@ class PlanThePath:
 
                 #drive
                 #print("not same more", orientationangle)
-        orientationangle = self.imu.getHeadingDeg()
 
     def nearTheGoal(self, center, radius, point):
         if (abs(point[0]) - abs(center[0]))**2 + (abs(point[1]) - abs(center[1]))**2 < radius**2:
