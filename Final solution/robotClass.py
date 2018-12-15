@@ -81,13 +81,13 @@ def AStarSearch(start, end, graph):
             G[neighbour] = candidateG
             H = graph.heuristic(neighbour, end)
             F[neighbour] = G[neighbour] + H
-        #print(current)
+        print(current)
     raise RuntimeError("A* failed to find a solution")
  
 class IMU:
 
     def __init__(self):
-        self.imu = InertialMeasurementUnit(bus = "GPG3_AD1") #RPI_1 GPG3_AD1
+        self.imu = InertialMeasurementUnit(bus = "RPI_1") #RPI_1 GPG3_AD1
 
     def getHeadingDeg(self):
         #Read the magnetometer, gyroscope, accelerometer in rad
@@ -137,7 +137,6 @@ class AStarGraph(object):
     def get_vertex_neighbours(self, pos):
         n = []
         #Moves allow link a chess king
-        #Basically just means it can move between waypoints like a king in chess. Movement in every direction but only one waypoint at a time
         for dx, dy in [(1,0),(-1,0),(0,1),(0,-1),(1,1),(-1,1),(1,-1),(-1,-1)]:
             x2 = pos[0] + dx
             y2 = pos[1] + dy
@@ -169,19 +168,21 @@ class PlanThePath:
         gpg = EasyGoPiGo3()
         gpg.set_speed(180)
         #drive = gpg.forward()
-        orientationangle = self.imu.getHeadingDeg()
-        print("orientationangle = ", orientationangle)
         n = 0
         rightAngle = False
         #print(n)
         if omf < 0:
             rightAngle = True
         while not rightAngle:
+            orientationangle = self.imu.getHeadingDeg()
+            print("orientationangle = ", orientationangle)
             if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
                 rightAngle = True
                 #print("1 orientationangle = ", orientationangle, 'uangle = ', uangle)
                 #print("same though")
             else:
+                #print('current:',self.imu.getHeadingDeg())
+                #print('wanted :', uangle)
                 temp = 0
                 temp2 = 0
                 for i in range(5, 359):
@@ -212,13 +213,31 @@ class PlanThePath:
                 else:
                     gpg.turn_degrees(temp)
                     #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cw=', temp)
-            orientationangle = self.imu.getHeadingDeg()
         if omf > 0:
             gpg.forward()
             print('moved')
         if omf < 0:
             gpg.stop()
             print('stopped')
+            """elif uangle - 10 < orientationangle:
+                diff_head = orientationangle - uangle
+                gpg.turn_degrees(-diff_head)
+                if omf > 0:
+                    #orientationangle = orientationangle + abs(diff_head)
+                    #gpg.drive_cm(20, True)
+                    gpg.forward()
+                    #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff =', diff_head)
+
+                    #drive
+                    #print("not same less", orientationangle)
+            elif uangle + 10 > orientationangle:
+                diff_head = orientationangle - uangle
+
+                #orientationangle = orientationangle - abs(diff_head)
+                gpg.turn_degrees((-1)*diff_head)
+                if omf > 0:
+                    #gpg.drive_cm(2, True)
+                    gpg.forward()"""
                 #print("3 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff =', diff_head)
 
                 #drive
@@ -228,3 +247,40 @@ class PlanThePath:
         if (abs(point[0]) - abs(center[0]))**2 + (abs(point[1]) - abs(center[1]))**2 < radius**2:
             return True
         return False
+
+    """def move(self, current):
+        Robot = np.array([[0, -1], [1, 0]])
+        #atThePoint = False
+        dt = 0.1
+        omf = 100
+
+        if self.n <= len(self.waypoints)-2:
+            W1 = np.array([self.waypoints[self.n][0],self.waypoints[self.n][1]])
+            W2 = np.array([self.waypoints[self.n+1][0],self.waypoints[self.n+1][1]])
+            u0 = np.array([W2 - W1])
+            norm = np.linalg.norm(u0)
+            u0 = np.divide(u0, norm)
+            x = np.array([current[0], current[1]])
+            u = self.imu.getHeading()
+
+            while not self.nearTheGoal(W2, 5, x):
+                x = x + dt * u * omf
+                print('x=',x)
+                xf = W2 + (omf - np.transpose(u0) * (W2 - x)) * u0
+                v = xf - x
+                v = v / np.linalg.norm(v)
+                omd = (u[0] * v[1] - u[1] * v[0]) * 2
+                R = Robot * dt
+                ru = np.array([R[0][0] * u[0] + R[0][1] * u[1], R[1][0] * u[0] + R[1][1] * u[1]])
+                ru = ru * omd
+                u = u + ru
+                u = u / np.linalg.norm(u)
+                print('u=',u)
+                #uangle = np.array([math.sqrt(u[0]**2 +, np.sin(u)])
+                uangle = np.arctan2(u[1], u[0])
+                #print("uangle = ", uangle)
+                self.robot_drive(u, omf, uangle)
+            self.n += 1"""
+
+
+
