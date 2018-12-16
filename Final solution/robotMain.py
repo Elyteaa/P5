@@ -81,11 +81,11 @@ if __name__ == '__main__':
                         path.robot_drive(-1, temp)
                         print('new orientation set')
 
-                    u = path.imu.getHeading()
-                    print('new u set')
                     #x = np.array([start[0], start[1]])
 
                     while not path.nearTheGoal(W2, 10, start) and (not rospy.is_shutdown()):
+                        u = path.imu.getHeading()
+                        print('new u set')
                         vel = 0.105
                         #x = x + dt * u * vel
                         x = start + dt * u * vel
