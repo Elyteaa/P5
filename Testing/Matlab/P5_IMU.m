@@ -1,26 +1,26 @@
-%%Recorded data and grount truth % DATA = MISSING
-m = [91 91 91; 115 114 116; 250 252 247];
+%%Recorded data and grount truth % DATA = IN
+%Moving, then reading % 90, 180, 270, 360 degrees
+m= [-1 4 0;      %90
+        -40 -34 -33; %180
+        -30 -36 -37; %270
+        1 5 0];      %360
 
-%m = []; %Other part of the test
-gtruth = [90 115 250];
-
-
+%Moving according to IMU % 90, 180, 270, 360
+%To see data for this, name it 'm'
+m_2= [5 -3 -8;  %90
+      1 0 3;    %180
+      10 4 3;   %270
+      4 6 4];   %360
 %% Number scronching
-avg= sum(m,2)/size(m,2); %Vector of averages
-accVec= zeros([size(m,2) 1]);
-accVec(:,:)=[];
-
-for i=1:size(avg)
-    accVec(i)= abs(avg(i)-gtruth(i));
+for i=1:size(m,1)
+    accVec(i)= abs(sum(m(i,:))/size(m,2));
 end
-
 accVec
 
-varVec= zeros([size(m,2) 1]);
-varVec(:,:)=[];
-
-for i=1:size(m,2)
+for i=1:size(m,1)
     varVec(i)= var(m(i,:));
 end
-
 varVec
+
+stdvVec= sqrt(varVec);
+stdvVec
