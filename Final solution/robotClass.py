@@ -89,7 +89,7 @@ class IMU:
     def __init__(self):
         self.imu = InertialMeasurementUnit(bus = "RPI_1") #RPI_1 GPG3_AD1
 
-    def getHeadingDeg(self):
+    """def getHeadingDeg(self):
         #Read the magnetometer, gyroscope, accelerometer in rad
         print('IMU getting the data ...')
         mag   = self.imu.read_magnetometer()
@@ -115,7 +115,36 @@ class IMU:
         angle = self.getHeadingDeg()
         angle = np.deg2rad(angle)
         orientation = np.array([np.cos(angle), np.sin(angle)])
-        return orientation
+        return orientation"""
+
+    def getHeading(self):
+        #Read the magnetometer, gyroscope, accelerometer in rad
+        print('IMU getting the data ...')
+        mag   = self.imu.read_magnetometer()
+        gyro  = self.imu.read_gyroscope()
+        accel = self.imu.read_accelerometer()
+
+
+        """pitch = np.arcsin(-accel[1] / np.linalg.norm(accel))
+        roll = np.arcsin(accel[0] / n.linalg.norm(accel))
+        y = -mag[0] * np.cos(roll) + mag[2] * np.sin(roll)
+        x = mag[0] * np.sin(pitch) * np.sin(roll) + mag[1] * cos(pitch) + mag[2] * np.sin(pitch) * np.cos(roll)
+        azimuth = np.arctan2(y, x)
+        orientation = np.array([azimuth, pitch])"""
+
+        #angle = (180/math.pi * math.atan2(mag[0], mag[2]) % 360)
+        #print('angle = ', angle)
+        #print('angle = ', angle)
+        #print('orientation = ', orientation)
+        print('returning the angle')
+        return mag #,angle
+    
+    def getHeadingDeg(self):
+        angle = self.getHeading()
+        #angle = np.deg2rad(angle)
+        #orientation = np.array([np.cos(angle), np.sin(angle)])
+        angle = (180/math.pi * math.atan2(angle[0], angle[2]) % 360)
+        return angle
 
 class AStarGraph(object):
     #Define a class board like grid with two barriers
