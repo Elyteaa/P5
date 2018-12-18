@@ -176,7 +176,7 @@ class PlanThePath:
         while not rightAngle:
             orientationangle = self.imu.getHeadingDeg()
             print("orientationangle = ", orientationangle)
-            if uangle - 10 <= orientationangle and uangle + 10 >= orientationangle:
+            if uangle - 9 <= orientationangle and uangle + 9 >= orientationangle:
                 rightAngle = True
                 #print("1 orientationangle = ", orientationangle, 'uangle = ', uangle)
                 #print("same though")
@@ -185,7 +185,7 @@ class PlanThePath:
                 #print('wanted :', uangle)
                 temp = 0
                 temp2 = 0
-                for i in range(5, 359):
+                for i in range(8, 359):
                     #temp += 1
                     #tempCurrent
                     #print('i', i)
@@ -209,9 +209,11 @@ class PlanThePath:
                     #print('1:', temp, '2:', temp2)
                 if temp2 < temp:
                     gpg.turn_degrees(-1 * temp2)
+                    print('turned')
                     #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cc=', temp2)
                 else:
                     gpg.turn_degrees(temp)
+                    print('turned')
                     #print("2 orientationangle = ", orientationangle, 'uangle = ', uangle, 'diff cw=', temp)
         if omf > 0:
             gpg.forward()
