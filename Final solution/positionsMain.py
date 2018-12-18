@@ -163,11 +163,11 @@ if z1serial.is_open:
                                     #print("a12 = ", a12, "a34 = ", a34)
                                     xx = d12 * (2 * a12 - 1)
                                     xy = d34 * (2 * a34 - 1)
-                                    xy = xx/20
-                                    xx = xy/20
-                                    print('xx = ', xx, 'xy = ', xy)
+                                    x = xy/20
+                                    y = xx/20
+                                    print('xx = ', x, 'xy = ', y)
                                     data = Int32MultiArray()
-                                    data.data = [xx, xy]
+                                    data.data = [x, y]
                                     stop = True
                                     #rospy.loginfo(data)
                                     pub.publish(data)
