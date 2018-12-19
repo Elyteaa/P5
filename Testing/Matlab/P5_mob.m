@@ -76,4 +76,4 @@ for i=1:size(m_c,3)
 end
 complexStdv= sqrt(complexVar)
 
-ranges= [2500,3300,3000,3000];
+%ranges= [2500,3300,3000,3000];

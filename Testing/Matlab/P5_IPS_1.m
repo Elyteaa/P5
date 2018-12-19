@@ -1,4 +1,6 @@
 %% Input recorded distances from transmitters, 1st round of testing % DATA = IN
+%ranges= [2500,3300,3000,3000]; % 1st entry - 1st transmitter
+
 m=    [1662 1661 1661; %Position 1, 1st transmitter
        1745 1745 1745; %Position 1, 2nd transmitter
        1892 1894 1894;
@@ -79,3 +81,4 @@ avgStdv= sum(sum(stdvmat))/(size(m,1)*size(m,3))
 
 %Average accuracy
 avgAcc= sum(sum(accmat))/(size(m,1)*size(m,3))
+
